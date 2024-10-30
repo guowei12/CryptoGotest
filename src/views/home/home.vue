@@ -1,21 +1,25 @@
 <template>
   <div class="QRPay-container">
+    <fLoading class="fLoading-box" v-if="loading"/>
     <HeaderBar :home="true"></HeaderBar>
     <div class="QRPay-con">
       <div class="QRPay-balance">
         <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img" src="@/assets/images/home/see-icon.png" alt=""></div>
         <div class="QRPay-balance-number">$ 1362.82</div>
       </div>
-      <div class="QRPay-balance-btn">
+      <div class="QRPay-balance-btn" @click="goManagebalance">
         <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
         <div>Manage balance</div>
       </div>
     </div>
     <div class="QRPay-change-con">
-      <div class="QRPay-change">
+      <div class="QRPay-change-tran">
+        Transaction
+      </div>
+      <!-- <div class="QRPay-change">
         <div @click="onChange(1)" :class="listShow==1?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Transaction</div>
         <div @click="onChange(2)" :class="listShow==2?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Assets</div>
-      </div>
+      </div> -->
       <div class="QRPay-list" v-if="listShow == 1">
         <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index">
           <div class="QRPay-list-li-left">
@@ -40,7 +44,7 @@
           <div class="QRPay-list-li-left">
           <img  class="currency-img" :src="item.img" alt="" srcset="">
           <div class="QRPay-list-con">
-            <div class="QRPay-list-con-name">{{ item.nenetwork }}</div>
+            <div class="QRPay-list-con-name">{{ item.network }}</div>
             <div class="QRPay-list-con-time">{{ item.name }}</div>
           </div>
           </div>
@@ -53,7 +57,7 @@
         </div>
       </div>
     </div>
-    <footerBar></footerBar>
+    <footerBar v-if="!loading"></footerBar >
     <!-- <qrcode/> -->
 
   </div>
@@ -63,6 +67,7 @@
 import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import qrcode from "../QRcode/index.vue"
+import fLoading from "@/components/fLoading/index.vue"
 import HeaderBar from '@/components/headerBar/index.vue'
 import footerBar from '@/components/footerBar/index.vue'
 
@@ -71,7 +76,7 @@ import footerBar from '@/components/footerBar/index.vue'
 */
 export default defineComponent({
     name: 'Home',
-    components:{HeaderBar,footerBar,qrcode},
+    components:{HeaderBar,footerBar,qrcode,fLoading},
     setup() {
        /**
        * 路由对象
@@ -86,6 +91,7 @@ export default defineComponent({
        * 数据局部
        */
        const data = reactive({
+        loading:false,
         listShow:1,
         transactionList:[
           {
@@ -106,7 +112,7 @@ export default defineComponent({
         assetsList:[
           {
             img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-            nenetwork:'Bitcoin',
+            network:'Bitcoin',
             name:'BTC',
             balance:'1191.71',
             number:'0.0185',
@@ -114,7 +120,7 @@ export default defineComponent({
           },
           {
             img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-            nenetwork:'Bitcoin',
+            network:'Bitcoin',
             name:'BTC',
             balance:'1191.71',
             number:'0.0185',
@@ -125,6 +131,9 @@ export default defineComponent({
        const infoMethods = {
         onChange(num: number){
           data.listShow=num
+        },
+        goManagebalance(){
+          router.push({ path: '/balance' })
         }
        }
        onBeforeMount(() => {

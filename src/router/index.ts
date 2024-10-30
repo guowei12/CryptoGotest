@@ -10,6 +10,31 @@ const router = createRouter({
       name: 'home',
       component: home
     },
+    {
+      path: '/scan',
+      name: 'scan',
+      component: () => import('../views/QRcode/index.vue')
+    },
+    {
+      path: '/discover',
+      name: 'discover',
+      component: () => import('../views/discover/index.vue')
+    },
+    {
+      path: '/balance',
+      name: 'balance',
+      component: () => import('../views/managebalance/index.vue')
+    },
+    {
+      path: '/deposit',
+      name: 'deposit',
+      component: () => import('../views/managebalance/components/deposit/index.vue')
+    },
+    {
+      path: '/withdraw',
+      name: 'withdraw',
+      component: () => import('../views/managebalance/components/withdraw/index.vue')
+    },
     // {
       // path: '/about',
       // name: 'about',

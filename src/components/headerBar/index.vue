@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="header-default" v-if="qrCode">
-      <div class="header-arrow-left">
+      <div class="header-arrow-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-default-right" @click="countryShow=!countryShow">
@@ -25,6 +25,25 @@
       </div>
         <img class="set-icon"  src="@/assets/images/header/set-icon.png" alt="" srcset="">
     </div>
+    <div class="header-default-line" v-if="balance">
+      <div class="header-arrow-left" @click="goBack">
+        <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
+      </div>
+      <div class="header-balance">
+        {{  title }}
+      </div>
+      <div class="header-default-right" @click="countryShow=!countryShow">
+        <img class="header-list-icon" src="@/assets/images/header/list-icon.png" alt="" srcset="">
+      </div>
+    </div>
+    <div class="header-default-line" v-if="defaultH">
+      <div class="header-arrow-left" @click="goBack">
+        <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
+      </div>
+      <div class="header-balance">
+        {{  title }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,12 +63,24 @@ import { useRouter, useRoute } from "vue-router";
 export default defineComponent({
   emit:['cancelFor'],
   props: {
+    defaultH:{
+      type: [Number, String, Boolean],
+      required: false,
+    },
     home: {
       type: [Number, String, Boolean],
       required: false,
     },
     qrCode: {
       type: [Number, String, Boolean],
+      required: false,
+    },
+    balance: {
+      type: [Number, String, Boolean],
+      required: false,
+    },
+    title: {
+      type: [String],
       required: false,
     },
     logo: {

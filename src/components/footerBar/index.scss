@@ -6,7 +6,7 @@
     align-items: center;
     font-family: 'sf-pro-display_regular_400';
     background: #FFFFFF;
-    z-index: 999;
+    z-index: 990;
 }
 .footerBar-list{
     width: 100%;
@@ -22,13 +22,13 @@
         font-size: 10px;
         line-height: 12px;
         font-family: 'sf-pro-display_medium_500';
-        color: #191b19;
+        // color: #191b19;
         height: 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0 41.5px;
+        width: 109px;
         .footerBar-li-img{
             width: 24px;
             height: 24px;
@@ -36,9 +36,14 @@
             margin-bottom: 4px;
         }
         .footerBar-li-text{
+            color: #B7BCC5;
             white-space: nowrap;
         }
+   
     }
+}
+.footerBar-li-text-set{
+    color: #191b19 !important;
 }
 .footerBar-list-home{
     position: relative;
@@ -52,23 +57,50 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0 55px;
+        width: 136px;
         .footerBar-li-img{
             width: 24px;
             height: 24px;
             object-fit: cover;
             margin-bottom: 4px;
         }
+        .footerBar-li-text{
+            color: #B7BCC5;
+            white-space: nowrap;
+        }
+    }
+    .scan-pay-icon-bg{
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        .scan-pay-icon-bg-icon{
+            position: absolute;
+            bottom: -15px;
+            width: 108px;
+            height: 108px;   
+            object-fit: contain;
+        }
     }
     .footerBar-li-scan{
         width: 64px;
         height: 64px;
         position: absolute;
+        bottom: 24px;
+        // background: #58F287;
+        .scan-pay-icon{
+            width: 64px;
+            height: 64px;
+            object-fit: cover; 
+        }
     }
 }
 @media only screen and (min-width: 700px) {
     .footerBar-container{
         margin: 0 auto;
+        max-width: 375px;
     }
       
 }

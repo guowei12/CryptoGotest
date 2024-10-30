@@ -1,19 +1,15 @@
-.QRPay-container{
-    background: #F7F7F7;
-    font-family: 'sf-pro-display_regular_400';
-}
-.fLoading-box{
-    z-index: 1000;
+.managebalance-box{
+    
 }
 .QRPay-con{
     margin: 0 16px;
+    padding-top:32px;
 }
 .QRPay-balance{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top:12px;
     .QRPay-balance-title{
         font-size: 14px;
         line-height: 17px;
@@ -36,108 +32,38 @@
         margin-top: 6px;
     }
 }
-.QRPay-balance-btn{
-    height: 36px;
-    background: #FFFFFF;
-    border-radius: 50px;
-    font-size: 14px;
-    font-family: 'sf-pro-display_medium_500';
-    line-height: 22.4px;
-    color: #191B1F;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 16px;
-    .QRPay-balance-btn-img{
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
-    }
-}
-.QRPay-change-con{
-    margin:  0 16px;
-}
-.QRPay-change-tran{
-    display: flex;
-    font-size: 16px;
-    line-height: 36px;
-    color: #191B1F;
-    font-family: 'sf-pro-display_bold_700';
-    height: 36px;
-    margin-top: 20px;
-}
-.QRPay-change{
+.balance-btn-box{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 36px;
-    .QRPay-change-btn{
-        cursor: pointer;
-        width: 50%;
-        font-size: 14px;
-        line-height: 16.7px;
+    margin-top: 16px;
+    .balance-btn-df{
         height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #737A86;
-        font-family: 'sf-pro-display_medium_500';
-        transition: background-color 0.3s;
-        border-radius: 12px;
-    }
-    .QRPay-change-btn-set{
-        flex-flow: 1;
-        flex-shrink: 0;
-        font-size: 16px;
-        font-family: 'sf-pro-display_bold_700';
         color: #191B1F;
-        height: 36px;
-        line-height: 19px;
+        line-height: 22.4px;
+        font-size: 14px;
+        font-family: 'sf-pro-display_medium_500';
         display: flex;
         align-items: center;
         justify-content: center;
+        width: calc(50% - 4px);
         background: #FFFFFF;
-        border-radius: 12px;
-        transition: background-color 0.3s;
-    }
-    .btn-class{
-        position: relative;
-    }
-    .QRPay-change-btn:hover{
-        .btn-class::after {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2;
-            cursor: pointer;
+        border-radius: 50px;
+        .balance-btn-img{
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            margin-right: 8px;
         }
     }
-    .QRPay-change-btn:active{
-        .btn-class::after {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2;
-            cursor: pointer;
-        }
-    }
+
 }
 .QRPay-list{
-    font-size: 14px;
     font-family: 'sf-pro-display_medium_500';
     color:#191B1F;
     border-radius: 12px;
     background: #FFFFFF;
+    margin-top: 24px;
  
     .QRPay-list-li{
         display: flex;
@@ -164,7 +90,7 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: 14px;
+                font-size: 16px;
                 line-height: 20px;
             }
             .QRPay-list-con-time{
@@ -212,7 +138,5 @@
     }
 }
 @media only screen and (min-width: 700px) {
-    .QRPay-container{
-        width: 375px;
-    }
+    
 }
