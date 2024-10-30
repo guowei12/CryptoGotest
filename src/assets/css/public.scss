@@ -1,0 +1,111 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  background: #f7f7f7;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+  /* 修改滚动条宽度和颜色 */
+  // ::-webkit-scrollbar {
+  //   width: 3px !important;
+  // }
+
+  // ::-webkit-scrollbar-track {
+  //   width: 3px !important;
+  //   border-radius: 24px;
+  // }
+  // ::-webkit-scrollbar-thumb {
+  //   width: 3px !important;
+  //   background: transparent;
+  //   border-radius: 24px;
+  // }
+@media only screen and (min-width: 700px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f7f7 !important;
+  }
+}
+@media only screen and (max-width: 700px) {
+}
+
+.van-toast{
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  width: 300px!important;
+  max-width:343px!important;
+  min-height: 20px !important;
+  line-height: 16px !important;
+  box-shadow: 0px 2px 32px 0px #0000001F;
+  font-size: 14px!important;
+  border-radius: 8px !important;
+  animation: slide-up 0.2s ease-in forwards !important;
+  padding: 10px 10px!important;
+}
+.van-toast__text{
+  width: 300px!important;
+  max-width: 300px!important;
+  text-align: left!important;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  margin-top: 2px !important;
+}
+.van-icon__image{
+  margin-right: 3px;
+}
+.van-toast--top{
+  top: 5% !important;
+}
+.n-tooltip {
+  padding: 4px  8px !important;
+  border-radius: 4px !important;
+  background: #ffffff  !important;
+  box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.12) !important;
+  position: relative;
+  left: 1px !important;
+}
+.n-popover-arrow{
+  background: #ffffff !important;
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(0%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(10%);
+    opacity: 1;
+  }
+}
+:root:root{
+  --van-toast-text-color:#191B1F;
+  --van-toast-background:#FFFFFF;
+}
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  border: none;
+  outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+}

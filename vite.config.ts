@@ -1,61 +1,54 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import VueSetupExtend from 'vite-plugin-vue-setup-extend';
-import AutoImport from 'unplugin-auto-import/vite';
-import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-export default defineConfig({
-	base: './',
-	plugins: [
-		vue(),
-		VueSetupExtend(),
-		AutoImport({
-			resolvers: [ElementPlusResolver()]
-		}),
-		Components({
-			resolvers: [ElementPlusResolver()]
-		})
-	],
-	build: {
-		sourcemap: false, 
-		minify: "terser",
-		terserOptions: {
-			compress: {
-				drop_console: true,
-				drop_debugger: true,
-			},
-			output: {
-        comments: true,
-      },
-		},
-	},
-	optimizeDeps: {
-		include: ['schart.js']
-	},
-	resolve: {
-		alias: {
-			'@': '/src',
-			'~': '/src/assets'
-		}
-	},
+import { fileURLToPath, URL } from 'node:url'
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import viteCompression from 'vite-plugin-compression'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
-	server: {
-		port: 8080, //启动端口
-		hmr: true,
-		host: '0.0.0.0',
-		//设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口
-		strictPort: false,
-		open: true, //项目启动时自动打开浏览器
-		// 设置 https 代理
-		proxy: {
-			'/api': {
-				target: '',
-				changeOrigin: true,
-				rewrite: (path: string) => path.replace(/^\/api/, '')
-			}
-		}
-	},
-	define: {
-		__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "true",
-	},
-});
+// https://vite.dev/config/
+export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler" // or 'modern'
+      }
+    }
+  },
+  plugins: [
+    vue(),
+    // vueDevTools(),
+    viteCompression({
+      threshold: 10240,//超过10Kb文件就压缩
+      deleteOriginFile: false,//不删除源文件
+      filter: /.(js|css|html|json|mjs|png|jpg|jpeg|svg)$/i  // 这些文件都要压缩
+    }),
+    basicSsl()
+  ],
+  resolve: {
+    alias: {
+      find: '@',
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      replacement: resolve(__dirname, './src')
+    }
+  },
+  build: {
+
+  },
+  //解决“vite use `--host` to expose”
+  base: './',	//不加打包后白屏
+  server: {
+    host: '0.0.0.0',
+    https:true,
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': {
+        target: '',
+        secure: false,
+        changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/api/, '')
+      }
+    }
+  },
+})

@@ -1,0 +1,117 @@
+.header-container {
+  width: 100%;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  font-family: 'sf-pro-display_regular_400';
+}
+.header-default{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 16px;
+}
+.header-already{
+  .header-already-left{
+    display: flex;
+    align-items: center;
+    .merchantLogo{
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+    }
+    .header-already-name{
+      color: #191B1F;
+      font-size: 18px;
+    }
+  }
+  .set-icon{
+    width: 44px;
+    height: 44px;
+  }
+}
+.header-arrow-left{
+  .arrow-left{
+    width: 24px;
+    height: 24px;
+  }
+}
+.header-default-right{
+  position: relative;
+  display: flex;
+  align-items: center;
+  .header-default-con{
+    display: flex;
+    align-items: center;
+  }
+  .header-default-img{
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+  .header-default-text{
+    width: 52px;
+    margin: 0 8px;
+  }
+  .arrow-btm{
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    transition: transform 0.4s;
+  }
+  .arrow-btm-set{
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    transition: transform 0.4s;
+    transform: rotate(180deg); 
+}
+  .country-list{
+    width: 156px;
+    position: absolute;
+    top: 28px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 32px 0px #0000001F;
+    background: #FFFFFF;
+    padding: 4px;
+    border-radius: 12px;
+    // opacity: 1;
+    // transition: all 1s;
+    transition-duration:0.3s;
+    transition-timing-function: ease;
+    .country-li{
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+    .country-li-set{
+      background: #F5F5F5;
+      border-radius: 8px;
+    }
+    .country-li-img{
+      width: 22px;
+      height: 22px;
+      margin:0 8px;
+    }
+    .country-li-text{
+      font-size: 14px;
+      line-height: 16.7px;
+      color: #191B1F;
+    }
+  }
+  .country-list-show{
+    opacity: 0;
+    display: none;
+    transition-duration:0.3s;
+    transition-timing-function: ease;
+  }
+}
+@media only screen and (min-width: 700px) {
+  .header-container{
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+}

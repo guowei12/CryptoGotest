@@ -1,0 +1,164 @@
+.pay-box {
+  font-family: 'sf-pro-display_regular_400';
+
+  :deep(.van-overlay) {
+    // border-radius: 16px 16px 0 0;
+    background: transparent !important;
+  }
+
+  // background: #E6E8EB;
+  .pay-box-num {
+    margin-top: 23px;
+  }
+
+  .pay-box-num-top {
+    width: calc(100% - 48px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .pay-box-num_title {
+      display: flex;
+      align-items: center;
+      line-height: 19px;
+      font-size: 16px;
+      color: #191B1F;
+      font-family: 'sf-pro-display_medium_500';
+    }
+
+    .pay-box-num_name {
+      line-height: 14px;
+      font-size: 12px;
+      color: #737A86;
+      font-family: 'sf-pro-display_regular_400';
+      margin-top: 2px;
+      margin-left: 4px;
+    }
+
+    .pay-box-num_img {
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  .pay-box-amount {
+    height: calc(100vh - 180px);
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 24px 24px 0 0;
+    margin-top: 20px;
+
+    .pay-box-amount-title {}
+
+    .van-cell {
+      font-size: 36px;
+      font-family: 'HarmonyOS_Sans_Bold_700';
+      padding: 0 !important;
+      line-height: normal !important;
+    }
+
+    .van-cell:after {
+      border-bottom: none !important;
+    }
+
+
+    .field-class {
+      height: 56px;
+      margin-top: 16px;
+      border-bottom: 1px solid #E6E8EB !important;
+
+      .field-label-class {
+        font-family: 'HarmonyOS_Sans_Bold_700';
+        color: #191B1F !important;
+        margin-right: 0px !important;
+      }
+    }
+
+    .field-wrong {
+      font-size: 12px;
+      color: #f53f3f;
+      line-height: 14px;
+      margin-top: 4px;
+    }
+
+    :deep(.van-number-keyboard) {
+      .van-number-keyboard__body {
+        .van-number-keyboard__sidebar {
+          .van-key__wrapper:first-child {
+            flex: 0.5;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .pay-box {
+    width: 375px;
+  }
+  :deep(.van-number-keyboard) {
+    width: 375px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translate(-50%,0);
+    .van-number-keyboard__body {
+      .van-number-keyboard__sidebar {
+        .van-key__wrapper:first-child {
+          flex: 0.5;
+        }
+      }
+    }
+  }
+}
+
+.custom-field {
+  line-height: 48px;
+  font-size: 36px;
+  font-family: 'HarmonyOS_Sans_Bold_700';
+  color: #191B1F !important;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  white-space: pre;
+  margin-top: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E6E8EB;
+  .custom-list{
+    display: flex;
+    flex-wrap: wrap;
+    .custom-list-li{
+      display: flex;
+      align-items: center;
+    }
+  }
+  .faitIcon {
+    margin-right: 4px;
+  }
+}
+
+#cursor {
+  width: 2px;
+  height: 48px;
+  border-radius: 24px 0 24px 0;
+  background-color: #1A72F6;
+  display: inline-block;
+  animation: blinkCursor 1.3s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blinkCursor {
+
+  from,
+  to {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
