@@ -1,11 +1,13 @@
 import {
   showToast,
   showFailToast,
-  showSuccessToast
+  showSuccessToast,
+  type ToastOptions,
+  type ToastWrapperInstance
 } from 'vant';
-import warn from "@/assets/images/transferInformation/warn-icon.png"
+import warn from "@/assets/images/warn-icon.png"
 // 全局复制
-const copyBtn = (value) => {
+const copyBtn = (value: string) => {
   var input = document.createElement("input");
   //   let lang = window.localStorage.getItem("locale") || "en";
   input.value = value;
@@ -16,7 +18,7 @@ const copyBtn = (value) => {
   input.remove(); // 成功后删除input，防止影响其他元素
 };
 export default {
-  install: (app) => {
+  install: (app: { config: { globalProperties: { $toast: (options?: string | ToastOptions) => ToastWrapperInstance; $copyBtn: (value: string) => void; $failToast: (message: any, className: any, duration: any) => void; $successToast: (message: any, className: any, duration: any) => void; }; }; }) => {
     // 全局提示弹窗
     app.config.globalProperties.$toast = showToast
     app.config.globalProperties.$copyBtn = copyBtn;

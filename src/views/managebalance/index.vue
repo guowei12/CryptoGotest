@@ -42,6 +42,7 @@
 import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
+import { useMain } from '@/store';
 
 /**
 * 仓库
@@ -50,18 +51,9 @@ export default defineComponent({
     name: '',
     components:{HeaderBar},
     setup() {
-       /**
-       * 路由对象
-       */
        const route = useRoute();
-       /**
-       * 路由实例
-       */
        const router = useRouter();
-       //console.log('1-开始创立组件-setup')
-       /**
-       * 数据局部
-       */
+       const couponStore = useMain();
        const data = reactive({
         headerTitle:"Manage balance",
         assetsList:[
@@ -89,13 +81,14 @@ export default defineComponent({
         }
        }
        onBeforeMount(() => {
-       //console.log('2.组件挂载页面之前执行----onBeforeMount')
+        couponStore.SET_WITHDRAW({})
+        couponStore.SET_DEPOSIT({})
        })
        onMounted(() => {
-      //console.log('3.-组件挂载到页面之后执行-------onMounted')
-      })
-      watchEffect(()=>{
-      })
+    
+       })
+       watchEffect(()=>{
+       })
       return {
         ...toRefs(data),
         ...infoMethods

@@ -10,7 +10,19 @@ export const useMain = defineStore('main', {
       scrollSize: 0,
       orderNum:'',
       nowCrypto:{},
-      cryptoList:[]
+      cryptoList:[],
+      deposit:{
+        networkList:[],
+        network:'',
+        currency:'',
+        address:''
+      },
+      withdraw:{
+        networkList:[],
+        network:'',
+        currency:'',
+        address:''
+      }
     }
   },
   // 相当于计算属性
@@ -33,6 +45,12 @@ export const useMain = defineStore('main', {
     },
     SET_CRYPTOLIST(e){
       this.cryptoList = e
+    },
+    SET_DEPOSIT(e){
+      this.deposit = e
+    },
+    SET_WITHDRAW(e){
+      this.withdraw = e 
     }
   },
 

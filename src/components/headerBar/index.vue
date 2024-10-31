@@ -36,8 +36,8 @@
         <img class="header-list-icon" src="@/assets/images/header/list-icon.png" alt="" srcset="">
       </div>
     </div>
-    <div class="header-default-line" v-if="defaultH">
-      <div class="header-arrow-left" @click="goBack">
+    <div class="header-default-init" v-if="defaultH">
+      <div class="header-default-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">

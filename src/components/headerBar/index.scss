@@ -13,6 +13,7 @@
   justify-content: space-between;
   margin: 0 16px;
 }
+
 .header-default-line{
   height: 48px;
   width: 100%;
@@ -83,7 +84,7 @@
     margin-right: 4px;
     transition: transform 0.4s;
     transform: rotate(180deg); 
-}
+  }
   .country-list{
     width: 156px;
     position: absolute;
@@ -130,6 +131,26 @@
   width: 24px;
   height: 24px;
   object-fit: cover;
+}
+.header-default-init{
+  position: relative;
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #E6E8EB;
+  padding:0 16px;
+  .header-default-left{
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translate(0,-50%);
+    .arrow-left{
+      width: 24px;
+      height: 24px;
+    }
+  }
 }
 @media only screen and (min-width: 700px) {
   .header-container{

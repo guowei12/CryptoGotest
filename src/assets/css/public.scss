@@ -109,3 +109,14 @@ button {
 button:hover {
   cursor: pointer;
 }
+textarea{
+	border:none;
+	outline: none;/*边线不显示*/
+	resize: none;/*禁止拉伸*/
+	background:transparent;/*带点绿*/
+  appearance:none;
+}
+.n-drawer-body-content-wrapper {
+    padding: 0 8px 0px !important;
+    background: #f7f7f7;
+}

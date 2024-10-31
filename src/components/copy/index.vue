@@ -1,12 +1,12 @@
 <template class="copy">
   <div class="copy-icon">
     <div @click="changeState" :class="!state ? 'copy_img' : 'copy_other'">
-      <img  src="@/assets/images/transferInformation/copy-icon.png" class="copy pointer" />
+      <img  src="@/assets/images/balance/copy-icon.png" class="copy pointer" />
     </div>
     <div :class="!state ? 'copy_Success' : 'copy_other'">
       <n-tooltip :show="showPopover" :trigger="!isMobile? 'hover' : 'click'">
         <template #trigger>
-          <img  class="copy" src="@/assets/images/transferInformation/copy-icon2.png" alt="" />
+          <img  class="copy" src="@/assets/images/balance/copy-icon2.png" alt="" />
         </template>
         <span class="tip">Copied</span>
       </n-tooltip>
@@ -62,7 +62,6 @@ const porps = withDefaults(
 </script>
 
 <style lang="scss" scoped>
-// @import '@/styles/global.scss';
 
 .pointer {
   cursor: pointer;
@@ -70,9 +69,6 @@ const porps = withDefaults(
 }
 
 .pointer:hover {
-  // @include respond-td('pc') {
-  //   opacity: 0.7;
-  // }
 }
 
 .copy {

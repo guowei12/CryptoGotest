@@ -7,10 +7,14 @@ import App from './App.vue'
 import router from './router'
 import vant from 'vant';
 import 'vant/lib/index.css';
+import pluginsAll from "./../common/plugins"
+import i18n from './multilingual/index';
 
 
 const app = createApp(App)
 app.use(vant)
 app.use(createPinia())
 app.use(router)
+app.use(i18n)
+app.use(pluginsAll)
 app.mount('#app')

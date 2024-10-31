@@ -35,6 +35,16 @@ const router = createRouter({
       name: 'withdraw',
       component: () => import('../views/managebalance/components/withdraw/index.vue')
     },
+    {
+      path: '/depositDetail',
+      name: 'depositDetail',
+      component: () => import('../views/managebalance/components/detail/deposit/index.vue')
+    },
+    {
+      path: '/withdrawDetail',
+      name: 'withdrawDetail',
+      component: () => import('../views/managebalance/components/detail/withdraw/index.vue')
+    },
     // {
       // path: '/about',
       // name: 'about',

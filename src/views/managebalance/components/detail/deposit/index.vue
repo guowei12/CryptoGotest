@@ -1,17 +1,40 @@
 <template>
-  <div class="deposit-box">
-    <HeaderBar :title="headerTitle" :balance="true"></HeaderBar>
-    <div class="deposit-con">
-    <div class="deposit-list">
-        <div @click="setDeposit(index)" :class="nowIndex==index?'deposit-list-li-set':''" class="deposit-list-li" v-for="(item, index) in depositList" :key="index">
-          <div class="deposit-list-li-left">
-          <img  class="currency-img" :src="item.img" alt="" srcset="">
-          <div class="deposit-list-con">
-            <div class="deposit-list-con-name">{{ item.name }}</div>
-            <div class="deposit-list-con-time">{{ item.network}}</div>
-          </div>
+  <div class="deposit-detail">
+    <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
+    <div class="deposit-detail-box">
+        <div class="deposit-detail-qrCode">
+
+        </div>
+        <div class="deposit-detail-address">
+          <div class="deposit-detail-address-title">Wallet address</div>
+          <div class="deposit-detail-address-hash-box">
+            <div class="deposit-detail-address-hash">{{ hash }}</div>
+            <copyCon :copyHtml="hash"/>
           </div>
         </div>
+        <div class="deposit-detail-network">
+          <div class="deposit-detail-network-title">
+            Network
+          </div>
+          <div class="deposit-detail-network-con" @click="show=true">
+            <div class="deposit-detail-network-con-left">
+              <img class="currency-icon" src="@/assets/images/balance/currency-icon.png" alt="">
+              <div class="deposit-detail-network-con-font">
+                <div class="detail-currency-text">Ethereum</div>
+                <div class="detail-network-text">ERC20</div>
+              </div>
+            </div>
+            <img class="net-change-icon" src="@/assets/images/balance/net-change-icon.png" alt="" srcset="">
+          </div>
+          <div class="deposit-detail-network-tip">
+            <img class="network-tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
+            <div class="network-tip-text">Sending coin or token other than USDT to this
+              address may result in the loss of your deposit</div>
+          </div>
+        </div>
+    </div>
+    <div class="deposit-detail-btn" @click="backHome">
+      Back Home
     </div>
     <van-action-sheet v-model:show="show" >
        <!-- 自定义 header 插槽 -->
@@ -40,7 +63,7 @@
         </div>
       </div>
     </van-action-sheet>
-    </div>
+    <!-- <showModel ></showModel> -->
   </div>
 </template>
 
@@ -48,29 +71,23 @@
 import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
+import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
-
+import showModel from '@/components/showModel/index.vue'
 /**
 * 仓库
 */
 export default defineComponent({
-    name: 'deposit',
-    components:{HeaderBar},
+    name: 'depositDetail',
+    components:{HeaderBar,copyCon,showModel},
     setup() {
-       /**
-       * 路由对象
-       */
        const route = useRoute();
-       /**
-       * 路由实例
-       */
        const router = useRouter();
        const couponStore = useMain();
-       /**
-       * 数据局部
-       */
        const data = reactive({
-        headerTitle:'Deposit',
+        headerTitle:'Deposit USDT',
+        hash:'0xe89bb7caa285672nbfe1v17bfcf85324b8b7f7af',
+        show:false,
         depositList:[
           {
             img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
@@ -95,8 +112,7 @@ export default defineComponent({
           name:'BTC',
         }],
         nowIndex:0,
-        nowNetwork:'',
-        show:false
+        nowNetwork:''
        })
        const infoMethods ={
         setDeposit(idx:any){
@@ -104,21 +120,18 @@ export default defineComponent({
           data.show=true
         },
         setNetwork(network:any){
-          couponStore.SET_DEPOSIT({
-            networkList:[],
-            network:'',
-            currency:'',
-            address:''
-          })
           data.nowNetwork=network
           data.show=false
-          router.push({ path: '/depositDetail'})
+        },
+        backHome(){
+          router.replace({path:'/'})
         }
        }
        onBeforeMount(() => {
        })
        onMounted(() => {
         console.log(couponStore.$state.deposit)
+        data.headerTitle='Deposit '+(route.query.currency?route.query.currency:'USDT1')
        })
        watchEffect(()=>{
        })

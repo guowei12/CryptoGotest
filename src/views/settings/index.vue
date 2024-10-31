@@ -5,9 +5,6 @@
 <script lang='ts'>
 import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-/**
-* 仓库
-*/
 export default defineComponent({
     name: '',
     setup() {
@@ -37,7 +34,6 @@ export default defineComponent({
       };
   },
 })
-
 </script>
 <style lang='scss' scoped src='./index.scss'>
 </style>
