@@ -11,19 +11,38 @@ const router = createRouter({
       component: home
     },
     {
+      path: '/signin',
+      name: 'signin',
+      component: () => import('../views/signin/index.vue')    },
+    {
       path: '/scan',
       name: 'scan',
       component: () => import('../views/QRcode/index.vue')
     },
     {
-      path: '/discover',
-      name: 'discover',
-      component: () => import('../views/discover/index.vue')
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/map/index.vue')
     },
     {
       path: '/balance',
       name: 'balance',
       component: () => import('../views/managebalance/index.vue')
+    },
+    {
+      path: '/currency',
+      name: 'currency',
+      component: () => import('../views/singleCurrency/index.vue')
+    },
+    {
+      path: '/history',
+      name: 'history',
+      component: () => import('../views/history/index.vue')
+    },
+    {
+      path: '/googleAuthInfo',
+      name: 'googleAuthInfo',
+      component: () => import('../views/googleAuth/components/googleAuthInfo/index.vue')
     },
     {
       path: '/deposit',
@@ -44,6 +63,41 @@ const router = createRouter({
       path: '/withdrawDetail',
       name: 'withdrawDetail',
       component: () => import('../views/managebalance/components/detail/withdraw/index.vue')
+    },
+    {
+      path: '/googleAuth',
+      name: 'googleAuth',
+      component: () => import('../views/googleAuth/index.vue')
+    },
+    {
+      path: '/downloadAPP',
+      name: 'downloadAPP',
+      component: () => import('../views/googleAuth/components/downloadAPP/index.vue')
+    },
+    {
+      path: '/googleAuthInfo',
+      name: 'googleAuthInfo',
+      component: () => import('../views/googleAuth/components/googleAuthInfo/index.vue')
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: () => import('../views/orderDetail/index.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/settings/index.vue')
+    },
+    {
+      path: '/currency',
+      name: 'currency',
+      component: () => import('../views/settings/components/currency/index.vue')
+    },
+    {
+      path: '/language',
+      name: 'language',
+      component: () => import('../views/settings/components/language/index.vue')
     },
     // {
       // path: '/about',

@@ -18,7 +18,7 @@
      
       </div>
       <div class="QRPay-list" >
-        <div class="QRPay-list-li" v-for="(item, index) in assetsList" :key="index">
+        <div class="QRPay-list-li" v-for="(item, index) in assetsList" :key="index" @click="goCurrency(item.currency)">
           <div class="QRPay-list-li-left">
           <img  class="currency-img" :src="item.img" alt="" srcset="">
           <div class="QRPay-list-con">
@@ -78,7 +78,10 @@ export default defineComponent({
        const infoMethods = {
         goUrl(url:any){
             router.push({ path: '/'+url })
-        }
+        },
+        goCurrency(currency:any){
+          router.push({ path: '/currency',query:{currency:currency} })
+        },
        }
        onBeforeMount(() => {
         couponStore.SET_WITHDRAW({})

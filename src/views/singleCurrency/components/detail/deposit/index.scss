@@ -1,0 +1,258 @@
+.deposit-detail-box{
+    margin: 16px;
+    font-family: 'sf-pro-display_regular_400';
+    background: #FFFFFF;
+    padding-bottom:24px;
+    .deposit-detail-qrCode{
+        width: 200px;
+        height: 200px;
+        margin: 16px auto 0;
+    }
+    .deposit-detail-address{
+        margin: 32px 24px 0;
+        .deposit-detail-address-title{
+            font-size: 12px;
+            line-height: 14.4px;
+            color: #737A86;
+        }
+        .deposit-detail-address-hash-box{
+            font-size: 14px;
+            line-height: 16.8px;
+            color: #191B1F;
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+            .deposit-detail-address-hash{
+                word-break: break-all;
+                width: calc(100% - 16px);
+                margin-right: 12px;
+            }
+
+        }
+    }
+    .deposit-detail-network{
+        margin: 20px 24px 0;
+        .deposit-detail-network-title{
+            font-size: 12px;
+            line-height: 14.4px;
+            color: #737A86;
+        }
+        .deposit-detail-network-con{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            border: 1px solid #E6E8EB;
+            border-radius: 12px;
+            padding: 16px 12px;
+            .deposit-detail-network-con-left{
+                display: flex;
+                align-items: center;
+            }
+            .deposit-detail-network-con-font{
+                margin-left:12px;
+                .detail-currency-text{
+                    font-size: 16px;
+                    line-height: 20px;
+                    font-family: 'sf-pro-display_medium_500';
+                    color: #191B1F;
+                }
+                .detail-network-text{
+                    font-size: 12px;
+                    line-height: 12px;
+                    line-height: 14.32px;
+                    color: #737A86;
+                }
+            }
+            .currency-icon{
+                width: 32px;
+                height: 32px;
+            }
+            .net-change-icon{
+                width: 16px;
+                height: 16px;
+                object-fit: cover;  
+            }
+        }
+        .deposit-detail-network-tip{
+            font-size: 12px;
+            line-height: 14.4px;
+            display: flex;
+            margin-top: 20px;
+            border-radius: 12px;
+            background: #F5F5F5;
+            padding: 12px;
+            .network-tip-icon{
+                width: 16px;
+                height: 16px;
+                object-fit: cover;
+                margin-right: 12px;
+            }
+        }
+    }
+}
+.deposit-detail-btn{
+    font-size: 16px;
+    font-family: 'sf-pro-display_medium_500';
+    color: #191B1F;
+    text-align: center;
+    width: calc(100% - 32px);
+    line-height: 48px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%,0);
+    border-radius: 12px;
+    background: #58F287;
+}
+.deposit-detail-btn:hover:after {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.deposit-detail-btn:active:after {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+.van-action-box-header{
+    font-size: 18px;
+    font-family: 'ssf-pro-display_semibold_600';
+    line-height: 24px;
+    color: #191B1F;
+    position: relative;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+}
+.action-title-line {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 48px;
+    height: 4.5px;
+    border-radius: 100px;
+    background: rgba(25,27,31,0.2);
+    z-index: 2003;
+}
+.back-icon{
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+}
+
+.network-list {
+    font-family: 'sf-pro-display_medium_500';
+    color: #191B1F;
+    border-radius: 12px;
+
+    .network-list-li {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 8px;
+
+        .currency-img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+        .network-list-con {
+            display: flex;
+            flex-direction: column;
+            margin-left: 16px;
+
+            .network-list-con-name {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 16px;
+                line-height: 20px;
+            }
+
+            .network-list-con-time {
+                flex-shrink: 0;
+                font-size: 12px;
+                font-family: 'sf-pro-display_regular_400';
+                list-style: 16px;
+                color: #737A86;
+                margin-top: 2px;
+            }
+        }
+
+        .network-li-left {
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+    }
+
+    .network-li-set {
+        position: relative;
+        z-index: 1;
+    }
+
+    .network-li-set::after {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        content: '';
+        width: calc(100% - 8px);
+        height: 100%;
+        background: #F5F5F5;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+}
+.action-btm {
+    font-size: 12px;
+    line-height: 14.4px;
+    font-family: 'sf-pro-display_regular_400';
+    color: #191B1F;
+    margin: 16px 16px 32px;
+    border-radius: 12px;
+    background: #F5F5F5;
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+
+    .tip-icon {
+        width: 16px;
+        height: 16px;
+        object-fit: cover;
+        margin-right: 12px;
+    }
+
+    .tip-con {}
+}
+@media only screen and (min-width: 700px) {
+    .deposit-detail{
+        max-width: 375px;
+    }
+    .deposit-detail-btn{
+        width: 375px;
+    }
+}

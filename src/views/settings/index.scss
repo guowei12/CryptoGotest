@@ -1,0 +1,65 @@
+.settings-con{
+    .settings-list{
+        font-family: 'sf-pro-display_regular_400';
+        margin: 0 16px;
+        .settings-list-title{
+          
+            font-size: 14px;
+            line-height: 16px;
+            color: #737A86;
+            margin: 24px 0 0 16px; 
+        }
+        .settings-list-li{
+            font-family: 'sf-pro-display_medium_500';
+            background: #FFFFFF;
+            margin-top: 12px;
+            border-radius: 12px;
+        }
+        .settings-li{
+            color: #191B1F;
+            line-height: 20px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .settings-li-left-icon{
+                width: 22px;
+                height: 22px;
+                object-fit: cover;
+                margin:0 16px;
+            }
+            .settings-li-left{
+                display: flex;
+                align-items: center;
+            }
+            .settings-li-right{
+                font-size: 14px;
+                color: #737A86;
+                display: flex;
+                align-items: center;
+                .arow-right{
+                    width: 12px;
+                    height: 12px;
+                    margin: 0 16px 0 12px;
+                }
+                .already-icon{
+                    width: 16px;
+                    height: 16px;
+                    object-fit: cover;   
+                    margin: 0 16px 0 6px;
+                }
+                .settings-li-btn{
+                    font-size: 14px;
+                    line-height: 32px;
+                    text-align: center;
+                    color: #1A72F6;
+                    width: 74px;
+                    height: 32px;
+                    background: #1A72F61A;
+                    border-radius: 8px;
+                    margin-right: 16px;
+                }
+            }
+        }
+    }
+}

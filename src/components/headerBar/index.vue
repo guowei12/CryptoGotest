@@ -23,7 +23,7 @@
         <img class="merchantLogo" :src="merchantLogo" alt="" srcset="">
         <div class="header-already-name">Sharon</div>
       </div>
-        <img class="set-icon"  src="@/assets/images/header/set-icon.png" alt="" srcset="">
+        <img @click="goSettings" class="set-icon"  src="@/assets/images/header/set-icon.png" alt="" srcset="">
     </div>
     <div class="header-default-line" v-if="balance">
       <div class="header-arrow-left" @click="goBack">
@@ -33,7 +33,7 @@
         {{  title }}
       </div>
       <div class="header-default-right" @click="countryShow=!countryShow">
-        <img class="header-list-icon" src="@/assets/images/header/list-icon.png" alt="" srcset="">
+        <img @click="gohistory" class="header-list-icon" src="@/assets/images/header/list-icon.png" alt="" srcset="">
       </div>
     </div>
     <div class="header-default-init" v-if="defaultH">
@@ -41,6 +41,7 @@
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">
+        <img v-if="currency" class="currency-icon" :src="currency" alt="" srcset="">
         {{  title }}
       </div>
     </div>
@@ -65,6 +66,10 @@ export default defineComponent({
   props: {
     defaultH:{
       type: [Number, String, Boolean],
+      required: false,
+    },
+    currency:{
+      type: [String],
       required: false,
     },
     home: {
@@ -152,6 +157,12 @@ export default defineComponent({
         emit('cancelFor',{
           cancel:true
         })
+      },
+      gohistory(){
+        router.push({ path: '/history' })
+      },
+      goSettings(){
+        router.push({ path: '/settings' })
       }
     };
     return {

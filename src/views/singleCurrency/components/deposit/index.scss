@@ -1,0 +1,200 @@
+.deposit-box {}
+
+.deposit-con {
+    margin: 16px;
+}
+
+.deposit-list {
+    font-family: 'sf-pro-display_medium_500';
+    color: #191B1F;
+    border-radius: 12px;
+    background: #FFFFFF;
+    margin-top: 24px;
+
+    .deposit-list-li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 16px;
+
+        .currency-img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .deposit-list-con {
+            display: flex;
+            flex-direction: column;
+            margin-left: 16px;
+
+            .deposit-list-con-name {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 16px;
+                line-height: 20px;
+            }
+
+            .deposit-list-con-time {
+                flex-shrink: 0;
+                font-size: 12px;
+                font-family: 'sf-pro-display_regular_400';
+                list-style: 16px;
+                color: #737A86;
+                margin-top: 2px;
+            }
+        }
+
+        .deposit-list-li-left {
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+    }
+
+    .deposit-list-li-set {
+        position: relative;
+        z-index: 1;
+    }
+
+    .deposit-list-li-set::after {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        content: '';
+        width: calc(100% - 8px);
+        height: calc(100% - 8px);
+        background: #F5F5F5;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+}
+
+.van-action-box-header{
+    font-size: 18px;
+    font-family: 'ssf-pro-display_semibold_600';
+    line-height: 24px;
+    color: #191B1F;
+    position: relative;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+}
+.action-title-line {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 48px;
+    height: 4.5px;
+    border-radius: 100px;
+    background: rgba(25,27,31,0.2);
+    z-index: 2003;
+}
+.back-icon{
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+}
+
+.network-list {
+    font-family: 'sf-pro-display_medium_500';
+    color: #191B1F;
+    border-radius: 12px;
+
+    .network-list-li {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 8px;
+
+        .currency-img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+        .network-list-con {
+            display: flex;
+            flex-direction: column;
+            margin-left: 16px;
+
+            .network-list-con-name {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 16px;
+                line-height: 20px;
+            }
+
+            .network-list-con-time {
+                flex-shrink: 0;
+                font-size: 12px;
+                font-family: 'sf-pro-display_regular_400';
+                list-style: 16px;
+                color: #737A86;
+                margin-top: 2px;
+            }
+        }
+
+        .network-li-left {
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+    }
+
+    .network-li-set {
+        position: relative;
+        z-index: 1;
+    }
+
+    .network-li-set::after {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        content: '';
+        width: calc(100% - 8px);
+        height: 100%;
+        background: #F5F5F5;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+}
+
+.action-btm {
+    font-size: 12px;
+    line-height: 14.4px;
+    font-family: 'sf-pro-display_regular_400';
+    color: #191B1F;
+    margin: 16px 16px 32px;
+    border-radius: 12px;
+    background: #F5F5F5;
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+
+    .tip-icon {
+        width: 16px;
+        height: 16px;
+        object-fit: cover;
+        margin-right: 12px;
+    }
+
+    .tip-con {}
+}
+
+@media only screen and (min-width: 700px) {
+    .deposit-box {
+        width: 375px;
+    }
+}

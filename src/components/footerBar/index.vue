@@ -51,10 +51,10 @@ export default defineComponent({
           url:'/scan'
         },
         {
-          name:'Discover',
-          icon:new URL('@/assets/images/footerBar/footer-discover.png', import.meta.url).href,
-          setIcon:new URL('@/assets/images/footerBar/footer-discover-set.png', import.meta.url).href,
-          url:'/discover'
+          name:'Map',
+          icon:new URL('@/assets/images/footerBar/footer-map.png', import.meta.url).href,
+          setIcon:new URL('@/assets/images/footerBar/footer-map-set.png', import.meta.url).href,
+          url:'/map'
         }
       ],
       path:'/'

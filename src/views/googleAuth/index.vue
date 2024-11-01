@@ -1,22 +1,20 @@
 <template>
   <div class="google-auth-contaner">
-    <div class="phone-header">
-      <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
-    </div>
+    <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="tip">
-      <!-- <SvgIcon class="tip-blue" icon="tip-blue"></SvgIcon> -->
-      <span>Please download the Google Authentication app and scan the QR code</span>
+       <img class="tip-img" src="@/assets/images/verification/tip-icon.png" alt="">
+       <span>Please download the Google Authentication app and scan the QR code</span>
     </div>
     <div class="qr_code">
       <div id="qrcodeImg"></div>
-      <div class="text">
-        <span>{{ secret }}</span>
-        <Copy :copyHtml="secret"></Copy>
+      <div class="qrcodeImg-text">
+        <div class="qrcodeImg-span">{{ secret }}</div>
+        <copyCon :copyHtml="secret"/>
       </div>
       <div class="download_button" @click="goDownload">Download APP</div>
     </div>
-    <div class="button">
-      <a-button width="470" @click="goGoogleAuthInfo">Continue</a-button>
+    <div class="qr_code-button" @click="goGoogleAuthInfo">
+      Continue
     </div>
   </div>
 </template>
@@ -26,17 +24,19 @@ import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch
 import QRCode from 'qrcodejs2-fix';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
+import copyCon from '@/components/copy/index.vue'
+
 import { getGoogleAuth } from '../../apis/googleAuth';
 // import { useAppStore } from '@/store';
 // const appStore = useAppStore();
 export default defineComponent({
-
   name: 'googleAuthInfo',
+  components:{HeaderBar,copyCon},
   setup() {
     const route = useRoute();
     const router = useRouter();
     let qrCodeUrl = ref('');
-    let secret = ref('');
+    let secret = ref('WWFGSFVASWFGB');
     const data = reactive({
       headerTitle:'Google Authenticator'
     })
@@ -83,12 +83,18 @@ export default defineComponent({
       qrcode.makeCode(url);
     };
     onMounted(() => {
-      initGoogleAuth();
+      // initGoogleAuth();
     });
     watchEffect(() => {
     })
     return {
-      ...toRefs(data)
+      ...toRefs(data),
+      initQrcode,
+      qrCodeUrl,
+      goDownload,
+      goGoogleAuthInfo,
+      initGoogleAuth,
+      secret
     };
   },
 })
@@ -108,10 +114,6 @@ export default defineComponent({
 // }
 
 
-.phone-header {
-  display: block;
-}
-
 .google-auth-contaner {
   max-width: 470px;
   margin: auto;
@@ -129,10 +131,9 @@ export default defineComponent({
     align-items: normal;
     margin: 16px 16px 0 16px;
 
-    .tip-blue {
+    .tip-img {
       width: 20px;
       height: 20px;
-      color: #006FFF;
       margin-right: 12px;
     }
 
@@ -149,7 +150,7 @@ export default defineComponent({
   .download_button {
     width: 100%;
     border-radius: 12px;
-    background: rgba(26, 114, 246, 0.1);
+    background: #58F28733;
     padding: 14.5px 0;
     display: flex;
     align-items: center;
@@ -158,8 +159,8 @@ export default defineComponent({
     cursor: pointer;
     font-family: 'sf-pro-display_medium_500';
     font-size: 16px;
-    line-height: normal;
-    color: #1A72F6;
+    line-height: 19px;
+    color: #31CF61;
     transition: all 0.3s ease-in-out;
   }
 
@@ -173,7 +174,7 @@ export default defineComponent({
 
   .qr_code {
     margin-top: 16px;
-    background: #181819;
+    background: #ffffff;
     padding: 32px 16px;
     border-radius: 12px;
     display: flex;
@@ -201,18 +202,18 @@ export default defineComponent({
     }
   }
 
-  .text {
+  .qrcodeImg-text {
     margin-top: 16px;
     display: flex;
     align-items: center;
 
-    span {
+    .qrcodeImg-span {
       margin-right: 12px;
       font-family: 'sf-pro-display_medium_500';
       font-style: normal;
       font-size: 16px;
-      line-height: 120%;
-      color: #ffffff;
+      line-height: 19.2px;
+      color: #191B1F;
       display: block;
     }
 
@@ -223,9 +224,15 @@ export default defineComponent({
   }
 }
 
-.button {
-  margin-top: 36px;
-  padding-bottom: 20px;
+.qr_code-button {
+  font-size: 16px;
+  font-family: 'sf-pro-display_medium_500';
+  color: #191B1F;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
   margin: 36px 16px 0 16px;
+  background: #58F287;
+  border-radius: 12px;
 }
 </style>

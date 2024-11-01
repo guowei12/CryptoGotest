@@ -1,0 +1,178 @@
+.history-ccontent{
+    margin:  0 auto;
+}
+.history-btn {
+    // width: 100%;
+
+    .tab-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        left: -4px;
+        top: 2px;
+
+        img {
+            width: 24px;
+            height: 24px;
+            margin-right: 4px;
+        }
+
+        .tab-header-text {
+            margin-top: -2px;
+        }
+    }
+
+    :deep(.n-tabs) {
+        width:100%  !important;
+    }
+
+    :deep(.n-tab) {
+        width: 50%;
+    }
+
+    :deep(.n-tabs-nav-scroll-content) {
+        // background: #EDEFF2;
+        border-radius: 12px;
+        height: 40px;
+        border-bottom: 1px solid transparent !important;
+    }
+
+    :deep(.n-tabs-tab__label) {
+        font-family: 'sf-pro-display_medium_500';
+        font-size: 14px;
+        line-height: 19px;
+        color: #737A86;
+        z-index: 10;
+    }
+
+    :deep(.n-tabs-tab--active .n-tabs-tab__label) {
+        color: #191B1F;
+    }
+
+    :deep(.n-tabs-wrapper) {
+        width: 100%;
+    }
+
+    :deep(.n-tabs-tab-wrapper) {
+        flex-direction: column;
+        width: 50%;
+    }
+
+    :deep(.n-tabs-tab) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    :deep(.n-tabs-tab-pad) {
+        width: 0 !important;
+    }
+
+    :deep(.n-tabs-bar) {
+        width: calc(50% - 3px) !important;
+        max-width: calc(50% - 3px) !important;
+        height: 36px;
+        top: 2px;
+        margin: 0 2px;
+        background: #FFFFFF;
+        border-radius: 12px !important;
+    }
+}
+
+.QRPay-list {
+    font-size: 14px;
+    font-family: 'sf-pro-display_medium_500';
+    color: #191B1F;
+    border-radius: 12px;
+    background: #FFFFFF;
+    margin: 12px 0 0;
+
+    .QRPay-list-li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 16px;
+
+        .shopping-img {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+        }
+
+        .currency-img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .QRPay-list-con {
+            display: flex;
+            flex-direction: column;
+            margin-left: 16px;
+
+            .QRPay-list-con-name {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            .QRPay-list-con-time {
+                flex-shrink: 0;
+                font-size: 12px;
+                font-family: 'sf-pro-display_regular_400';
+                list-style: 16px;
+                color: #737A86;
+                margin-top: 2px;
+            }
+        }
+
+        .QRPay-list-li-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .QRPay-list-right {
+            font-size: 12px;
+            line-height: 16px;
+            display: flex;
+            flex-direction: column;
+
+            .QRPay-list-con-num {
+                text-align: end;
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            .QRPay-list-con-status {
+                text-align: end;
+                font-size: 12px;
+                line-height: 16px;
+                color: #737A86;
+            }
+
+            .completed-color {
+                font-family: 'sf-pro-display_regular_400';
+                text-align: right;
+                color: #00B42A;
+                margin-top: 2px;
+            }
+
+            .failed-color {
+                font-family: 'sf-pro-display_regular_400';
+                text-align: right;
+                color: #F53F3F;
+                margin-top: 2px;
+            }
+            .Refund-color{
+                font-family: 'sf-pro-display_regular_400';
+                text-align: right;
+                color: #1A72F6;
+                margin-top: 2px;
+            }
+        }
+    }
+}

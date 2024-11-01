@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #E6E8EB;
-  padding:0 16px;
+  padding:0 20px;
 }
 .header-already{
   height: 76px;
@@ -50,6 +50,8 @@
   }
 }
 .header-balance{
+  display: flex;
+  align-items: center;
   font-size: 18px;
   line-height: 21.6px;
   color: #191B1F;
@@ -140,7 +142,7 @@
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #E6E8EB;
-  padding:0 16px;
+  padding:0 20px;
   .header-default-left{
     position: absolute;
     left: 20px;
@@ -151,6 +153,12 @@
       height: 24px;
     }
   }
+}
+.currency-icon{
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  margin-right: 6px;
 }
 @media only screen and (min-width: 700px) {
   .header-container{

@@ -1,6 +1,6 @@
 <template>
   <div >
-    discover
+    map
     <footerBar></footerBar>
   </div>
 </template>
