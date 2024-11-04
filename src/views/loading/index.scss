@@ -1,0 +1,112 @@
+.loading-box {
+    font-family: 'sf-pro-display_regular_400';
+
+    .ani-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+
+        .lottie-box {
+            width: 300px;
+            /* height: 350px; */
+        }
+    }
+
+    .loading-con {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+
+        .loading-title {
+            color: #00B42A;
+            font-family: 'sf-pro-display_bold_700';
+            font-size: 20px;
+            line-height: 24px;
+        }
+
+        .loading-text {
+            font-size: 14px;
+            line-height: 21px;
+            width: 270px;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .loading-progress {
+            width: calc(100% - 64px);
+            background: #FFFFFF;
+            border-radius: 12px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .loading-progress-color {
+            font-family: 'sf-pro-display_medium_500';
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 14.4px;
+            color: #1A72F6;
+            margin-bottom: 8px;
+        }
+
+        .loading-progress-loader {
+            width: 100%;
+            height: 3px;
+            background-color: #EDEFF2;
+            border-radius: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background-color: #1A72F6;
+            animation: loading 10s linear forwards;
+        }
+
+        @keyframes loading {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 98%;
+            }
+        }
+
+        .flash {
+            animation: flashing 0.5s linear infinite;
+        }
+
+        @keyframes flashing {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+        .loading-progress-con {
+            font-size: 12px;
+            color: #737A86;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+
+            .loading-tiem-icon {
+                width: 14px;
+                height: 14px;
+                object-fit: cover;
+                margin-right: 8px;
+            }
+        }
+    }
+}

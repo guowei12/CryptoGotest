@@ -7,11 +7,11 @@
         <div class="QRPay-balance-number">$ 1362.82</div>
       </div>
       <div class="balance-btn-box" >
-        <div class="balance-btn-df" @click="goUrl('deposit')">
+        <div class="balance-btn-df" @click="goUrl('depositb')">
             <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
             <div>Deposit</div>
         </div>
-        <div class="balance-btn-df" @click="goUrl('withdraw')">
+        <div class="balance-btn-df" @click="goUrl('withdrawb')">
             <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
             <div>Withdraw</div>
         </div>
@@ -80,7 +80,7 @@ export default defineComponent({
             router.push({ path: '/'+url })
         },
         goCurrency(currency:any){
-          router.push({ path: '/currency',query:{currency:currency} })
+          router.push({ path: '/siCurrency',query:{currency:currency} })
         },
        }
        onBeforeMount(() => {

@@ -1,24 +1,28 @@
 <template>
   <div class="signin-con">
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
-    <div class="signin-box">
+    <div class="signin-box" v-if="false">
         <div class="signin-box-edit">
             <div class="signin-box-edit-title">
                 Bind your email to enhance the security of your Wallet Management.
             </div>
             <div class="s-b-e-con">
                 <div class="s-b-e-title">Please enter your Email address</div>
-                <input @input="FormValidation('email', 'input')" @focus="FormValidClone('email')"
+                <input  @input="FormValidation('email', 'input')" @focus="FormValidClone('email')"
                         @blur="FormValidation('email', 'blur')"
-                        :class="formError.email ? 'receive-con-input-wrong' : ''" class="receive-con-input " type="text"
-                        v-model="formData.email" placeholder="Email">
-                    <div v-if="formError.email" class="wrong-text">Your email is wrong</div>
-            </div>
-            <div class="proceed-btn">
-                Proceed
+                        :class="formError.email ? 's-b-e-input-wrong' : ''" class="s-b-e-input " type="text"
+                        v-model="formData.email" placeholder="Esther@example.com">
+                <div v-if="formError.email" class="wrong-text">You email is wrong</div>
+            </div> 
+
+            <div class="proceed-btn" @click="setBtn" >
+                <div class="btn-class" :class="nextShow?'':'btn-class-opacity'">
+                    Proceed
+                </div>
             </div>
         </div>
     </div>
+    <verificationCode></verificationCode>
   </div>
 </template>
 
@@ -26,15 +30,17 @@
 import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
+import verificationCode from './components/verificationCode/index.vue'
 
 export default defineComponent({
     name: '',
-    components:{HeaderBar},
+    components:{HeaderBar,verificationCode},
     setup() {
        const route = useRoute();
        const router = useRouter();
        const data = reactive({
         headerTitle:'',
+        nextShow:false,
         formData:{
             email:''
         } as any,
@@ -42,12 +48,12 @@ export default defineComponent({
 
         } as any
        })
-          // 输入框输入时清空错误显示
-         const FormValidClone = (val: string) => {
+       // 输入框输入时清空错误显示
+       const FormValidClone = (val: string) => {
             data.formError[val] = false;
-        }
-        //表单验证
-        const FormValidation = (val: string, type: string) => {
+       }
+       //表单验证
+       const FormValidation = (val: string, type: string) => {
             if (data.formData[val] == '') {
                 data.formError[val] = false;
                 return
@@ -66,7 +72,10 @@ export default defineComponent({
                     data.formError.email = false;
                 }
             }
-        }
+       }
+       const setBtn=()=>{
+        data.nextShow=!data.nextShow
+       }
        onBeforeMount(() => {
        })
        onMounted(() => {
@@ -76,7 +85,8 @@ export default defineComponent({
        return {
          ...toRefs(data),
          FormValidClone,
-         FormValidation
+         FormValidation,
+         setBtn
        };
   },
 })

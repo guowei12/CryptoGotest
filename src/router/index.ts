@@ -13,7 +13,18 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('../views/signin/index.vue')    },
+      component: () => import('../views/signin/index.vue')    
+    },
+    {
+      path: '/payMent',
+      name: 'payMent',
+      component: () => import('../views/payMent/index.vue')    
+    },
+    {
+      path: '/loading',
+      name: 'loading',
+      component: () => import('../views/loading/index.vue')    
+    },
     {
       path: '/scan',
       name: 'scan',
@@ -30,8 +41,8 @@ const router = createRouter({
       component: () => import('../views/managebalance/index.vue')
     },
     {
-      path: '/currency',
-      name: 'currency',
+      path: '/siCurrency',
+      name: 'siCurrency',
       component: () => import('../views/singleCurrency/index.vue')
     },
     {
@@ -45,13 +56,13 @@ const router = createRouter({
       component: () => import('../views/googleAuth/components/googleAuthInfo/index.vue')
     },
     {
-      path: '/deposit',
-      name: 'deposit',
+      path: '/depositb',
+      name: 'depositb',
       component: () => import('../views/managebalance/components/deposit/index.vue')
     },
     {
-      path: '/withdraw',
-      name: 'withdraw',
+      path: '/withdrawb',
+      name: 'withdrawb',
       component: () => import('../views/managebalance/components/withdraw/index.vue')
     },
     {
@@ -80,9 +91,39 @@ const router = createRouter({
       component: () => import('../views/googleAuth/components/googleAuthInfo/index.vue')
     },
     {
-      path: '/orderDetail',
-      name: 'orderDetail',
-      component: () => import('../views/orderDetail/index.vue')
+      path: '/deposit',
+      name: 'deposit',
+      component: () => import('../views/orderDetail/details/deposit/index.vue')
+    },
+    {
+      path: '/refund',
+      name: 'refund',
+      component: () => import('../views/orderDetail/details/refund/index.vue')
+    },
+    {
+      path: '/withdraw',
+      name: 'withdraw',
+      component: () => import('../views/orderDetail/details/withdraw/index.vue')
+    },
+    {
+      path: '/complete',
+      name: 'complete',
+      component: () => import('../views/orderDetail/payMent/complete/index.vue')    
+    },
+    {
+      path: '/failed',
+      name: 'failed',
+      component: () => import('../views/orderDetail/payMent/failed/index.vue')    
+    },
+    {
+      path: '/transactionComplete',
+      name: 'transactionComplete',
+      component: () => import('../views/orderDetail/transaction/complete/index.vue')    
+    },
+    {
+      path: '/transactionFailed',
+      name: 'transactionFailed',
+      component: () => import('../views/orderDetail/transaction/failed/index.vue')    
     },
     {
       path: '/settings',

@@ -1,0 +1,43 @@
+ .signin-code{
+    margin:0 16px;
+    font-family: 'sf-pro-display_regular_400';
+    .signin-code-title{
+        font-size: 14px;
+        color: #191B1F;
+        margin-top: 40px;
+        .s-c-t-top{
+            font-size: 20px;
+            line-height: 24px;
+            font-family: 'sf-pro-display_bold_700';
+            margin-bottom: 4px;
+        }
+        .s-c-t-text{
+            color: #737A86;
+            padding-bottom: 40px;
+        }
+        .s-c-t-emial{
+            line-height: 17.5px;
+            font-family: 'sf-pro-display_medium_500';
+            margin-top: 4px;
+        }
+    }
+    .s-c-t-verification{
+        font-size: 14px;
+        color: #737A86;
+        line-height: 16.71px;
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+    }
+    .s-c-t-resend{
+        font-size: 14px;
+        color: #737A86;
+        line-height: 16.71px;
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+        .code-color{
+            color: #1A72F6;
+        }
+    }
+ }

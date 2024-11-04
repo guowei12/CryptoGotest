@@ -22,10 +22,10 @@
                 </div>
             </div>
             <div class="detail-box-li">
-                <div class="detail-box-li-left">Txid</div>
+                <div class="detail-box-li-left">Hash</div>
                 <div class="detail-box-li-right">
-                   <div class="detail-box-li-right-text">{{ txid }}</div> 
-                    <copyCon :copyHtml="txid"/>
+                   <div class="detail-box-li-right-text">{{ Hash }}</div> 
+                    <copyCon :copyHtml="Hash"/>
                 </div>
             </div>
             <div class="detail-box-li">
@@ -56,7 +56,7 @@ export default defineComponent({
         failIcon:new URL('@/assets/images/detail/fail-icon.png', import.meta.url).href,
         headerTitle:'Deposit details',
         address:'0xe89bb7caa285672nbfe1v17bfcf85324b8b7f7af',
-        txid:'0x9265671e759f0e7cfc8451a089f747e0e8035b46e776cf2a948e814179b55585'
+        Hash:'0x9265671e759f0e7cfc8451a089f747e0e8035b46e776cf2a948e814179b55585'
        })
        onBeforeMount(() => {
        })

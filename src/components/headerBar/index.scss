@@ -36,6 +36,7 @@
     .header-already-name{
       color: #191B1F;
       font-size: 18px;
+      margin-left: 8px;
     }
   }
   .set-icon{
@@ -57,6 +58,19 @@
   color: #191B1F;
   font-family: 'ssf-pro-display_semibold_600';
 }
+.header-logo-la{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0);
+  width: 94px;
+  height: 28px;
+  object-fit: contain;
+}
+.header-default-text-la{
+  // width: 52px;
+  text-align: center;
+  margin: 0 8px;
+}
 .header-default-right{
   position: relative;
   display: flex;
@@ -71,7 +85,7 @@
     object-fit: cover;
   }
   .header-default-text{
-    width: 52px;
+    width: 56px;
     margin: 0 8px;
   }
   .arrow-btm{
@@ -153,6 +167,11 @@
       height: 24px;
     }
   }
+}
+.header-logo{
+  width: 94px;
+  height: 28px;
+  object-fit: contain;
 }
 .currency-icon{
   width: 24px;

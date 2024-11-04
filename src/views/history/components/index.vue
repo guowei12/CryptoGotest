@@ -95,7 +95,7 @@ export default defineComponent({
         };
         const goDetail=()=>{
             router.push({
-                path:'/orderDetail',
+                path:'/refund',
                 query:{
                     no:'1111'
                 }

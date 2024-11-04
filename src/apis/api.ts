@@ -1,5 +1,4 @@
-import { get } from "http";
-import http from "./https.ts";
+import http from "./https";
 
 const Public = {
 

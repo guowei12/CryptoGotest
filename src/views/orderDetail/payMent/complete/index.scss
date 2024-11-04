@@ -1,0 +1,165 @@
+.complete-box {
+    .complete-con {
+        font-family: 'sf-pro-display_regular_400';
+        color: #191B1F;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+
+        .status-icon {
+            width: 102px;
+            height: 102px;
+            object-fit: contain;
+            margin-top: 32px;
+        }
+
+        .complete-title {
+            font-family: 'sf-pro-display_bold_700';
+            font-size: 24px;
+            line-height: 28.8px;
+            margin-top: 8px;
+        }
+
+        .complete-text {
+            font-family: 'sf-pro-display_medium_500';
+            font-size: 16px;
+            line-height: 19.2px;
+            width: 270px;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+    }
+
+    .complete-payment {
+        width: calc(100% - 32px);
+        .complete-payment-header {
+            padding: 16px;
+            text-align: left;
+            background: #FFFFFF;
+            box-shadow: 0px 8px 32px 0px #0000000A;
+            border-radius: 12px;
+        }
+        .complete-payment-header-title{
+            font-size: 12px;
+            line-height: 14.4px;
+            font-family: 'sf-pro-display_medium_500';
+            color: #737A86;
+        }
+        .complete-payment-header-con {
+            display: flex;
+            align-items: center;
+            margin-top: 13.5px;
+            .complete-payment-header-left{
+                img{
+                    width: 48px;
+                    height: 32px;
+                    object-fit: cover;   
+                }
+            }
+        }
+        .complete-payment-header-li{
+            color: #191B1F;
+            font-size: 12px;
+            line-height: 14.4px;
+            font-family: 'sf-pro-display_medium_500';
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-left:16px;
+            .complete-payment-header-li-title{
+                font-size: 14px;
+                line-height: 16.8px;
+                margin-bottom: 4px;
+            }
+            .complete-payment-header-li-text{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .complete-li-text-line{
+                font-family: 'sf-pro-display_regular_400';
+                color: #737A86;
+                text-align: center;
+                width: 62px;
+                height: 16px;
+                line-height: 16px;
+                border: 0.5px solid #737A86;
+                border-radius: 12px;
+                margin-right: 12px;
+            }
+        }
+    }
+    .dashed-line{
+        width: calc(100% - 24px);
+        height: 1px;
+        background: linear-gradient(to left,/*to结束的方向*/#FFFFFF 0%,#FFFFFF 50%,#D3D6DC 50%,#D3D6DC 100%); 
+        background-size: 8px 1px; 
+        background-repeat: repeat-x; /*背景图像将在水平方向重复。*/ 
+        margin: 0 auto;
+    }
+    .complete-payment-con{
+        padding: 16px;
+        text-align: left;
+        background: #FFFFFF;
+        box-shadow: 0px 8px 32px 0px #0000000A;
+        border-radius: 12px;
+        .complete-payment-con-li{
+            color: #191B1F;
+            font-family: 'sf-pro-display_medium_500';
+            .complete-payment-con-li-title{
+                text-align: left;
+                font-size: 12px;
+                line-height: 14.4px;
+                color: #737A86;
+                margin-bottom: 6px;
+            }
+        }
+        .matop-24{
+            margin-top: 24px;
+        }
+        .complete-payment-con-li-text{
+            display: flex;
+            align-items: center;
+        }
+    }
+    .complete-btn{
+        width: calc(100% - 32px);
+        font-family: 'sf-pro-display_medium_500';
+        font-size: 16px;
+        line-height: 19.09px;
+        color: #191B1F;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        bottom:28px;
+        left: 50%; 
+        transform: translate(- 50%, 0);
+        .complete-btn-icon{
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+        .complete-btn-box{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 165.5px;
+            height: 48px;
+            border-radius: 12px;
+            background: #58F287; 
+        }
+    }
+}
+@media only screen and (min-width: 700px) {
+    .complete-btn{
+        .complete-btn-box{
+            width: calc(50% - 16px);
+        }
+    }  
+}

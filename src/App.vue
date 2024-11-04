@@ -64,7 +64,7 @@ export default defineComponent({
   #app {
     position: relative;
     -webkit-overflow-scrolling: touch;
-    // width: 375px;
+    width: 100%;
     height:100%;
     padding-top:6px;
     margin: 0 auto !important;

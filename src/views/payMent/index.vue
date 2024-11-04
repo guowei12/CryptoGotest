@@ -9,16 +9,26 @@
           <div class="pay-box-num_name">{{ merchantName }}</div>
         </div> -->
         <div class="pay-box-num_title">
-          Pay to <div class="pay-box-num_name"> {{ merchantName }}</div>
+          Pay with AEON  
+          <!-- <div class="pay-box-num_name"> {{ merchantName }}</div> -->
         </div>
         <img class="pay-box-num_img" :src="scanLogo?scanLogo:merchantLogo" alt="" srcset="">
+      </div>
+      <div class="pay-box-con">
+        <div class="pay-box-con-left">
+          <div class="pay-box-con-left-title">PHAM THI HUYEN</div>
+        </div>
+        <div class="pay-box-con-right">
+          <div>8193868668</div>
+          <div class="pay-box-con-right-btn">MB Bank</div>
+        </div>
       </div>
       <div class="pay-box-amount">
         <div class="pay-box-amount-title">
           Amount
         </div>
         <!-- 允许输入正整数，调起纯数字键盘 -->
-        <div  v-if="currencyResponseList?.scale == 0" >
+        <div v-if="currencyResponseList?.scale == 0" >
         <!-- <van-field ref="inputField" :input-class="'van-field-input' + (showCursor ? ' show-cursor' : '')"  readonly unselectable="on" @click="show = true" @touchstart.stop="show = true"    autofocus class="field-class" v-model="digit" type="digit"
           label-class="field-label-class"  :label="currencyResponseList?.faitIcon" >
           <span class="custom" id="cursor"></span>
@@ -37,6 +47,9 @@
           {{currencyResponseList?.faitMin }} {{ currencyResponseList?.faitCurrency }}.</div>
         <div class="field-wrong" v-if="digit && digit > currencyResponseList?.faitMax">The maximum transaction amount is
           {{currencyResponseList?.faitMax }} {{ currencyResponseList?.faitCurrency }}.</div>
+          <div class='payment-btm'>
+            The system will automatically convert Crypto to VND and process with the payment 
+          </div>
        <van-number-keyboard @input="onInputKeyd"  theme="custom" extra-key="."   close-button-text="pay" :show="show" :maxlength="16"
        @close="pustPay" @delete="onDeleted" />
         </div>
@@ -63,12 +76,13 @@
         <div class="field-wrong" v-if="number && number > currencyResponseList?.faitMax">The maximum transaction amount
           is
           {{ currencyResponseList?.faitMax }} {{ currencyResponseList?.faitCurrency }}.</div>
+          <div class='payment-btm'>
+           The system will automatically convert Crypto to VND and process with the payment 
+         </div>
           <van-number-keyboard @input="onInputKey" theme="custom" extra-key="." close-button-text="pay"  :show="show1"
           :maxlength="16" @delete="onDelete" @close="pustPay" />
         </div>
-      
       </div>
-
     </div>
     <loading v-if="mechShow"></loading>
   </div>
@@ -80,7 +94,7 @@ import { useRoute, useRouter } from 'vue-router';
 import headerBar from './components/headerBar/index.vue'
 import { getQrInfor, pustQrPay } from '../../apis/api'
 import loading from './components/loading/index.vue'
-import  {getUrlData}  from '../../common/index'
+import  {getUrlData,getUrlDataTg}  from '@/common/index'
 
 /**
 * 仓库
@@ -104,8 +118,8 @@ export default defineComponent({
     * 数据局部
     */
     const data = reactive({
-      displayChars:[]
-,      showCursor: false,
+      displayChars:[], 
+      showCursor: false,
       cursorPosition: 0,
       isShowCursor:false,
       intervalId:null as any,
@@ -396,16 +410,18 @@ export default defineComponent({
       },
     }
     onMounted(async () => {
-      data.mechShow = true
-      if(getUrlData()?.faitCurrency){
-        data.faitCurrency=getUrlData()?.faitCurrency
-      }
-      if (getUrlData()?.appid) {
-        data.appid = getUrlData()?.appid
-        await infoMethods.getInfor()
-      } else {
-        data.mechShow = false
-      }
+      console.log(route.query.merchantNo)
+      console.log(getUrlDataTg())
+      data.mechShow = false
+      // if(getUrlData()?.faitCurrency){
+      //   data.faitCurrency=getUrlData()?.faitCurrency
+      // }
+      // if (getUrlData()?.appid) {
+      //   data.appid = getUrlData()?.appid
+      //   await infoMethods.getInfor()
+      // } else {
+      //   data.mechShow = false
+      // }
       document.addEventListener('keydown', function (event) {
         if (event.key === 'Enter' || event.key === 'Go') {
           console.log('手机输入法的回车或Go操作被触发');
@@ -488,7 +504,11 @@ export default defineComponent({
     caret-color: #1A72F6 !important;
     /*光标颜色*/
   }
-
+  .van-key--blue{
+    font-size: 16px;
+    color: #191B1F;
+    background: #58F287 !important;
+  }
   .van-field__label {
     width: auto;
     // max-width: 100px !important;

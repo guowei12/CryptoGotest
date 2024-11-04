@@ -1,3 +1,4 @@
+<!-- withdraw List -->
 <template>
   <div class="deposit-box">
     <HeaderBar :title="headerTitle" :balance="true"></HeaderBar>
@@ -27,7 +28,7 @@ import { useMain } from '@/store';
 * 仓库
 */
 export default defineComponent({
-    name: 'withdraw',
+    name: 'withdrawList',
     components:{HeaderBar},
     setup() {
        const route = useRoute();

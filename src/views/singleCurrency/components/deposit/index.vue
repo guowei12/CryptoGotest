@@ -1,3 +1,4 @@
+<!-- deposit List -->
 <template>
   <div class="deposit-box">
     <HeaderBar :title="headerTitle" :balance="true"></HeaderBar>
@@ -54,7 +55,7 @@ import { useMain } from '@/store';
 * 仓库
 */
 export default defineComponent({
-    name: 'deposit',
+    name: 'depositList',
     components:{HeaderBar},
     setup() {
        /**

@@ -56,6 +56,11 @@
           </div>
         </div>
       </div>
+      <div class="no-data" v-if="listShow != 2&&listShow != 1">
+        <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
+        <div class="no-data-title">You haven't topped up yet</div>
+        <div class="no-data-text">Please complete the first top-up to activate the card</div>
+      </div>
     </div>
     <footerBar v-if="!loading"></footerBar >
     <!-- <qrcode/> -->

@@ -44,6 +44,8 @@ function getUrlDataTg() {
 	/**
     * tempStr 格式是http://域名/路由?key=value&key=value...
     */
+   console.log(window.location)
+
    let tempStr = window.location.search
    /**
    * tempArr 是一个字符串数组 格式是["key=value", "key=value", ...]
