@@ -116,6 +116,11 @@ const router = createRouter({
       component: () => import('../views/orderDetail/payMent/failed/index.vue')    
     },
     {
+      path: '/payWithdraw',
+      name: 'payWithdraw',
+      component: () => import('../views/orderDetail/payWithdraw/index.vue')    
+    },
+    {
       path: '/transactionComplete',
       name: 'transactionComplete',
       component: () => import('../views/orderDetail/transaction/complete/index.vue')    

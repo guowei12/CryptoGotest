@@ -8,11 +8,11 @@
         <div class="QRPay-balance-number-text">261.33 USDT</div>
       </div>
       <div class="balance-btn-box" >
-        <div class="balance-btn-df" @click="goUrl('deposit')">
+        <div class="balance-btn-df" @click="goUrl('depositDetail')">
             <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
             <div>Deposit</div>
         </div>
-        <div class="balance-btn-df" @click="goUrl('withdraw')">
+        <div class="balance-btn-df" @click="goUrl('withdrawDetail')">
             <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
             <div>Withdraw</div>
         </div>

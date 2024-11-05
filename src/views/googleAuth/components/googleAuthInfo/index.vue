@@ -8,7 +8,7 @@
     </div>
     <div class="input code_input">
       <div class="title">Google Authenticator code</div>
-      <CodeInput :autofocus="true" v-model:data="googleCode" @submitCode="handleGoogleInput"></CodeInput>
+      <codeInput :autofocus="true" v-model:data="googleCode" @submitCode="handleGoogleInput"></codeInput>
     </div>
     <div class="button">
       <van-button class="qr_code-button" :loading="loadingBtn" :disabled="disabledBtn" @click="eventClick"
@@ -24,12 +24,14 @@ import { useRoute, useRouter } from 'vue-router';
 import { googleAuthSendEmail, bindAuth } from './../../../../apis/googleAuth';
 import HeaderBar from '@/components/headerBar/index.vue'
 import myInput from '@/components/myInput/index.vue'
+import codeInput from "@/components/CodeInput/index.vue"
+
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 import { useVerificationStore, usePhysicalCardStore } from '@/store';
 export default defineComponent({
   name: 'googleAuthInfo',
-  components:{HeaderBar,myInput},
+  components:{ HeaderBar, myInput, codeInput },
   setup() {
     const route = useRoute();
     const router = useRouter();

@@ -46,7 +46,7 @@ import copyCon from '@/components/copy/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 
 export default defineComponent({
-    name: 'orderDetail',
+    name: 'payWithdraw',
     components:{HeaderBar,copyCon},
     setup() {
        const route = useRoute();

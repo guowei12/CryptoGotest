@@ -1,0 +1,189 @@
+.detail-withdraw-content {
+    padding-bottom: 16px;
+    background: #F7F7F7;
+    margin: 0 auto;
+    padding-bottom: 24px;
+    font-family: 'sf-pro-display_regular_400';
+    .rotating-image {
+        animation: rotate 2s linear infinite;
+    }
+    @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+    }
+    .withdraw-result {
+          width: calc(100% - 32px);
+          margin: 0 auto;
+        .withdraw-schedule{
+            .withdraw-top{
+                width: 278px;
+                height: 29px;
+                margin-top: 24px;
+                .progress-img{
+                    width: 224px;
+                    object-fit: cover;
+                }
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    margin-bottom: 16px;
+                }
+            }
+            .withdraw-center{
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                font-family: 'sf-pro-display_medium_500';
+                color: #191B1F;
+                margin-top: 16px;
+                .confirmedCenter{
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 6px;
+                    object-fit: cover;
+                }
+                
+                .confirmedLoading{
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 6px;
+                    object-fit: cover;
+                }
+                .completed-font{
+                    word-wrap: break-word;
+                    word-break: break-all;
+                }
+            }
+        }
+        .withdraw-list{
+            display: flex;
+            flex-direction: column;
+            width:100%;
+            height: 90px;
+            border-radius: 12px;
+            background: #FFFFFF;
+            margin-top: 24px;
+            .withdraw-li{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 14px;
+                line-height: 45px;
+                font-family: 'sf-pro-display_medium_500';
+                margin: 0 16px;
+                .withdraw-li-title{
+                    color: #737A86;
+                }
+                .withdraw-li-txt{
+                    display: flex;
+                    align-items: center;
+                    color: #191B1F;
+                }
+                .withdraw-li-img{
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 4px;
+                }
+            }
+            .withdraw-li:nth-child(1){
+                border-bottom: 1px solid #E6E8EB;
+            }
+        }
+        .detail-result-con {
+            font-size: 14px;
+            color: #191B1F;
+            padding: 16px;
+            border-radius: 12px;
+            background: #FFFFFF;
+            margin-top: 12px;
+
+            .detail-result-con-title {
+                color: #737A86;
+            }
+
+            .detail-result-con-tx {
+                font-family: 'sf-pro-display_medium_500';
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 4px;
+                .detail-result-con-tx-nu{
+                    font-size: 12px;
+                    // width: 279px;
+                    margin-right: 16px;
+                    word-wrap: break-word;
+                    word-break: break-all;
+                }
+                .detail-result-con-tx-img{
+                    cursor: pointer;
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+    .withdraw-btn{
+        width: 100%;
+        font-family: 'sf-pro-display_medium_500';
+        font-size: 16px;
+        line-height: 19.09px;
+        color: #191B1F;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom:28px;
+        left: 50%; 
+        transform: translate(-50%, 0);
+        .withdraw-btn-box{
+            position: relative;
+            width: calc(100% - 32px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            justify-content: center;
+            text-align: center;
+            height: 48px;
+            border-radius: 12px;
+            background: #58F287; 
+        }
+        withdraw-btn-box:hover:after {
+            width:100%;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            cursor: pointer;
+        }
+        
+        .withdraw-btn-box:active:after {
+            width:100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            cursor: pointer;
+        }
+    }
+}
+@media only screen and (min-width: 700px) {
+    .detail-withdraw-content{
+        // width: 375px !important;
+        overflow-x: hidden;
+    }
+}

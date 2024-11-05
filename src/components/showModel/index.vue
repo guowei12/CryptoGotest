@@ -1,9 +1,9 @@
 <template>
   <div class="showModel-box">
-    <n-drawer v-model:show="showModal" resizable :placement="'bottom'" @mask-click="closeDialog"
-      style="border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden" :trap-focus="trapFocus"
+    <n-drawer :style="verificationMethod?'height: 480px; border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden':'border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden'" v-model:show="showModal" resizable :placement="'bottom'" @mask-click="closeDialog"
+       :trap-focus="trapFocus"
       :block-scroll="true">
-      <n-drawer-content>
+      <n-drawer-content >
         <div class="code">
           <div>
             <div class="line"><span></span></div>
