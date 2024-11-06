@@ -16,7 +16,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, nextTick, reactive, toRefs, onBeforeMount, onMounted, watchEffect, getCurrentInstance } from 'vue';
+import { defineComponent, ref, nextTick, reactive, toRefs, onBeforeMount, onMounted,onDeactivated, watchEffect, getCurrentInstance } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import codeInput from '@/components/CodeInput/index.vue'
 // import { findCardSendEmail, findCardInfo } from '@/api/card';
@@ -28,7 +28,8 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { proxy } = getCurrentInstance() as any
-
+    const codeInputFocus = ref(false);
+    const nowIntervalId = ref(null) as any;
     const data = reactive({
       codeEmail: '' as any,
       second: 30
@@ -53,24 +54,26 @@ export default defineComponent({
         // window.$message?.error(returnData.data.msg, {
         //   icon: () => h('img', { src: sucMsgIcon, className: 'message-icon' }),
         // });
-        proxy.$successToast(returnData.data.msg, 'failToast', 5000)
+        proxy.$failToast(returnData.data.msg, 'failToast', 5000)
       }
       codeInputFocus.value = true;
     };
     const sendCode = async () => {
+      codeInputFocus.value=true
       // 模拟发送验证码的操作
       console.log('验证码已发送');
       // 设置计时器
       countdown.value = 60; // 假设验证码有效期为60秒
-      const intervalId = setInterval(() => {
+      nowIntervalId.value = setInterval(() => {
         if (countdown.value > 0) {
           countdown.value--;
+          localStorage.setItem('countdown',countdown.value.toString())
         } else {
-          clearInterval(intervalId);
+          clearInterval(nowIntervalId.value);
         }
       }, 1000)
     }
-    const codeInputFocus = ref(false);
+
     const checkCodeByEmail = (val: string) => {
       if (!val || val.length < 6 ) return;
       // 验证code成功展示卡信息详情
@@ -84,7 +87,7 @@ export default defineComponent({
       } else {
         changeBlur();
         data.codeEmail = '';
-        proxy.$successToast(returnData.data.msg, 'failToast', 1000000)
+        proxy.$failToast(returnData.data.msg, 'failToast', 5000)
       }
     }
     // 失去焦点
@@ -106,6 +109,23 @@ export default defineComponent({
     onBeforeMount(() => {
     })
     onMounted(() => {
+      countdown.value=Number(localStorage.getItem('countdown'))
+      if(countdown.value!=0){
+        nowIntervalId.value = setInterval(() => {
+        if (countdown.value > 0) {
+          countdown.value--;
+          localStorage.setItem('countdown',countdown.value.toString())
+        } else {
+          clearInterval(nowIntervalId.value);
+        }
+      }, 1000)
+      }
+      // console.log(countdown.value)
+    })
+    onDeactivated(()=>{
+      if(nowIntervalId.value){
+        clearInterval(nowIntervalId.value);
+      }
     })
     watchEffect(() => {
     })

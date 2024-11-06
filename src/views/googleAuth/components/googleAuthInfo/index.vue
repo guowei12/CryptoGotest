@@ -8,11 +8,12 @@
     </div>
     <div class="input code_input">
       <div class="title">Google Authenticator code</div>
-      <codeInput :autofocus="true" v-model:data="googleCode" @submitCode="handleGoogleInput"></codeInput>
+      <codeInput :keyboard="false" :autofocus="true" v-model:data="googleCode" @submitCode="handleGoogleInput">
+      </codeInput>
     </div>
-    <div class="button">
-      <van-button class="qr_code-button" :loading="loadingBtn" :disabled="disabledBtn" @click="eventClick"
-        type="primary" loading-type="spinner">
+    <div class="google-button">
+      <!-- :disabled="disabledBtn" -->
+      <van-button class="qr_code-button" block :loading="loadingBtn"  @click="eventClick">
         Continue
       </van-button>
     </div>
@@ -25,13 +26,12 @@ import { googleAuthSendEmail, bindAuth } from './../../../../apis/googleAuth';
 import HeaderBar from '@/components/headerBar/index.vue'
 import myInput from '@/components/myInput/index.vue'
 import codeInput from "@/components/CodeInput/index.vue"
-
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+// const { t } = useI18n();
 import { useVerificationStore, usePhysicalCardStore } from '@/store';
 export default defineComponent({
   name: 'googleAuthInfo',
-  components:{ HeaderBar, myInput, codeInput },
+  components: { HeaderBar, myInput, codeInput },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -155,10 +155,27 @@ export default defineComponent({
       height: 48px;
     }
   }
+:deep(.van-button--default){
+  background: transparent !important;
+  border: none;
+}
+:deep(.van-button--normal){
+  font-size:16px;
+}
+:deep(.van-button__text){
+  color: #191B1F !important; 
 
-  .button {
-    margin-top: 36px;
+}
+  .google-button {
+    width: calc(100% - 32px) !important;
+    margin: 36px auto;
     padding-bottom: 20px;
+    .qr_code-button{
+      height: 48px;
+      color: #191B1F !important;
+      background: #58F287 !important;
+      border-radius: 12px;
+    }
   }
 }
 </style>

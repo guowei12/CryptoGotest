@@ -6,7 +6,7 @@
         <div>Please enter the verification code send to</div>
         <div class="s-c-t-emial">John@gmail.com</div>
       </div>
-      <codeInput :autofocus="codeInputFocus" v-model:data="codeEmail" @submitCode="checkCodeByEmail" @blur="changeBlur"
+      <codeInput :keyboard="false"  :autofocus="codeInputFocus" v-model:data="codeEmail" @submitCode="checkCodeByEmail" @blur="changeBlur"
         @focus="changeFocus"></codeInput>
       <div v-if="countdown==0" class="s-c-t-resend">Not received? <span @click="sendCode" class="code-color">Resend code</span></div>
       <div v-else class="s-c-t-verification">New verification code sent {{ countdown }}s</div>

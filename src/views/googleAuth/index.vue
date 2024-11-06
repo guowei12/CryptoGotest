@@ -50,9 +50,9 @@ export default defineComponent({
 
     // 点击按钮
     const goGoogleAuthInfo = () => {
-      if (secret.value) {
+      // if (secret.value) {
         router.push('/googleAuthInfo');
-      }
+      // }
     };
     // 获取谷歌授权码
     const initGoogleAuth = async () => {

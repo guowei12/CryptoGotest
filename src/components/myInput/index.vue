@@ -1,21 +1,19 @@
 <template>
-  <div id="myInput" :error="error" :style="`height:${props.height}px;`">
-    <input :type="props.type === 'code' ? 'tel' : 'text'" v-model="data" :placeholder="props.placeholder"
-      :disabled="props.disabled" @update:model-value="updateChange" @blur="onBlur" @input="changeVal" @focus="onFocus"
-      :maxlength="props.maxlength" :minlength="props.minlength"
-      :style="`width: ${props.width}px;height:${props.height}px;`" autocapitalize="off" />
+  <div id="myInput" :error="error" :style="`height:${height}px;`">
+    <input :type="type === 'code' ? 'tel' : 'text'" v-model="data" :placeholder="placeholder" :disabled="disabled"
+      @update:model-value="updateChange" @blur="onBlur" @input="changeVal" @focus="onFocus" :maxlength="maxlength"
+      :minlength="minlength" :style="`width: ${width}px;height:${height}px;`" autocapitalize="off" />
     <div class="suffix code_text" v-if="isCode">
-      <span @click="handSendCode" v-if="!active" :class="props.phone ? '' : 'send_code'"> {{ $t('googleCode.Send_code')
-        }}</span>
+      <span @click="handSendCode" v-if="!active" :class="phone ? '' : 'send_code'"> Send code </span>
       <span class="countdown" v-else>
         <n-countdown :render="renderCountdown" :duration="59000" @finish="handleFinish" />
         s</span>
     </div>
-    <div class="suffix clear_icon" v-if="props.clear">
+    <div class="suffix clear_icon" v-if="clear">
       <img @click="clearVal" src="@/assets/images/verification/clear_icon.png" alt="" />
     </div>
   </div>
-  <div :class="error ? 'error-tip-show error-tip' : 'error-tip'">{{ props.errorTip }}</div>
+  <div :class="error ? 'error-tip-show error-tip' : 'error-tip'">{{ errorTip }}</div>
 </template>
 <script lang='ts'>
 import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch } from 'vue';
@@ -23,37 +21,22 @@ import { useRoute, useRouter } from 'vue-router';
 import { type CountdownProps, NCountdown } from 'naive-ui';
 export default defineComponent({
   name: 'myInput',
-  components: {  NCountdown },
+  emits: ['input', 'update:data', 'blur', 'focus', 'click'],
+  components: { NCountdown },
   props: {
-    data:{
-      type: [Number, String, Boolean],
-      required: false,
-    },
-    error :{
-      type: [Number, String, Boolean],
-      required: false,
-    },
-    isCode:{
-      type: [Number, String, Boolean],
-      required: false,
-    },
+    data: '' as any,
+    error: false,
+    isCode: false,
+    height: '' as any,
+    width: '' as any,
     maxlength: 200,
     type: 'text',
-    phone: true ,
+    phone: true,
     clear: false,
   },
-  setup(props) {
-
+  setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter();
-    const emit = defineEmits<{
-      (e: 'update:data', value: string): void;
-      (e: 'blur', value: string): void;
-      (e: 'input', value: string): void;
-      (e: 'focus', value: string): void;
-      (e: 'click', value: string): void;
-    }>();
-
     const updateChange = (e: string) => {
       emit('update:data', e);
     };
@@ -136,8 +119,7 @@ export default defineComponent({
     );
     return {
       data,
-      error,
-      active,
+      ...props,
       updateChange,
       renderCountdown,
       handleFinish,
@@ -170,7 +152,7 @@ export default defineComponent({
 }
 
 #myInput:hover {
-  background: #E0E3E7;
+  // background: #E0E3E7;
 }
 
 #myInput:focus-within {
@@ -202,6 +184,7 @@ export default defineComponent({
   flex: 1;
   width: calc(100%);
   font-size: 16px;
+  border: none;
 }
 
 #myInput input {
@@ -280,7 +263,7 @@ export default defineComponent({
 
   .send_code {
     cursor: auto;
-    color: #B7BCC5;
+    color: #1A72F6;
   }
 }
 

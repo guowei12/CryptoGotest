@@ -31,7 +31,7 @@
               <div class="tip">Please enter the verification code send to </div>
               <div class="email">{{ email }}</div>
               <div class="code-input">
-                <CodeInput :autofocus="codeInputFocus" v-model:data="codeEmail" @submitCode="checkCodeByEmail"
+                <CodeInput :keyboard="true" :autofocus="codeInputFocus" v-model:data="codeEmail" @submitCode="checkCodeByEmail"
                   @blur="changeBlur" @focus="changeFocus"></CodeInput>
               </div>
               <div class="send-code-btn">

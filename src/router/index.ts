@@ -56,11 +56,6 @@ const router = createRouter({
       component: () => import('../views/history/index.vue')
     },
     {
-      path: '/googleAuthInfo',
-      name: 'googleAuthInfo',
-      component: () => import('../views/googleAuth/components/googleAuthInfo/index.vue')
-    },
-    {
       path: '/depositb',
       name: 'depositb',
       component: () => import('../views/managebalance/components/deposit/index.vue')
