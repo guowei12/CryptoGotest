@@ -1,29 +1,35 @@
-.signin-box{
-    margin:  0 16px;
+.login-box {
+    margin: 0 16px;
 }
-.signin-box-edit{
+
+.login-box-edit {
     font-family: 'sf-pro-display_regular_400';
     margin-top: 40px;
-    .signin-box-edit-title{
+
+    .login-box-edit-title {
         font-size: 20px;
         font-family: 'sf-pro-display_bold_700';
         line-height: 24px;
         color: #191B1F;
     }
+
     .wrong-text {
         font-size: 12px;
         color: #F53F3F;
         line-height: 14px;
     }
-    .wrong-text-no{
+
+    .wrong-text-no {
         font-size: 12px;
         color: transparent;
         line-height: 14px;
         visibility: hidden;
     }
-    .s-b-e-con{
-        margin: 40px auto;
-        input{
+
+    .l-b-e-con {
+        margin: 4px auto;
+
+        input {
             width: 100%;
             font-family: 'sf-pro-display_medium_500';
             font-style: normal;
@@ -31,8 +37,9 @@
             line-height: 20px;
             box-sizing: border-box;
             color: #191B1F;
-            text-indent:16px;
+            text-indent: 16px;
         }
+
         input::placeholder {
             font-family: 'sf-pro-display_regular_400';
             font-style: normal;
@@ -40,13 +47,15 @@
             line-height: 20px;
             color: #737A86;
         }
-        .s-b-e-title{
+
+        .l-b-e-title {
             font-size: 14px;
             color: #191B1F;
             line-height: 16.8px;
-            margin-bottom: 8px;
+            margin-bottom: 40px;
         }
-        .s-b-e-input{
+
+        .l-b-e-input {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,19 +63,94 @@
             border-radius: 12px;
             background: #EDEFF2;
             border: none;
+            margin-bottom: 24px;
         }
-        .s-b-e-input-wrong{
 
+        .l-b-e-input-wrong {}
+    }
+
+    .l-b-e-agree {
+        display: flex;
+        margin-top: 24px;
+        :deep(.n-checkbox) {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            box-shadow: none !important;
+
+            .n-checkbox-box {
+                border-radius: 3px;
+            }
+
+            .n-checkbox-box-wrapper {
+                line-height: 16px;
+            }
+
+            .n-checkbox-box__border {
+                box-shadow: none !important;
+                border: 1px solid #CBCED5;
+                background: #FFFFFF;
+                z-index: -100;
+                border-radius: 3px;
+            }
+
+            .n-checkbox-icon {
+                background: #0260E7;
+                z-index: -100;
+            }
+        }
+
+        :deep(.active) {
+            .n-checkbox-icon {
+                z-index: 100 !important;
+            }
+        }
+
+        :deep(.n-checkbox:focus:not(:active)) {
+            box-shadow: none !important;
+        }
+
+        .n-checkbox.n-checkbox--checked:focus:not(:active) {
+            box-shadow: none !important;
+        }
+
+        .agree-text {
+            font-family: 'sf-pro-display_regular_400';
+            font-size: 12px;
+            line-height: 16px;
+            color: #737A86;
+
+            span {
+                color: #2980fe;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .name_mer {
+                color: #737A86;
+            }
+
+            span:hover {
+                opacity: 0.8;
+            }
         }
     }
-    .proceed-btn{
+
+    .proceed-btn {
         height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: 40px;
     }
-
-    .btn-class{
+    .sign-btn{
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    .btn-class {
         width: 100%;
         position: relative;
         cursor: pointer;
@@ -83,10 +167,34 @@
         border-radius: 12px;
         transition: background-color 0.3s;
     }
-    .btn-class-opacity{
+    .sign-btn-class{
+        width: 100%;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #191B1F;
+        line-height: 20px;
+        font-family: 'sf-pro-display_medium_500';
+        height: 48px;
+        margin: 40px auto;
+        border-radius: 12px;
+        transition: background-color 0.3s;
+        border: 1px solid #DBDEE3;
+        .google-icon{
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-right: 12px;
+        }
+    }
+    .btn-class-opacity {
         opacity: 0.2;
     }
-    .btn-class-set{
+
+    .btn-class-set {
         // flex-flow: 1;
         // flex-shrink: 0;
         // font-size: 16px;
@@ -101,7 +209,8 @@
         // border-radius: 12px;
         // transition: background-color 0.3s;
     }
-    .proceed-btn:hover{
+
+    .proceed-btn:hover {
         .btn-class::after {
             background: rgba(0, 0, 0, 0.1);
             border-radius: 12px;
@@ -115,7 +224,8 @@
             cursor: pointer;
         }
     }
-    .proceed-btn:active{
+
+    .proceed-btn:active {
         .btn-class::after {
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
@@ -132,7 +242,7 @@
 }
 
 @media only screen and (min-width: 700px) {
-    .proceed-btn:hover{
+    .proceed-btn:hover {
         .btn-class::after {
             background: transparent !important;
             border-radius: 12px;
@@ -146,5 +256,5 @@
             cursor: pointer;
         }
     }
-    
+
 }

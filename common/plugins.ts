@@ -6,6 +6,8 @@ import {
   type ToastWrapperInstance
 } from 'vant';
 import warn from "@/assets/images/warn-icon.png"
+import success from "@/assets/images/suc_icon.png"
+
 // 全局复制
 const copyBtn = (value: string) => {
   var input = document.createElement("input");
@@ -37,7 +39,7 @@ export default {
       showSuccessToast({
         wordBreak:'break-all',
         iconSize:'20px',
-        icon:'passed',
+        icon:success,
         message: message,
         className:className,
         duration: duration,

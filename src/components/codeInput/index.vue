@@ -12,10 +12,10 @@
     <div class="code-item" :class="codeValue.length == 4 && inputFocus ? 'code-item-active' : ''">{{ codeValue[4] }}
     </div>
     <div class="code-item" :class="isShowCursor">{{ codeValue[5] }}</div>
-    <!-- <div class="pc-input" >
-      <input id="inputCode" class="input-code" v-model="codeValue" :maxlength="6" type="tel" @blur="codeInputBlur" @focus="codeInputFocus" @input="codeInputChange" @update:model-value="updateChange" v-if="isShowInput" autocomplete="off" />
-    </div> -->
-    <div class="phone-input">
+    <div class="pc-input" v-show="!keyboard">
+      <input id="inputCode" class="input-code" v-model="codeValue" :maxlength="6" type="tel" @blur="codeInputBlur" @focus="codeInputFocus" @input="codeInputChange" @update:model-value="updateChange" autocomplete="off" />
+    </div>
+    <div class="phone-input" v-show="keyboard">
       <input id="inputCode1" class="input-code" v-model="codeValue" :maxlength="6" type="tel" @blur="codeInputBlur1"
         @focus="codeInputFocus" @input="codeInputChange" @update:model-value="updateChange"
         v-if="isShowInput && !codeValue" :readonly="isReadonly" @click="handleClick" autocomplete="off" />
@@ -40,6 +40,10 @@ export default defineComponent({
       type: [Number, String, Boolean],
       required: false,
     },
+    keyboard: {
+      type: [Boolean],
+      required: true,
+    },
     type: {
       type: [Number, String, Boolean],
       required: false,
@@ -53,15 +57,17 @@ export default defineComponent({
     let inputFocus = ref(false) as any;
     let show = ref(true);
     let isReadonly = ref(true);
-    let codeValue = ref('') as any;
-    codeValue.value = props.data;
     inputFocus.value = props.autofocus;
-    const data = reactive({})
+    const data = reactive({
+      codeValue:'' as any
+    })
     onBeforeMount(() => {
     })
     onMounted(() => {
+      data.codeValue = props.data;
       isShowInput.value = true;
       isAutofocus.value = true;
+      // console.log(inputFocus.value)
       nextTick(() => {
         document.getElementById('inputCode1')?.focus();
         if (inputFocus.value) {
@@ -71,9 +77,9 @@ export default defineComponent({
     })
 
     const isShowCursor = computed(() => {
-      if (codeValue.value?.length == 6 && inputFocus.value) {
+      if (data.codeValue?.length == 6 && inputFocus.value) {
         return 'code-item-active no_cursor';
-      } else if (codeValue.value?.length >= 5 && inputFocus.value) {
+      } else if (data.codeValue?.length >= 5 && inputFocus.value) {
         return 'code-item-active';
       } else {
         return '';
@@ -81,18 +87,18 @@ export default defineComponent({
     });
     // 验证码输入框input
     const codeInputChange = (event: any) => {
-      if (event) {
-        codeValue.value = '';
+      if (event  && props.keyboard) {
+        data.codeValue = '';
         isReadonly.value = true;
       }
-
-      if (codeValue.value) {
-        codeValue.value = codeValue.value.replace(/[^\d]/g, '');
-        emit('update:data', codeValue.value);
+      console.log(event,data.codeValue)
+      if (data.codeValue) {
+        data.codeValue = data.codeValue.replace(/[^\d]/g, '');
+        emit('update:data', data.codeValue);
       }
-      // if (codeValue.value && codeValue.value.length >= 6 && appStore.equipmentType === 'pc') {
-      //   emit('submitCode', codeValue.value?.slice(0, 6));
-      // }
+      if (data.codeValue && data.codeValue.length >= 6 && !props.keyboard) {
+        emit('submitCode', data.codeValue?.slice(0, 6));
+      }
     };
     const updateChange = (e: string) => {
       emit('update:data', e);
@@ -131,31 +137,31 @@ export default defineComponent({
       }
     };
     watch(
-      () => codeValue.value,
+      () => data.codeValue,
       (newVal) => {
-        if (newVal?.length === 6 && props.type === 'phy') {
-          emit('submitCode', codeValue.value?.slice(0, 6));
+        if (newVal?.length === 6 && props.type === 'phy' && !props.keyboard) {
+          emit('submitCode', data.codeValue?.slice(0, 6));
         }
       }
     );
     watch(
       () => props.data,
       (newVal) => {
-        codeValue.value = props.data;
+        data.codeValue = props.data;
       }
     );
-    watch(codeValue, (newVal) => {
+    watch(data.codeValue, (newVal) => {
       if (!inputFocus.value) {
-        codeValue.value = '';
+        data.codeValue = '';
         return;
       }
       if (newVal.length == 0) {
         isReadonly.value = true;
       }
       // 移动端存在值时输入框隐藏使用此方法触发
-      if (codeValue.value) {
-        codeValue.value = codeValue.value.replace(/[^\d]/g, '');
-        emit('update:data', codeValue.value);
+      if (data.codeValue) {
+        data.codeValue = data.codeValue.replace(/[^\d]/g, '');
+        emit('update:data', data.codeValue);
       }
     });
     watch(
@@ -174,7 +180,6 @@ export default defineComponent({
       isAutofocus,
       inputFocus,
       isReadonly,
-      codeValue,
       isShowCursor,
       codeInputChange,
       updateChange,
@@ -236,7 +241,7 @@ export default defineComponent({
 
   .code-item-active {
     border-radius: 12px;
-    background-color: #ffffff;
+    background-color: #fff;
     font-size: 20px;
     position: relative;
     z-index: 1;

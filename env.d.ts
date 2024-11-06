@@ -16,6 +16,9 @@ declare module "*.vue" {
     interface ComponentCustomProperties {
       $failToast: any
     }
+    interface ComponentCustomProperties {
+      $successToast: any
+    }
   }
   
   

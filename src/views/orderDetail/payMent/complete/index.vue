@@ -35,7 +35,7 @@
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">Total Payment</div>
                             <div class="complete-payment-con-li-text">
-                                {{ orderId }}{{ currency }}
+                                {{ amount }}{{ currency }}
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
@@ -80,7 +80,7 @@
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">Total Payment</div>
                             <div class="complete-payment-con-li-text">
-                                {{ orderId }}{{ currency }}
+                                {{ amount }}{{ currency }}
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
@@ -94,8 +94,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="complete-btn">
             <div class="complete-btn-box" @click="generateImage">
                 <img class="complete-btn-icon" src="@/assets/images/status/save-icon.png" alt="" srcset="">
@@ -127,6 +125,7 @@ export default defineComponent({
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId: '661bbbc10cf7f20007e4ff48',
             total: '20,000',
+            amount:'20,000',
             currency: 'VND',
             time: '2024-04-14 18:19 (UTC+8)',
             watermark: new URL('@/assets/images/status/watermark-icon.png', import.meta.url).href
