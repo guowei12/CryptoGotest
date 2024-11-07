@@ -33,27 +33,57 @@
           currencyList:[
             {
             name:'USD',
+            value:'USD',
             img:new URL('@/assets/images/set/usd-icon.png', import.meta.url).href,
            },
            {
             name:'VND',
+            value:'VND',
             img:new URL('@/assets/images/set/vnd-icon.png', import.meta.url).href,
            },
            {
             name:'THB',
+            value:'THB',
             img:new URL('@/assets/images/set/thb-icon.png', import.meta.url).href,
            },
-         
+           {
+            name:'EUR',
+            value:'EUR',
+            img:new URL('@/assets/images/set/eur-icon.png', import.meta.url).href,
+           },
+           {
+            name:'HKD',
+            value:'HKD',
+            img:new URL('@/assets/images/set/hkd-icon.png', import.meta.url).href,
+           },
+           {
+            name:'IDR',
+            value:'IDR',
+            img:new URL('@/assets/images/set/idr-icon.png', import.meta.url).href,
+           },
+           {
+            name:'SGD',
+            value:'SGD',
+            img:new URL('@/assets/images/set/sgd-icon.png', import.meta.url).href,
+           },
           ],
           nowCurrency:'USD'
          })
          onBeforeMount(() => {
+
          })
          onMounted(() => {
+          let currency= window.localStorage.getItem('currency') as any;
+          if(currency){
+            data.nowCurrency=currency
+          }else{
+            window.localStorage.setItem('currency', 'USD');
+          }
          })
          const setCurrency=(item:any)=>{
-            data.nowCurrency=item.name
-        //   router.go(-1)
+            data.nowCurrency=item.value
+            window.localStorage.setItem('currency', item.value);
+            router.replace({path:'/settings'})
          }
          watchEffect(()=>{
          })

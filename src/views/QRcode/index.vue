@@ -5,11 +5,10 @@
       <img src="@/assets/images/qr/aeon-logo.png" alt="">
     </div>
     <div class="qr-content" v-if="!showScanned">
-      A pioneering Payment Association uniting the entire payment ecosystem to seamlessly bridge crypto and real-world
-      transactions.
+      {{ $t('qrPay.text') }}
     </div>
     <div class="qr-support-title" v-if="!showScanned">
-      <div>Support payment method:</div>
+      <div>{{ $t('qrPay.supportText') }}</div>
       <div class="qr-support-list">
         <img v-for="item, index in imgList" class="qr-support-img" :src="item" :key="index" alt="" srcset="">
       </div>
@@ -37,7 +36,7 @@
     </div> -->
     <div class="qr-fix-btn" @click="startScanning" v-if="!showScanned">
       <img class="qr-mini" src="@/assets/images/qr/qr-mini.png" alt="" srcset="">
-      <div class="no-select-text">Scan QR To Pay</div>
+      <div class="no-select-text">{{ $t('qrPay.btnText') }}</div>
     </div>
   </div>
 </template>

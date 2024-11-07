@@ -3,9 +3,17 @@ import { createI18n } from 'vue-i18n';
 // 自己的语言配置
 import enLocale from './en';
 import zhLocale from './zh';
+import vieLocale from './vietnam';
+import thaiLocale from './thai';
 
 // 语言配置整合
 const messages = {
+  th:{
+    ...thaiLocale
+  },
+  vi:{
+    ...vieLocale,
+  },
   en: {
     ...enLocale,
   },
@@ -13,7 +21,7 @@ const messages = {
     ...zhLocale,
   },
 };
-const lang = window.sessionStorage.getItem('locale') || 'en';
+const lang = window.localStorage.getItem('locale') || 'en';
 // 创建 i18n
 const i18n = createI18n({
   legacy: false,

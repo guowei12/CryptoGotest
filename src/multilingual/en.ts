@@ -1,5 +1,38 @@
 const en = {
-
+  qrPay:{
+    text:'A pioneering Payment Association uniting the entire payment ecosystem to seamlessly bridge crypto and real-world transactions.',
+    supportText:"Support payment method:",
+    btnText:"Scan QR To Pay"
+  },
+  headerTitle:{
+    GoogleAuthenticator:'Google Authenticator',
+    DownloadAPP:"Download APP",
+    Settings:"Settings",
+    Transactiondetails:"Transaction details",
+    Refunddetails:"Refund details",
+    Depositdetails:"Deposit details",
+    Withdrawdetails:"Withdraw details",
+    Managebalance:"Manage balance",
+    Deposit:"Deposit",
+    Withdraw:"Withdraw",
+    History:"History",
+    Payment:"Payment"
+  },
+  settings:{
+    General:'General',
+    Security:'Security',
+    DisplayedCurrency:'Displayed Currency',
+    Language:'Language',
+    Email:'Email',
+    GoogleAuthenticator:'Google Authenticator',
+    LogOut:'Log Out',
+    Activate:'Activate'
+  },
+  logout:{
+    msg: 'Whether you still want to Logout?',
+    Cancel: 'Cancel',
+    Confirm: 'Confirm',
+  },
   // 邮箱
   email: {
     VerificationMethod: 'Verification Method',

@@ -1,15 +1,21 @@
 <template>
   <div id="app">
-    <!-- <n-message-provider>
-    <MessageProvider />
-  </n-message-provider> -->
-    <router-view v-if="isRouterAlive"></router-view>
+    <router-view v-if="isRouterAlive" v-slot="{ Component }">
+      <keep-alive :include="keepAlive_list">
+        <component :is="Component" :key="key" />
+      </keep-alive>
+      <!-- <component :is="Component" :key="key" v-if="!route.meta.keepAlive" /> -->
+    </router-view>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, getCurrentInstance, reactive, toRefs, provide, nextTick, onMounted } from 'vue'
+import { defineComponent, getCurrentInstance, watch, computed, reactive, toRefs, provide, nextTick, onMounted } from 'vue'
 import useHook from './../common/useHook'
+import { storeToRefs } from 'pinia'
+import { useMain } from '@/store/index';
+import { useRoute } from 'vue-router'
+
 export default defineComponent({
   components: {
 
@@ -17,9 +23,17 @@ export default defineComponent({
   setup() {
     let timer: any;
     const { handleScroll } = useHook()
+    const couponStore = useMain();
+    const { keepAlive_list } = storeToRefs(couponStore)
+    watch(() => keepAlive_list, (to) => {
+    }, { deep: true })
+    const route = useRoute()
     let proxy = getCurrentInstance()!.proxy!
     const data = reactive({
       isRouterAlive: true
+    })
+    const key = computed(() => {
+      return route.fullPath
     })
     // 局部组件刷新
     const reload = () => {
@@ -39,6 +53,9 @@ export default defineComponent({
     return {
       ...toRefs(data),
       reload,
+      key,
+      route,
+      keepAlive_list
     }
   },
 })

@@ -13,11 +13,12 @@ import {
     // create naive ui
     create,
     // component
+    NModal,
     NTooltip,
     NCheckbox
   } from 'naive-ui'
   const naive = create({
-    components: [NTooltip,NCheckbox]
+    components: [NTooltip,NCheckbox,NModal]
   })
 
 const app = createApp(App)

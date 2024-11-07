@@ -1,4 +1,38 @@
 const zh = {
+  qrPay: {
+    text: "一個開創性的支付協會，將整個支付生態系統聯合起來，無縫連接加密貨幣和現實世界的交易。",
+    supportText: "支持付款方式：",
+    btnText: "掃描二維碼支付"
+  },
+  headerTitle: {
+    GoogleAuthenticator: '穀歌身份驗證器',
+    DownloadAPP: "下載APP",
+    Settings: "設定",
+    Transactiondetails: "交易詳情",
+    Refunddetails: "退款詳情",
+    Depositdetails: "存款明細",
+    Withdrawdetails: "提款詳細資訊",
+    Managebalance: "管理餘額",
+    Deposit: "存款",
+    Withdraw: "提款",
+    History: "歷史",
+    Payment: "付款"
+  },
+  settings: {
+    General: '概述',
+    Security: '安全',
+    DisplayedCurrency: '顯示的貨幣',
+    Language: '語言',
+    Email: '電子郵件',
+    GoogleAuthenticator: '穀歌身份驗證器',
+    LogOut: '註銷',
+    Activate: '啟動',
+  },
+  logout: {
+    msg: '您是否要登出？',
+    Cancel: '取消',
+    Confirm: '確認',
+  },
   // 邮箱
   email: {
     VerificationMethod: '驗證方法',

@@ -4,14 +4,16 @@
       <div class="header-arrow-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
-      <div class="header-default-right" @click="countryShow=!countryShow">
+      <div class="header-default-right" @click="countryShow = !countryShow">
         <div class="header-default-con">
           <img class="header-default-img" :src="nowCountry.img" alt="" srcset="">
           <div class="header-default-text">{{ nowCountry.name }}</div>
         </div>
-        <img :class="countryShow?'arrow-btm-set':'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt="" srcset="">
-        <div :class="!countryShow?'country-list-show':'country-list'" v-if="countryShow">
-          <div @click.stop="setCountry(item)" :class="nowCountry.name==item.name?'country-li-set':''" class="country-li" v-for="item,index in countryList" :key="index">
+        <img :class="countryShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
+          srcset="">
+        <div :class="!countryShow ? 'country-list-show' : 'country-list'" v-if="countryShow">
+          <div @click.stop="setCountry(item)" :class="nowCountry.name == item.name ? 'country-li-set' : ''"
+            class="country-li" v-for="item, index in countryList" :key="index">
             <img class="country-li-img" :src="item.img" alt="" srcset="">
             <div class="country-li-text">{{ item.name }}</div>
           </div>
@@ -23,14 +25,14 @@
         <img class="merchantLogo" :src="merchantLogo" alt="" srcset="">
         <div class="header-already-name">Sharon</div>
       </div>
-        <img @click="goSettings" class="set-icon"  src="@/assets/images/header/set-icon.png" alt="" srcset="">
+      <img @click="goSettings" class="set-icon" src="@/assets/images/header/set-icon.png" alt="" srcset="">
     </div>
     <div class="header-default-line" v-if="balance">
       <div class="header-arrow-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">
-        {{  title }}
+        {{ title }}
       </div>
       <div class="header-default-right">
         <img @click="gohistory" class="header-list-icon" src="@/assets/images/header/list-icon.png" alt="" srcset="">
@@ -42,7 +44,7 @@
       </div>
       <div class="header-balance">
         <img v-if="currency" class="currency-icon" :src="currency" alt="" srcset="">
-        {{  title }}
+        {{ title }}
       </div>
     </div>
     <div class="header-default" v-if="headerLogo">
@@ -61,14 +63,16 @@
       <div class="header-balance">
         <img class="header-logo-la" :src="heLogo" alt="" srcset="">
       </div>
-      <div v-if="noLanguage" class="header-default-right" @click="languageShow=!languageShow">
+      <div v-if="noLanguage" class="header-default-right" @click="languageShow = !languageShow">
         <div class="header-default-con">
           <img class="header-default-img" :src="nowLanguage.img" alt="" srcset="">
           <div class="header-default-text-la">{{ nowLanguage.name }}</div>
         </div>
-        <img :class="languageShow?'arrow-btm-set':'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt="" srcset="">
-        <div :class="!languageShow?'country-list-show':'country-list'" v-if="languageShow">
-          <div @click.stop="setLanguage(item)" :class="nowCountry.name==item.name?'country-li-set':''" class="country-li" v-for="item,index in LanguageList" :key="index">
+        <img :class="languageShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
+          srcset="">
+        <div :class="!languageShow ? 'country-list-show' : 'country-list'" v-if="languageShow">
+          <div @click.stop="setLanguage(item)" :class="nowCountry.name == item.name ? 'country-li-set' : ''"
+            class="country-li" v-for="item, index in LanguageList" :key="index">
             <img class="country-li-img" :src="item.img" alt="" srcset="">
             <div class="country-li-text">{{ item.name }}</div>
           </div>
@@ -89,16 +93,18 @@ import {
   nextTick,
   watch,
   ref,
+  inject
 } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useI18n } from '@/multilingual/index.ts';
 export default defineComponent({
-  emit:['cancelFor'],
+  emit: ['cancelFor'],
   props: {
-    defaultH:{
+    defaultH: {
       type: [Number, String, Boolean],
       required: false,
     },
-    currency:{
+    currency: {
       type: [String],
       required: false,
     },
@@ -114,11 +120,11 @@ export default defineComponent({
       type: [Number, String, Boolean],
       required: false,
     },
-    headerLogo:{
+    headerLogo: {
       type: [Boolean],
       required: false,
     },
-    headerLanguage:{
+    headerLanguage: {
       type: [Boolean],
       required: false,
     },
@@ -132,56 +138,91 @@ export default defineComponent({
     }
   },
   components: {},
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const { proxy } = getCurrentInstance() as any;
     const router = useRouter();
     const queryRoute = useRoute();
+    const reload = inject('reload') as any;
+    const { t, locale } = useI18n();
+
     const data = reactive({
-      merchantLogo:new URL('@/assets/images/header/default-img.png', import.meta.url).href,
-      heLogo:new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href,
-      countryList:[
-        {img:new URL('@/assets/images/header/VN.png', import.meta.url).href,name:'Vietnam'},
-        {img:new URL('@/assets/images/header/TH.png', import.meta.url).href,name:'Thailand'}
+      merchantLogo: new URL('@/assets/images/header/default-img.png', import.meta.url).href,
+      heLogo: new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href,
+      countryList: [
+        { img: new URL('@/assets/images/header/VN.png', import.meta.url).href, name: 'Vietnam', value: 'vi' },
+        { img: new URL('@/assets/images/header/TH.png', import.meta.url).href, name: 'Thailand', value: 'th' },
+        { img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href, name: 'EN-US', value: 'en' },
       ],
-      nowCountry:{
-        name:'Vietnam',
-        img:new URL('@/assets/images/header/VN.png', import.meta.url).href
+      nowCountry: {
+        name: 'Vietnam',
+        value: 'vi',
+        img: new URL('@/assets/images/header/VN.png', import.meta.url).href
       },
-      countryShow:false,
-      languageShow:false,
-      noLanguage:false,
-      LanguageList:[
-            {
-            name:'EN-US',
-            img:new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
-           },
-           {
-            name:'VN',
-            img:new URL('@/assets/images/set/VN-icon.png', import.meta.url).href,
-           },
-           {
-            name:'Thai',
-            img:new URL('@/assets/images/set/TH-icon.png', import.meta.url).href,
-           },
+      countryShow: false,
+      languageShow: false,
+      noLanguage: false,
+      LanguageList: [
+        {
+          name: 'EN-US',
+          img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
+          value: 'en',
+        },
+        {
+          name: 'VN',
+          img: new URL('@/assets/images/set/VN-icon.png', import.meta.url).href,
+          value: 'vi',
+        },
+        {
+          name: 'Thai',
+          img: new URL('@/assets/images/set/TH-icon.png', import.meta.url).href,
+          value: 'th',
+        },
       ],
-      nowLanguage:{
-        name:'EN-US',
-        img:new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
+      nowLanguage: {
+        name: 'EN-US',
+        img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
+        value: 'en'
       }
     });
     onMounted(() => {
-      data.merchantLogo=props.logo?props.logo:new URL('@/assets/images/header/default-img.png', import.meta.url).href,
-      data.heLogo=props.logo?props.logo:new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href
+      let lang = window.localStorage.getItem('locale')
+      if (lang) {
+        if (['vi', 'th', 'en'].includes(lang)) {
+          data.countryList.forEach(item => {
+            if (item.value == lang) {
+              data.nowCountry = { ...item }
+            }
+          })
+
+        } else {
+          data.nowCountry = {
+            img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
+            name: 'EN-US',
+            value: 'en',
+          }
+        }
+      } else {
+        locale.value = 'vi'
+        window.localStorage.setItem('locale', 'vi')
+      }
+      data.merchantLogo = props.logo ? props.logo : new URL('@/assets/images/header/default-img.png', import.meta.url).href,
+        data.heLogo = props.logo ? props.logo : new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href
     });
 
     const infoMethods = {
-      setCountry(ary: { img: string; name: string; }){
-        data.nowCountry={...ary}
-        data.countryShow=false
+      setCountry(ary: { img: string; name: string; value: any }) {
+        data.nowCountry = { ...ary }
+        locale.value = ary.value 
+        window.localStorage.setItem('locale', ary.value);
+        data.countryShow = false
+        // reload();
       },
-      setLanguage(ary: { img: string; name: string; }){
-        data.nowLanguage={...ary}
-        data.languageShow=false
+      setLanguage(ary: { img: string; name: string; value: any }) {
+        data.nowLanguage = { ...ary }
+        locale.value = ary.value
+        window.localStorage.setItem('locale', ary.value);
+        data.languageShow = false
+        // reload()
       },
       goBack() {
         // router.go(-1);
@@ -190,20 +231,22 @@ export default defineComponent({
         //   cancel:true
         // })
       },
-      goClose(){
-        emit('cancelFor',{
-          cancel:true
+      goClose() {
+        emit('cancelFor', {
+          cancel: true
         })
       },
-      gohistory(){
+      gohistory() {
         router.push({ path: '/history' })
       },
-      goSettings(){
+      goSettings() {
         router.push({ path: '/settings' })
       }
     };
     return {
       ...toRefs(data),
+      reload,
+      locale,
       props,
       router,
       queryRoute,
