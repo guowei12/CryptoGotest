@@ -1,4 +1,4 @@
-import http from "./https.ts"
+import http from "./https"
 
 /*
  * 检查是否已绑定googleAuth 返回true和false

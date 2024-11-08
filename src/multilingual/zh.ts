@@ -1016,12 +1016,6 @@ const zh = {
     failed: '失敗',
   },
 
-  // 退出登录弹窗
-  logout: {
-    msg: '您是否要登出？',
-    Cancel: '取消',
-    Confirm: '確認',
-  },
 
   // Safety Validation 安全认证页面
   safetyValidation: {

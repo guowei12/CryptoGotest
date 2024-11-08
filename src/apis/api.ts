@@ -1,8 +1,31 @@
 import http from "./https";
 
 const Public = {
-
+  getFait:"/api/config/faitList", //查询支付的法币币种
+  code:"/api/scanCode", //扫码
+  order:"/api/createOrder"// 下单
 };
+const login={
+  onLogin:"/api/login/in",//登录
+  inWattle:"/api/login/initWattle",//初始化钱包
+  seEmail:"/api/login/sendEmail",//发送验证码
+  tokenIn:"/api/login/tokenInfo"//查询token
+}
+const wallet={
+  getToken:"/open/api/wallet/accept",
+  balances:"/api/wallet/account/balances",//钱包账户余额
+  history:'/api/wallet/account/history',//钱包充值赎回记录
+  walletRecordDetail:"/api/wallet/queryWalletRecordDetail",//钱包记录详情
+  transHistory:"/api/wallet/account/transactionHistory",//钱包交易记录
+}
+const operate ={
+  address:"/api/wallet/operate/findAddress",
+  network:"/api/wallet/operate/findNetwork",
+  tokens:"/api/wallet/operate/findTokens",
+  networkFree:"/api/wallet/operate/getNetworkFree",
+  withdraw:"/api/wallet/operate/withdraw"
+}
+
 // 订单
 const order={
   getInfo:"/open/api/order/info",//查询订单信息
@@ -21,11 +44,67 @@ const merchant = {
 }
 const QRCode={
   getInfor:"/api/merchant/findMerchantByAppid",
-  postQrPay:"/open/api/createOrder",
+  postQrPay:"/open/api/createOrder"
 }
-const wallet={
-  getToken:"/open/api/wallet/accept"
+
+
+
+export function scanCode( code: any,currency: any){
+  return http.get(`${Public.code}?code=${code}&currency=${currency}`);
 }
+export function getFaitList( token: any){
+  return http.get(`${Public.getFait}?token=${token}`);
+}
+export function createOrder( data: any){
+  return http.post(`${Public.order}`,data);
+}
+export function sendLogin(data: any){
+  return http.post(`${login.onLogin}`,data);
+}
+export function sendEmail(data: any){
+  return http.post(`${login.seEmail}`,data);
+}
+export function getTokenInfo(data: any){
+  return http.post(`${login.tokenIn}`,data);
+}
+export function initWattle(){
+  return http.get(`${login.inWattle}`);
+}
+export function getAddress(){
+  return http.get(`${operate.address}`);
+}
+export function getNetwork(){
+  return http.get(`${operate.network}`);
+}
+export function getTokens(){
+  return http.get(`${operate.tokens}`);
+}
+export function getNetworkFree(){
+  return http.get(`${operate.networkFree}`);
+}
+export function getWithdraw(data: any) {
+  return http.post(`${operate.withdraw}`, data);
+}
+export function getBalances(faitCurrency: any) {
+  return http.get(`${wallet.balances}?faitCurrency=${faitCurrency}`);
+}
+export function getHistory(pageNo:number,pageSize:number,type:number,faitCurrency: any) {
+  return http.get(`${wallet.balances}?pageNo=${pageNo}&pageSize=${pageSize}&type=${type}&faitCurrency=${faitCurrency}`);
+}
+export function getWalletRecordDetail(id:string,type:number) {
+  return http.get(`${wallet.walletRecordDetail}?id=${id}&type=${type}`);
+}
+export function getTransHistory(pageNo:number,pageSize:number) {
+  return http.get(`${wallet.transHistory}?pageNo=${pageNo}&pageSize=${pageSize}`);
+}
+
+
+
+
+
+
+
+
 export function getWalletToken(data:any) {
   return http.get(`${wallet.getToken}?crypto=${data.crypto}&network=${data.network}`);
 }

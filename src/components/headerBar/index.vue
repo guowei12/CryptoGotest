@@ -225,8 +225,8 @@ export default defineComponent({
         // reload()
       },
       goBack() {
-        // router.go(-1);
-        window.history.go(-1);
+        router.go(-1);
+        // window.history.go(-1);
         // emit('cancelFor',{
         //   cancel:true
         // })

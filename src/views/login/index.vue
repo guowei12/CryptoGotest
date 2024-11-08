@@ -26,12 +26,12 @@
                     <div v-else class="wrong-text-no" >You email is wrong</div> -->
                 </div>
                 <div class="proceed-btn" @click="setBtn">
-                    <div class="btn-class" >
+                    <div class="btn-class">
                         Sign in
                     </div>
                 </div>
                 <div class="sign-btn" @click="setBtn">
-                    <div class="sign-btn-class" >
+                    <div class="sign-btn-class">
                         <img class="google-icon" src="@/assets/images/google-icon.png" alt="" srcset="">
                         Sign in with Google
                     </div>
@@ -47,6 +47,7 @@ import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import verificationCode from './components/verificationCode/index.vue'
+import { getTokenInfo,initWattle,sendEmail,sendLogin } from '@/apis/api'
 
 export default defineComponent({
     name: 'Login',

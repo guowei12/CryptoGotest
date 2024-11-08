@@ -145,6 +145,11 @@ const router = createRouter({
       name: 'language',
       component: () => import('../views/settings/components/language/index.vue')
     },
+        {
+      path: '/termsOfService',
+      name: 'termsOfService',
+      component: () => import('../views/clause/termsOfService/index.vue')
+    },
     // {
       // path: '/about',
       // name: 'about',

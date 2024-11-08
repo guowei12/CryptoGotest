@@ -1009,13 +1009,6 @@ const en = {
     failed: 'Failed',
   },
 
-  // 退出登录弹窗
-  logout: {
-    msg: 'Whether you still want to Logout?',
-    Cancel: 'Cancel',
-    Confirm: 'Confirm',
-  },
-
   // Safety Validation 安全认证页面
   safetyValidation: {
     title: 'Safety Validation',
