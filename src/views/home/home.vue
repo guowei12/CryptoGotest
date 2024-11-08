@@ -152,6 +152,14 @@ export default defineComponent({
         window.sessionStorage.setItem('token', token)
         if (res.data.code == 0) {
           if (res.data.model) {
+            let tokenObj = res.data.model
+            if (tokenObj.email) {
+              if (tokenObj.language) {
+                window.localStorage.setItem('locale', tokenObj.language)
+              }
+            } else {
+              router.replace({ path: '/login' })
+            }
             data.loading = false
           }
         } else {
