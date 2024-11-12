@@ -42,7 +42,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import qrStream from "./../../components/QRCodeScanner/index.vue";
@@ -59,18 +59,9 @@ export default defineComponent({
     qrStream    // QRCodeScanner
   },
   setup() {
-    /**
-    * 路由对象
-    */
     const route = useRoute();
-    /**
-    * 路由实例
-    */
     const router = useRouter();
-    //console.log('1-开始创立组件-setup')
-    /**
-    * 数据局部
-    */
+    const { proxy } = getCurrentInstance() as any
     const data = reactive({
       imgList: [new URL('@/assets/images/qr/momo-logo.png', import.meta.url).href,
       new URL('@/assets/images/qr/zalo-logo.png', import.meta.url).href,
@@ -83,7 +74,7 @@ export default defineComponent({
       scannedResult: null as any,
       html5Qrcode: null as any,
       showScanned: false,
-      authCode:null as any
+      authCode: null as any
     })
     const startScanning = () => {
       // data.html5Qrcode = new Html5Qrcode("reader");
@@ -115,20 +106,32 @@ export default defineComponent({
     }
     const onDecode = (data: any) => {
       console.log(data);//二维码附带信息
+
       alert(data)
       data.showScanned = false
     }
     const onBack = () => {
       data.showScanned = false
     }
-    const onBtn={
-      onDecodeHandler:(res: any) => {
-      data.authCode = res
-      data.showScanned = false
-    },
-    qrReaderClose : () => {
-      data.showScanned = false
-    }
+    const onBtn = {
+      onDecodeHandler: (res: any) => {
+        proxy.$closeToas
+        if (res.code && res.currency) {
+          data.authCode = res
+          data.showScanned = false
+          router.push({
+            path: "/payMent",
+            query: { code: res.code.code,currency:res.currency },
+          });
+        } else {
+          proxy.$failToast('Invalid QR code! ', 'failToast', 3000)
+        }
+
+      },
+      qrReaderClose: () => {
+        data.authCode = ''
+        data.showScanned = false
+      }
     }
     onBeforeMount(() => {
       //console.log('2.组件挂载页面之前执行----onBeforeMount')

@@ -10,9 +10,10 @@ import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import tranList from './components/index.vue'
+import { getHistory } from '@/apis/api'
 
 export default defineComponent({
-    name: '',
+    name: 'History',
     components: { HeaderBar,tranList },
     setup() {
         const route = useRoute();
@@ -45,6 +46,9 @@ export default defineComponent({
         const changeTab = (tab: string | number) => {
           activeTab.value = tab;
         };
+        const getHistory=() => {
+            
+        }
         onBeforeMount(() => {
             //console.log('2.组件挂载页面之前执行----onBeforeMount')
         })

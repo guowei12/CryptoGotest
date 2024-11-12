@@ -130,6 +130,7 @@ export default defineComponent({
       }
     })
     onDeactivated(()=>{
+      proxy.$closeToas()
       if(nowIntervalId.value){
         clearInterval(nowIntervalId.value);
       }

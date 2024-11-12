@@ -1,13 +1,14 @@
 <template>
   <div class="QRPay-container">
-    <fLoading class="fLoading-box" v-if="loading" />
+    <!-- <fLoading class="fLoading-box" v-if="loading" /> -->
+    <tloading v-if="loading"></ tloading>
     <div v-else>
       <HeaderBar :home="true"></HeaderBar>
       <div class="QRPay-con">
         <div class="QRPay-balance">
           <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
               src="@/assets/images/home/see-icon.png" alt=""></div>
-          <div class="QRPay-balance-number">{{ balancesObj.faitIcon }}{{ balancesObj.balances }}</div>
+          <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
         </div>
         <div class="QRPay-balance-btn" @click="goManagebalance">
           <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
@@ -47,7 +48,7 @@
             </div>
             <!-- </div> -->
           </van-list>
-          <div class="QRPay-list" v-if="listShow == 2">
+          <!-- <div class="QRPay-list" v-if="listShow == 2">
             <div class="QRPay-list-li" v-for="(item, index) in assetsList" :key="index">
               <div class="QRPay-list-li-left">
                 <img class="currency-img" :src="item.img" alt="" srcset="">
@@ -63,7 +64,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="no-data" v-if="transactionList.length == 0 && listShow == 1">
             <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
             <div class="no-data-title">You haven't topped up yet</div>
@@ -82,22 +83,20 @@ import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMou
 import { useRoute, useRouter } from 'vue-router';
 import qrcode from "../QRcode/index.vue"
 import fLoading from "@/components/fLoading/index.vue"
+import tloading from '@/components/loading/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 import footerBar from '@/components/footerBar/index.vue'
 import { getTokenInfo, initWattle, getTransHistory, getBalances } from '@/apis/api'
 
-/**
-* 仓库
-*/
 export default defineComponent({
   name: 'Home',
-  components: { HeaderBar, footerBar, qrcode, fLoading },
+  components: { HeaderBar, footerBar, qrcode, fLoading, tloading },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const { proxy } = getCurrentInstance() as any
     const list = ref([]);
-    const loading = ref(false);
+    const loading = ref(true);
     const finished = ref(false);
     const data = reactive({
       faitCurrency: '',
@@ -106,22 +105,7 @@ export default defineComponent({
       dataLoading: false,
       loading: false,
       listShow: 1,
-      transactionList: [
-        {
-          name: 'Mountain island coffee',
-          time: '2023-02-06 01:56:45',
-          status: 'Completed',
-          number: '-20,000',
-          currency: 'VND'
-        },
-        {
-          name: 'Mountain island coffee',
-          time: '2023-02-06 01:56:45',
-          status: 'Failed',
-          number: '-20,000',
-          currency: 'VND'
-        }
-      ],
+      transactionList: [],
       assetsList: [
         {
           img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
@@ -141,13 +125,12 @@ export default defineComponent({
         },
       ],
       token: '' as any,
-      balancesObj: {
+      userInfo: {} as any,
+      userBalances: {
         faitIcon: '$',
         balances: '0',
         tropertyList: []
       } as any,
-      userInfo: {} as any,
-      userBalances: {} as any,
       pageNo: 1,
       pageSize: 10,
       lastPage: false
@@ -178,10 +161,12 @@ export default defineComponent({
               }
 
             } else {
-              router.replace({ path: '/login' })
+              router.replace({ path: '/signin' })
             }
             data.loading = false
             await infoMethods.onBalances()
+          }else{
+            router.replace({ path: '/signin' })
           }
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)

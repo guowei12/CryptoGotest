@@ -207,6 +207,7 @@ export default defineComponent({
             name: 'EN-US',
             value: 'en',
           }
+          locale.value = 'en'
         }
       } else {
         locale.value = 'en'

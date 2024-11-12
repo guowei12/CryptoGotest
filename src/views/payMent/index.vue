@@ -92,7 +92,7 @@
 import { defineComponent, ref, getCurrentInstance, nextTick, reactive, toRefs, onBeforeMount,onActivated,onMounted, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import headerBar from './components/headerBar/index.vue'
-import { getQrInfor, pustQrPay } from '../../apis/api'
+import { getQrInfor, pustQrPay,scanCode } from '../../apis/api'
 import loading from './components/loading/index.vue'
 import  {getUrlData,getUrlDataTg}  from '@/common/index'
 
@@ -126,6 +126,7 @@ export default defineComponent({
       inputA: false,
       faitCurrency:null as any,
       appid: null as any,
+      code:null as any,
       digit: null as any,
       show: false,
       number: '' as any,
@@ -151,7 +152,7 @@ export default defineComponent({
           inputField.focus();
         }
       },
-    measureCursorOffset(position) {
+      measureCursorOffset(position) {
       const inputField = this.$refs.inputField.$el.querySelector('.van-field-input');
       const textBeforeCursor = this.inputValue.substring(0, position);
       const dummy = document.createElement('span');
@@ -160,7 +161,7 @@ export default defineComponent({
       const offsetLeft = dummy.offsetWidth;
       inputField.parentNode.removeChild(dummy);
       return offsetLeft;
-    },
+      },
       onFocus() {
         nextTick(() => {
           document.getElementsByClassName('van-field__control')[0]?.focus();
@@ -301,13 +302,72 @@ export default defineComponent({
         infoMethods.updateDisplayChars();
       }
       },
-      // 获取商户信息
+      // // 获取商户信息
+      // async getInfor() {
+      //   let params = {
+      //     appid: data.appid,
+      //     faitCurrency:data.faitCurrency
+      //   }
+      //   let res = await getQrInfor(params)
+      //   if (res.data.code == 0) {
+      //     if(res.data.model){
+      //       if(res.data.model.scanPayStatus===false){
+      //         proxy.$failToast('404 error', 'failToast', 3000)
+      //         // data.mechShow = false
+      //         return
+      //       }
+      //       localStorage.setItem("merchantNo", res.data.model.merchantNo);
+      //       data.currencyResponseList = res.data.model.currencyResponseList
+      //       data.merchantName = res.data.model.merchantName
+      //       data.merchantLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).merchantLogo : ''
+      //       data.scanLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).scanLogo : ''
+
+      //       if(data.faitCurrency){
+      //         const exists = data.currencyResponseList.some(item => item.faitCurrency === data.faitCurrency);
+      //         if(exists){
+      //          data.currencyResponseList.forEach(item =>{
+      //           if(data.faitCurrency==item.faitCurrency){
+      //           data.currencyResponseList=item
+      //           }
+      //          })}else{
+      //           data.show = false
+      //           data.show1 = false
+      //           data.mechShow = false
+      //           proxy.$failToast('fait error', 'failToast', 6000)
+      //           return
+      //          }
+      //       }else{
+      //          data.show = false
+      //          data.show1 = false
+      //          data.mechShow = false
+      //          proxy.$failToast('fait error', 'failToast', 6000)
+      //           return
+      //         // data.currencyResponseList = res.data.model.currencyResponseList[0]
+      //       }
+      //       // data.currencyResponseList.scale=1
+      //       data.mechShow = false
+      //     }else{
+      //       proxy.$failToast('fait error', 'failToast', 3000)
+      //     }
+      //   }else if(res.data.code == '8025'){
+      //     // proxy.$failToast(res.data.msg, 3000)
+      //     router.replace({ path: '/ip'})
+      //     return
+      //   }else {
+      //     data.mechShow = false
+      //     proxy.$failToast(res.data.msg, 'failToast', 3000)
+      //   }
+      //   setTimeout(() => {
+      //     data.mechShow = false
+      //   }, 9000)
+      // },
+      // 获取扫码信息
       async getInfor() {
         let params = {
-          appid: data.appid,
-          faitCurrency:data.faitCurrency
+          code: data.code,
+          currency:data.faitCurrency
         }
-        let res = await getQrInfor(params)
+        let res = await scanCode(params)
         if (res.data.code == 0) {
           if(res.data.model){
             if(res.data.model.scanPayStatus===false){
@@ -382,13 +442,17 @@ export default defineComponent({
           data.show= true
           return
         }
-        if (!data.appid) {
+        // if (!data.appid) {
+        //   return
+        // }
+        if(!data.code){
           return
         }
         data.mechShow = true
         let params = {
           orderAmount: data.digit ? data.digit : data.number,
-          appId: data.appid,
+          // appId: data.appid,
+          code:data.code,
           payCurrency: data.currencyResponseList.faitCurrency,
           redirectUrl: window.location.href
         }
@@ -411,6 +475,8 @@ export default defineComponent({
     }
     onMounted(async () => {
       console.log(route.query.merchantNo)
+      data.code = route.query.code
+      data.faitCurrency = route.query.Currency
       console.log(getUrlDataTg())
       data.mechShow = false
       // if(getUrlData()?.faitCurrency){
@@ -432,11 +498,13 @@ export default defineComponent({
     })
     onActivated(async () => {
       data.mechShow = true
-      if(getUrlData()?.faitCurrency){
-        data.faitCurrency=getUrlData()?.faitCurrency
-      }
-      if (getUrlData()?.appid) {
-        data.appid = getUrlData()?.appid
+      // if(getUrlData()?.faitCurrency){
+      //   data.faitCurrency=getUrlData()?.faitCurrency
+      // }
+      data.code = route.query.code
+      data.faitCurrency = route.query.Currency
+      if (data.code = route.query.code) {
+        data.faitCurrency = route.query.Currency
         await infoMethods.getInfor()
       } else {
         data.mechShow = false

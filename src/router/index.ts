@@ -164,6 +164,7 @@ const router = createRouter({
   // hash
   // history: createWebHashHistory(),
 })
+
 router.beforeEach((to, from, next) => {
   // chrome
   document.body.scrollTop = 0;
@@ -171,6 +172,7 @@ router.beforeEach((to, from, next) => {
   document.documentElement.scrollTop = 0;
   // safari
   window.pageYOffset = 0;
+
   next();
 })
 export default router

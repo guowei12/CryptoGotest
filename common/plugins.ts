@@ -2,6 +2,7 @@ import {
   showToast,
   showFailToast,
   showSuccessToast,
+  closeToast,
   type ToastOptions,
   type ToastWrapperInstance
 } from 'vant';
@@ -20,10 +21,13 @@ const copyBtn = (value: string) => {
   input.remove(); // 成功后删除input，防止影响其他元素
 };
 export default {
-  install: (app: { config: { globalProperties: { $toast: (options?: string | ToastOptions) => ToastWrapperInstance; $copyBtn: (value: string) => void; $failToast: (message: any, className: any, duration: any) => void; $successToast: (message: any, className: any, duration: any) => void; }; }; }) => {
+  install: (app: { config: { globalProperties: {
+    $closeToast: (all?: boolean) => void; $toast: (options?: string | ToastOptions) => ToastWrapperInstance; $copyBtn: (value: string) => void; $failToast: (message: any, className: any, duration: any) => void; $successToast: (message: any, className: any, duration: any) => void; 
+}; }; }) => {
     // 全局提示弹窗
     app.config.globalProperties.$toast = showToast
     app.config.globalProperties.$copyBtn = copyBtn;
+    app.config.globalProperties.$closeToast = closeToast
     app.config.globalProperties.$failToast =(message:any,className:any,duration:any)=>{
       showFailToast({
         wordBreak:'break-all',
