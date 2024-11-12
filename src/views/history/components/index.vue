@@ -44,6 +44,7 @@ import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import { NTabs, NTab } from 'naive-ui'
+import { getHistory } from '@/apis/api'
 
 export default defineComponent({
     name: '',
@@ -100,6 +101,14 @@ export default defineComponent({
                     no:'1111'
                 }
             })
+        }
+        const onHistory= async() => {
+            let params={
+                pageNo:0,
+                pageSize:10,
+                type:''
+            }
+            await getHistory(params)
         }
         onBeforeMount(() => {
             //console.log('2.组件挂载页面之前执行----onBeforeMount')

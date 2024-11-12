@@ -96,7 +96,6 @@ export default defineComponent({
     const router = useRouter();
     const { proxy } = getCurrentInstance() as any
     const list = ref([]);
-    const loading = ref(true);
     const finished = ref(false);
     const data = reactive({
       faitCurrency: '',
@@ -252,6 +251,7 @@ export default defineComponent({
         } else {
           await infoMethods.onTokenInfo(stoken, '2')
         }
+        loading.value=false
       } else {
         if (infoMethods.isMobile()) {
           router.replace({
