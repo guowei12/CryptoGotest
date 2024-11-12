@@ -1,50 +1,62 @@
 <template>
     <div class="history-ccontent">
         <div class="history-btn ">
-            <n-tabs type="line" animated default-value="Deposits" justify-content="space-between"
+            <n-tabs type="line" animated default-value="DEPOSIT" justify-content="space-between"
                 :on-update:value="changeTab">
-                <n-tab name="Deposits">
+                <n-tab name="DEPOSIT">
                     <div class="tab-header">
                         <div class="tab-header-text">Deposits</div>
                     </div>
                 </n-tab>
-                <n-tab name="Withdrawals">
+                <n-tab name="WITHDRAW">
                     <div class="tab-header">
                         <div class="tab-header-text">Withdrawals</div>
                     </div>
                 </n-tab>
             </n-tabs>
         </div>
-        <div class="QRPay-list">
-            <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
-                <div class="QRPay-list-li-left">
-                    <img v-if="item.status == 'Completed'" class="shopping-img"
-                        :src="img1" alt="" srcset="">
-                    <img v-else class="shopping-img" :src="img2" alt="" srcset="">
-                    <div class="QRPay-list-con">
-                        <div class="QRPay-list-con-name">{{ item.name }}</div>
-                        <div class="QRPay-list-con-time">{{ item.time }}</div>
+        <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
+            v-model="refLoading" @refresh="onRefresh">
+            <van-list class="QRPay-list" v-show="transactionList?.length > 0" v-model:loading="dataLoading"
+                :finished="finished" finished-text="no data" @load="onRefresh">
+                <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index"
+                    @click="goDetail(item)">
+                    <div class="QRPay-list-li-left">
+                        <img v-if="activeTab == 'DEPOSIT'" class="shopping-img" :src="img2" alt="" srcset="">
+                        <img v-else-if="activeTab == 'DEPOSIT' && item.type == 2" class="shopping-img" :src="img2"
+                            alt="" srcset="">
+                        <img v-else class="shopping-img" :src="img3" alt="" srcset="">
+                        <div class="QRPay-list-con">
+                            <div class="QRPay-list-con-name">{{ item.crypto }}</div>
+                            <div class="QRPay-list-con-time">{{ item.createTime }}</div>
+                        </div>
+                    </div>
+                    <div class="QRPay-list-right">
+                        <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-"}} {{ item.confirmedNum }} </div>
+                        <div class="QRPay-list-con-status">
+                            <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
+                            <div class="failed-color" v-if="item.status == 'FAIL'">Failed</div>
+                            <div class="Refund-color" v-if="item.type == 2 && item.status == 'Refund'">Refund</div>
+                        </div>
                     </div>
                 </div>
-                <div class="QRPay-list-right">
-                    <div class="QRPay-list-con-num">{{ item.number }} {{ item.currency }}</div>
-                    <div class="QRPay-list-con-status">
-                        <div class="completed-color" v-if="item.status == 'Completed'">Completed</div>
-                        <div class="failed-color" v-if="item.status == 'Failed'">Failed</div>
-                        <div class="Refund-color" v-if="item.status == 'Refund'">Refund</div>
-                    </div>
-                </div>
+            </van-list>
+            <div class="no-data" v-if="transactionList.length == 0">
+                <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
+                <div class="no-data-title">You haven't topped up yet</div>
+                <div class="no-data-text">Please complete the first top-up to activate the card</div>
             </div>
-        </div>
+        </van-pull-refresh>
     </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect, onDeactivated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import { NTabs, NTab } from 'naive-ui'
 import { getHistory } from '@/apis/api'
+import { useMain } from '@/store';
 
 export default defineComponent({
     name: '',
@@ -59,70 +71,99 @@ export default defineComponent({
         },
     },
     components: { HeaderBar, NTabs, NTab },
-    setup() {
+    setup(props) {
         const route = useRoute();
         const router = useRouter();
+        const finished = ref(false);
+        const { proxy } = getCurrentInstance() as any
+        const couponStore = useMain();
+
         const data = reactive({
-            img1:new URL('@/assets/images/balance/arrow-retract-icon.png', import.meta.url).href,
-            img2:new URL('@/assets/images/balance/arrow-down-icon.png', import.meta.url).href,
-            transactionList: [
-                {
-                    name: 'Mountain island coffee',
-                    time: '2023-02-06 01:56:45',
-                    status: 'Completed',
-                    number: '-20,000',
-                    currency: 'VND'
-                },
-                {
-                    name: 'Mountain island coffee',
-                    time: '2023-02-06 01:56:45',
-                    status: 'Refund',
-                    number: '-20,000',
-                    currency: 'VND'
-                },
-                {
-                    name: 'Mountain island coffee',
-                    time: '2023-02-06 01:56:45',
-                    status: 'Failed',
-                    number: '-20,000',
-                    currency: 'VND'
-                }
-            ],
+            refLoading: false,
+            loadingText: '...',
+            img1: new URL('@/assets/images/balance/arrow-retract-icon.png', import.meta.url).href,
+            img2: new URL('@/assets/images/balance/arrow-down-icon.png', import.meta.url).href,
+            img3: new URL('@/assets/images/balance/arrow-up-icon.png', import.meta.url).href,
+            transactionList: [] as any,
+            pageNo: 0,
+            pageSize: 10,
+            dataLoading: false,
+            lastPage: false
         })
         const activeTab = ref();
-        activeTab.value = 'Deposits';
-        const changeTab = (tab: string | number) => {
+        activeTab.value = 'DEPOSIT';
+        const changeTab = async (tab: string | number) => {
             activeTab.value = tab;
+            await onRefresh()
         };
-        const goDetail=()=>{
-            router.push({
-                path:'/refund',
-                query:{
-                    no:'1111'
-                }
-            })
-        }
-        const onHistory= async() => {
-            let params={
-                pageNo:0,
-                pageSize:10,
-                type:''
+        const goDetail = (obj: any) => {
+            console.log(obj)
+            if (activeTab.value == 'DEPOSIT') {
+                
+                couponStore.SET_ORDERDETAIL(obj)
+                console.log(couponStore.$state.orderDetail)
+                router.push({
+                    path: '/deposit',
+                })
+            } else if (activeTab.value == 'WITHDRAW') {
+                couponStore.SET_ORDERDETAIL(obj)
+                router.push({
+                    path: '/withdraw',
+                })
             }
-            await getHistory(params)
+
+        }
+        const onHistory = async () => {
+            let res = await getHistory(data.pageNo, data.pageSize, props.type)
+            if (res.data.code == 0) {
+                if (res.data.model.data && res.data.model.data.length > 0) {
+                    data.transactionList = res.data.model.data
+                    data.transactionList.forEach((item: { createTime: any; }) => {
+                        item.createTime = proxy.$moment(item.createTime).local().format('YYYY-MM-DD HH:mm:ss')
+                        item.UTCTime = proxy.$moment.utc(item.createTime).local().format('YYYY-MM-DD HH:mm:ss')
+                    })
+                } else {
+                    data.transactionList = []
+                }
+                // console.log(data.transactionList)
+                // 加载状态结束
+                data.dataLoading = false
+                data.refLoading = false
+                // 数据全部加载完成
+                if (data.lastPage && res.data.model.sumPage == res.data.model.pageNo) {
+                    finished.value = true;
+                }
+
+            } else {
+                data.dataLoading = false
+                data.refLoading = false
+                finished.value = true;
+            }
+        }
+        const onRefresh = async () => {
+            data.refLoading = true
+            data.pageNo = 0
+            data.pageSize = 1
+            data.refLoading = false
+            onHistory()
         }
         onBeforeMount(() => {
-            //console.log('2.组件挂载页面之前执行----onBeforeMount')
+            couponStore.SET_ORDERDETAIL({})
         })
-        onMounted(() => {
-            //console.log('3.-组件挂载到页面之后执行-------onMounted')
+        onMounted(async () => {
+            activeTab.value = 'DEPOSIT';
+            await onRefresh()
         })
         watchEffect(() => {
         })
         return {
             ...toRefs(data),
+            finished,
             activeTab,
             changeTab,
-            goDetail
+            goDetail,
+            onHistory,
+            onRefresh
         };
     },
 })

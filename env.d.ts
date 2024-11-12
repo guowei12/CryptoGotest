@@ -22,6 +22,9 @@ declare module "*.vue" {
     interface ComponentCustomProperties {
       $successToast: any
     }
+    interface ComponentCustomProperties {
+      $moment: any
+    }
   }
   
   

@@ -11,7 +11,43 @@
     line-height: 16.71px;
     color: #191B1F;
     margin: 0 16px;
+    .currency-img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 
+    .network-list-con {
+        display: flex;
+        flex-direction: column;
+        margin-left: 8px;
+
+        .network-list-con-name {
+            font-size: 14px;
+            color: #191B1F;
+            font-family: 'sf-pro-display_medium_500';
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 18px;
+        }
+
+        .network-list-con-time {
+            flex-shrink: 0;
+            font-size: 12px;
+            font-family: 'sf-pro-display_regular_400';
+            list-style: 14px;
+            color: #737A86;
+            // margin-top: 2px;
+        }
+    }
+
+    .network-li-left {
+        display: flex;
+        align-items: center;
+        z-index: 2;
+    }
     input {
         width: 100%;
         font-size: 16px;

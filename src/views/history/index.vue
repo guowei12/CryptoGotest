@@ -20,28 +20,12 @@ export default defineComponent({
         const data = reactive({
             headerTitle: 'History',
             tranList:{
-                type:'Deposit',
+                type:'DEPOSIT',
                 currency:'USDT'
-            },
-            transactionList: [
-                {
-                    name: 'Mountain island coffee',
-                    time: '2023-02-06 01:56:45',
-                    status: 'Completed',
-                    number: '-20,000',
-                    currency: 'VND'
-                },
-                {
-                    name: 'Mountain island coffee',
-                    time: '2023-02-06 01:56:45',
-                    status: 'Failed',
-                    number: '-20,000',
-                    currency: 'VND'
-                }
-            ],
+            }
         })
         const activeTab = ref();
-        activeTab.value = 'Deposits';
+        activeTab.value = 'DEPOSIT';
         const changeTab = (tab: string | number) => {
           activeTab.value = tab;
         };

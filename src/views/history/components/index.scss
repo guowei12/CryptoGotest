@@ -87,6 +87,7 @@
     border-radius: 12px;
     background: #FFFFFF;
     margin: 12px 0 0;
+    z-index: 10;
 
     .QRPay-list-li {
         display: flex;
@@ -174,5 +175,28 @@
                 margin-top: 2px;
             }
         }
+    }
+}
+.no-data{
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    .no-data-img{
+        width: 101px;
+        height: 114.49px;
+    }
+    .no-data-title{
+        font-size: 14px;
+        line-height: 16.8px;
+        color: #191B1F;
+        font-family: 'sf-pro-display_medium_500';
+        margin:22.5px 0 6px 0;
+    }
+    .no-data-text{
+        font-size: 12px;
+        line-height: 14.4px;
+        color: #737A86;
     }
 }

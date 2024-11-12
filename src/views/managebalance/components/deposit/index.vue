@@ -5,10 +5,10 @@
     <div class="deposit-list">
         <div @click="setDeposit(index)" :class="nowIndex==index?'deposit-list-li-set':''" class="deposit-list-li" v-for="(item, index) in depositList" :key="index">
           <div class="deposit-list-li-left">
-          <img  class="currency-img" :src="item.img" alt="" srcset="">
+          <img  class="currency-img" :src="item.cryptoLogoUrl" alt="" srcset="">
           <div class="deposit-list-con">
-            <div class="deposit-list-con-name">{{ item.name }}</div>
-            <div class="deposit-list-con-time">{{ item.network}}</div>
+            <div class="deposit-list-con-name">{{ item.crypto }}</div>
+            <div class="deposit-list-con-time">{{ item.cryptoFullName}}</div>
           </div>
           </div>
         </div>
@@ -23,11 +23,11 @@
         </div>
       </view>  
       <div class="network-list">
-        <div @click="setNetwork(item.network)" :class="nowIndex==index?'network-li-set':''" class="network-list-li" v-for="(item, index) in depositList" :key="index">
+        <div @click="setNetwork(item.network,index)" :class="nowIndext==index?'network-li-set':''" class="network-list-li" v-for="(item, index) in networkList" :key="index">
           <div class="network-li-left"> 
-          <img  class="currency-img" :src="item.img" alt="" srcset="">
+          <img  class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
           <div class="network-list-con">
-            <div class="network-list-con-name">{{ item.name }}</div>
+            <div class="network-list-con-name">{{ item.network }}</div>
             <div class="network-list-con-time">{{ item.network}}</div>
           </div>
           </div>
@@ -45,80 +45,75 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent,ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent,ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import { useMain } from '@/store';
+import { getTokens, getNetwork } from '@/apis/api'
 
-/**
-* 仓库
-*/
+
 export default defineComponent({
     name: 'deposit',
-    components:{HeaderBar},
+    components:{ HeaderBar },
     setup() {
-       /**
-       * 路由对象
-       */
        const route = useRoute();
-       /**
-       * 路由实例
-       */
        const router = useRouter();
        const couponStore = useMain();
-       /**
-       * 数据局部
-       */
+       const { proxy } = getCurrentInstance() as any
        const data = reactive({
         headerTitle:'Deposit',
-        depositList:[
-          {
-            img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-            network:'Bitcoin',
-            name:'BTC',
-            balance:'1191.71',
-            number:'0.0185',
-            currency:'VND'
-          },
-          {
-            img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-            network:'Bitcoin',
-            name:'BTC',
-            balance:'1191.71',
-            number:'0.0185',
-            currency:'VND'
-          },
-        ],
-        networkList:[{
-          img:new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-          network:'Bitcoin',
-          name:'BTC',
-        }],
+        depositList:[] as any,
+        networkList:[] as any,
         nowIndex:0,
-        nowNetwork:'',
+        nowIndext:0,
+        network:'',
+        currency:'' as any,
         show:false
        })
        const infoMethods ={
         setDeposit(idx:any){
+          data.currency = data.depositList[idx].crypto
+          infoMethods.findNetwork(data.depositList[idx].crypto)
           data.nowIndex=idx
           data.show=true
         },
-        setNetwork(network:any){
+        setNetwork(network:any,index:any){
           couponStore.SET_DEPOSIT({
-            networkList:[],
-            network:'',
+            networkList:data.networkList,
+            network:network,
             currency:'',
             address:''
           })
-          data.nowNetwork=network
+          data.nowIndext = index
+          data.network=network
           data.show=false
-          router.push({ path: '/depositDetail'})
+          router.push({ path: '/depositDetail',query:{
+            currency:data.currency,
+            network:network
+          }})
+        },
+        async getList(){
+          let res = await getTokens()
+          if(res.data.code == 0){
+            data.depositList = res.data.model
+          }else{
+            proxy.$failToast(res.data.msg, 'failToast', 3000)
+          }
+        },
+        async findNetwork(token: any){
+          let res = await getNetwork(token)
+          if(res.data.code == 0){
+            data.networkList = res.data.model
+            data.nowIndext = 0
+          }else{
+            proxy.$failToast(res.data.msg, 'failToast', 3000)
+          }
         }
        }
        onBeforeMount(() => {
        })
-       onMounted(() => {
-        console.log(couponStore.$state.deposit)
+       onMounted(async() => {
+         await infoMethods.getList()
        })
        watchEffect(()=>{
        })

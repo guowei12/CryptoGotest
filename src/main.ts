@@ -9,6 +9,12 @@ import vant from 'vant';
 import 'vant/lib/index.css';
 import pluginsAll from "./../common/plugins"
 import i18n from './multilingual/index';
+import moment from 'moment';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+
+// moment.utc(...).local().format(...) UTC
+// .local().format('YYYY-MM-DD HH:mm:ss')
 import {
     // create naive ui
     create,
@@ -22,8 +28,11 @@ import {
   })
 
 const app = createApp(App)
+app.config.globalProperties.$moment = moment;
+pinia.use(piniaPluginPersistedstate)
+
 app.use(vant)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(i18n)
 app.use(naive)

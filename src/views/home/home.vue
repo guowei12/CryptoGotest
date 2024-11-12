@@ -251,7 +251,7 @@ export default defineComponent({
         } else {
           await infoMethods.onTokenInfo(stoken, '2')
         }
-        loading.value=false
+        data.loading=false
       } else {
         if (infoMethods.isMobile()) {
           router.replace({

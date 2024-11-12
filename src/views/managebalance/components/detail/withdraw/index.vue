@@ -6,8 +6,19 @@
         <div class="withdraw-detail-con-li">
           <div class="withdraw-detail-con-title">Transfer network</div>
           <div class="withdraw-detail-con-text" @click="networkShow = !networkShow">
-            <div>Select Network</div>
-            <img :class="networkShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png" alt="">
+            <div v-if="nowNetwork" class="network-list-li">
+              <div class="network-li-left">
+                <img class="currency-img" :src="nowUrl" alt="" srcset="">
+                <div class="network-list-con">
+                  <div class="network-list-con-name">{{ nowChainType }}</div>
+                  <div class="network-list-con-time">{{ nowNetwork }}</div>
+                </div>
+              </div>
+
+            </div>
+            <div v-else>Select Network</div>
+            <img :class="networkShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png"
+              alt="">
           </div>
         </div>
         <div class="withdraw-detail-con-li">
@@ -23,24 +34,23 @@
           <div class="withdraw-detail-con-title">Withdraw amount</div>
           <div class="withdraw-detail-con-text">
             <div class="withdraw-detail-con-li-left">
-              <input  type="number" class="amount-text" v-model="formData.amount"
-              placeholder="At least 1" />
+              <input type="number" class="amount-text" v-model="formData.amount" placeholder="At least 1" />
             </div>
             <div class="withdraw-detail-con-li-right">
-              <img class="currency-icon" src="@/assets/images/balance/currency-icon.png" alt="">
-              <div>USDT</div>
+              <img class="currency-icon" :src="currencyUrl" alt="">
+              <div>{{ currency }}</div>
             </div>
           </div>
         </div>
         <div class="withdraw-detail-con-btm">
-          <div >Available</div>
-          <div class="withdraw-detail-con-btm-right">261.33 USDT</div>
+          <div>Available</div>
+          <div class="withdraw-detail-con-btm-right">{{ balances }} {{ currency }}</div>
         </div>
       </div>
     </div>
     <div class="withdraw-detail-quantity">
       <div class="withdraw-detail-quantity-title">
-        Estimated arrival quantity  <span class="font-strong">0.00 USDT</span>
+        Estimated arrival quantity <span class="font-strong">0.00 USDT</span>
       </div>
       <div class="withdraw-detail-quantity-con">
         <div>Network fee</div>
@@ -60,12 +70,12 @@
         </div>
       </view>
       <div class="network-list">
-        <div @click="setNetwork(item.network)" :class="nowIndex == index ? 'network-li-set' : ''" class="network-list-li"
-          v-for="(item, index) in depositList" :key="index">
+        <div @click="setNetwork(item)" :class="nowIndex == index ? 'network-li-set' : ''" class="network-list-li"
+          v-for="(item, index) in networkList" :key="index">
           <div class="network-li-left">
-            <img class="currency-img" :src="item.img" alt="" srcset="">
+            <img class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
             <div class="network-list-con">
-              <div class="network-list-con-name">{{ item.name }}</div>
+              <div class="network-list-con-name">{{ item.chainType }}</div>
               <div class="network-list-con-time">{{ item.network }}</div>
             </div>
           </div>
@@ -84,50 +94,43 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
 import showModel from '@/components/showModel/index.vue'
+import { getNetworkFree, getNetwork, getBalances } from '@/apis/api'
 
 export default defineComponent({
   name: 'withdrawDetail',
-  components: { HeaderBar, copyCon,showModel },
+  components: { HeaderBar, copyCon, showModel },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const couponStore = useMain();
+    const { proxy } = getCurrentInstance() as any
     const data = reactive({
       headerTitle: 'Withdraw USDT',
-      hash: '0xe89bb7caa285672nbfe1v17bfcf85324b8b7f7af',
+      address: '',
       networkShow: false,
-      depositList: [
-        {
-          img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-          network: 'Bitcoin',
-          name: 'BTC',
-          balance: '1191.71',
-          number: '0.0185',
-          currency: 'VND'
-        },
-        {
-          img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-          network: 'Bitcoin',
-          name: 'BTC',
-          balance: '1191.71',
-          number: '0.0185',
-          currency: 'VND'
-        },
-      ],
       networkList: [{
-        img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
+        networkLogoUrl: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
         network: 'Bitcoin',
-        name: 'BTC',
-      }],
+        chainType: 'BTC',
+      }, {
+        networkLogoUrl: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
+        network: 'Bitcoin',
+        chainType: 'BTC',
+      }] as any,
       receiveCrypto: {} as any,
       nowIndex: 0,
-      nowNetwork: '',
+      balances:0,
+      nowUrl: '' as any,
+      nowChainType: '' as any,
+      currency: '' as any,
+      currencyUrl: '' as any,
+      nowNetwork: '' as any,
       formData: {
         amount: '',
         address: '',
@@ -172,19 +175,68 @@ export default defineComponent({
       }
     }
     const infoMethods = {
-      setNetwork(network: any) {
-        data.nowNetwork = network
+      async setNetwork(items: any) {
+        data.nowUrl = items.networkLogoUrl
+        data.nowNetwork = items.network
+        data.nowChainType = items.chainType
+        await infoMethods.getFree(data.currency,data.nowNetwork)
         data.networkShow = false
+        
       },
       backHome() {
         router.replace({ path: '/' })
+      },
+      async findNetwork(token: any) {
+        let res = await getNetwork(token)
+        if (res.data.code == 0) {
+          data.networkList = res.data.model
+          data.nowIndex = 0
+        } else {
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
+        }
+      },
+      async getFree(token: any,network: any) {
+        let res = await getNetworkFree(token,network)
+        if (res.data.code == 0) {
+          data.networkList = res.data.model
+          data.nowIndex = 0
+        } else {
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
+        }
+      },
+      async onBalances(currency: any) {
+        let res = await getBalances(currency)
+        if (res.data.code == 0) {
+          data.balances = res.data.model.balances
+        } else {
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
+        }
       }
     }
     onBeforeMount(() => {
     })
-    onMounted(() => {
+    onMounted(async () => {
       console.log(couponStore.$state.withdraw)
-      data.headerTitle = 'withdraw ' + (route.query.currency ? route.query.currency : 'USDT1')
+      let deposit = couponStore.$state.deposit
+      if (route.query.currency) {
+        data.headerTitle = 'Withdraw ' + route.query.currency
+        data.currency = route.query.currency
+        data.nowNetwork = route.query.network
+        data.currencyUrl = route.query.url
+        await infoMethods.findNetwork(data.currency)
+        await infoMethods.getFree(data.currency,data.nowNetwork)
+        await infoMethods.onBalances(data.currency)
+      } else {
+        if (deposit) {
+          data.headerTitle = 'Withdraw ' + deposit
+          data.currency = deposit.currency
+          data.nowNetwork = deposit.network
+          data.currencyUrl = deposit.url
+          await infoMethods.findNetwork(data.currency)
+          await infoMethods.getFree(data.currency,data.nowNetwork)
+          await infoMethods.onBalances(data.currency)
+        }
+      }
     })
     watchEffect(() => {
     })

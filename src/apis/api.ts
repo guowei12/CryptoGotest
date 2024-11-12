@@ -19,11 +19,11 @@ const wallet = {
   transHistory: "/api/wallet/account/transactionHistory",//钱包交易记录
 }
 const operate = {
-  address: "/api/wallet/operate/findAddress",
-  network: "/api/wallet/operate/findNetwork",
-  tokens: "/api/wallet/operate/findTokens",
-  networkFree: "/api/wallet/operate/getNetworkFree",
-  withdraw: "/api/wallet/operate/withdraw"
+  address: "/api/wallet/operate/findAddress", //获取充值地址
+  network: "/api/wallet/operate/findNetwork", //根据token获取网络
+  tokens: "/api/wallet/operate/findTokens", //获取所有token
+  networkFree: "/api/wallet/operate/getNetworkFree", //获取网络费
+  withdraw: "/api/wallet/operate/withdraw" //提现
 }
 
 // 订单
@@ -70,17 +70,17 @@ export function getTokenInfo(data: any) {
 export function initWattle() {
   return http.get(`${login.inWattle}`);
 }
-export function getAddress() {
-  return http.get(`${operate.address}`);
+export function getAddress(token: any, network: any) {
+  return http.get(`${operate.address}?token=${token}&network=${network}`);
 }
-export function getNetwork() {
-  return http.get(`${operate.network}`);
+export function getNetwork(token: any) {
+  return http.get(`${operate.network}?token=${token}`);
 }
 export function getTokens() {
   return http.get(`${operate.tokens}`);
 }
-export function getNetworkFree() {
-  return http.get(`${operate.networkFree}`);
+export function getNetworkFree(token: any, network: any) {
+  return http.get(`${operate.networkFree}?token=${token}&network=${network}`);
 }
 export function getWithdraw(data: any) {
   return http.post(`${operate.withdraw}`, data);
@@ -88,7 +88,7 @@ export function getWithdraw(data: any) {
 export function getBalances(faitCurrency: any) {
   return http.get(`${wallet.balances}?faitCurrency=${faitCurrency}`);
 }
-export function getHistory(pageNo: number, pageSize: number, type: number) {
+export function getHistory(pageNo: any, pageSize: any, type: any) {
   return http.get(`${wallet.history}?pageNo=${pageNo}&pageSize=${pageSize}&type=${type}`);
 }
 export function getWalletRecordDetail(id: string, type: number) {
