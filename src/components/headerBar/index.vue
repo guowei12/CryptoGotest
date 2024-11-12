@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="header-default" v-if="qrCode">
-      <div class="header-arrow-left" @click="goBack">
+      <div class="header-arrow-left" @click="setBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-default-right" @click="countryShow = !countryShow">
@@ -28,7 +28,7 @@
       <img @click="goSettings" class="set-icon" src="@/assets/images/header/set-icon.png" alt="" srcset="">
     </div>
     <div class="header-default-line" v-if="balance">
-      <div class="header-arrow-left" @click="goBack">
+      <div class="header-arrow-left" @click="setBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">
@@ -39,7 +39,10 @@
       </div>
     </div>
     <div class="header-default-init" v-if="defaultH">
-      <div class="header-default-left" @click="goBack">
+      <div v-if="!previousShow" class="header-default-left" @click="setBack">
+        <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
+      </div>
+      <div v-else class="header-default-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">
@@ -48,7 +51,7 @@
       </div>
     </div>
     <div class="header-default" v-if="headerLogo">
-      <div class="header-arrow-left" @click="goBack">
+      <div class="header-arrow-left" @click="setBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">
@@ -98,7 +101,7 @@ import {
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from '@/multilingual/index.ts';
 export default defineComponent({
-  emit: ['cancelFor'],
+  emit: ['onBack' ],
   props: {
     defaultH: {
       type: [Number, String, Boolean],
@@ -135,7 +138,11 @@ export default defineComponent({
     logo: {
       type: [String],
       required: false,
-    }
+    },
+    previousShow: {
+      type: [Boolean],
+      required: false,
+    },
   },
   components: {},
   setup(props, { emit }) {
@@ -202,8 +209,8 @@ export default defineComponent({
           }
         }
       } else {
-        locale.value = 'vi'
-        window.localStorage.setItem('locale', 'vi')
+        locale.value = 'en'
+        window.localStorage.setItem('locale', 'en')
       }
       data.merchantLogo = props.logo ? props.logo : new URL('@/assets/images/header/default-img.png', import.meta.url).href,
         data.heLogo = props.logo ? props.logo : new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href
@@ -224,12 +231,15 @@ export default defineComponent({
         data.languageShow = false
         // reload()
       },
-      goBack() {
+      setBack() {
         router.go(-1);
         // window.history.go(-1);
-        // emit('cancelFor',{
-        //   cancel:true
-        // })
+
+      },
+      goBack(){
+        emit('onBack',{
+          cancel:true
+        })
       },
       goClose() {
         emit('cancelFor', {

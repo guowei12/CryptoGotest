@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build --force"
+    "build:pro": "vite build --mode main",
+    "build:pre": "vite build --mode pre",
+    "build:test": "vite build --mode test",
+    "build:sbx": "vite build --mode sbx",
+    "build:dev": "vite build --mode dev"
   },
   "dependencies": {
     "axios": "^0.27.2",

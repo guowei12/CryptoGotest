@@ -1,7 +1,7 @@
 <template>
     <div class="signin-con">
         <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
-        <div class="signin-box" v-if="showCode">
+        <div class="signin-box">
             <div class="signin-box-edit">
                 <div class="signin-box-edit-title">
                     Bind your email to enhance the security of your Wallet Management.
@@ -11,8 +11,8 @@
                     <input @input="FormValidation('email', 'input')" @focus="FormValidClone('email')"
                         @blur="FormValidation('email', 'blur')" :class="formError.email ? 's-b-e-input-wrong' : ''"
                         class="s-b-e-input " type="text" v-model="formData.email" placeholder="Esther@example.com">
-                    <div v-if="formError.email&&nextShow" class="wrong-text">You email is wrong</div>
-                    <div v-else class="wrong-text-no" >You email is wrong</div>
+                    <div v-if="formError.email && nextShow" class="wrong-text">You email is wrong</div>
+                    <div v-else class="wrong-text-no">You email is wrong</div>
                 </div>
                 <div class="proceed-btn" @click="setBtn">
                     <div class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
@@ -21,15 +21,15 @@
                 </div>
             </div>
         </div>
-        <verificationCode v-if="!showCode"></verificationCode>
     </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import verificationCode from './components/verificationCode/index.vue'
+import { sendEmail } from '@/apis/api'
 
 export default defineComponent({
     name: 'Signin',
@@ -37,9 +37,9 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const { proxy } = getCurrentInstance() as any
         const data = reactive({
             headerTitle: '',
-            showCode: true,
             nextShow: false,
             formData: {
                 email: ''
@@ -73,11 +73,36 @@ export default defineComponent({
                 }
             }
         }
-        const setBtn = () => {
-            data.nextShow=false
-            if (data.formError.email) {
-                data.nextShow = true
-                return
+        const setBtn = async () => {
+            data.nextShow = false
+            if (data.formData.email) {
+                if (await getCode()) {
+                    router.push({
+                        name: 'scode',
+                        params: {
+                            email: data.formData.email
+                        }
+                    })
+                    data.nextShow = true
+                    return
+                }else{
+
+                }
+
+            }
+
+        }
+        const getCode = async () => {
+            let params = {
+                email: data.formData.email
+            }
+            let res = await sendEmail(params)
+            if (res.data.code == 0 ) {
+                localStorage.setItem('countdown', '60')
+                return true
+            } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+                return false
             }
         }
         onBeforeMount(() => {
@@ -90,7 +115,8 @@ export default defineComponent({
             ...toRefs(data),
             FormValidClone,
             FormValidation,
-            setBtn
+            setBtn,
+            getCode
         };
     },
 })

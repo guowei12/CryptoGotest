@@ -1,3 +1,4 @@
+<!-- pc -->
 <template>
     <div class="login-con">
         <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>

@@ -21,6 +21,11 @@ const router = createRouter({
       component: () => import('../views/signin/index.vue')    
     },
     {
+      path: '/scode/:email',
+      name: 'scode',
+      component: () => import('../views/signin/components/verificationCode/index.vue')    
+    },
+    {
       path: '/payMent',
       name: 'payMent',
       component: () => import('../views/payMent/index.vue')    

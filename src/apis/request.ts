@@ -8,10 +8,16 @@ const service = axios.create({
 // console.log(deviceId);
 service.interceptors.request.use(config => {
   // const deviceId = getDeviceIdentifier();
-
+  var user_token = localStorage.getItem('user_token');
+  // let lang = window.sessionStorage.getItem('locale') || 'en';
+  if (user_token) {
+    var userid = user_token;
+  } else {
+    userid = '';
+  }
   var contentData = {
     "Content-Type": "application/json;charset=utf-8",
-    "merchantNo":''
+    Authorization: userid,
   }
   let merchantNo=localStorage.getItem("merchantNo");
   var contentType = config.header
