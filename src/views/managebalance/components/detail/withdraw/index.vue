@@ -89,7 +89,7 @@
         </div>
       </div>
     </van-action-sheet>
-    <showModel></showModel>
+    <showModel :showModal="showModal" @closeModel="closeDialog"></showModel>
   </div>
 </template>
 
@@ -100,7 +100,7 @@ import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
 import showModel from '@/components/showModel/index.vue'
-import { getNetworkFree, getNetwork, getBalances } from '@/apis/api'
+import { getNetworkFree, getNetwork, getBalances, putWithdraw } from '@/apis/api'
 
 export default defineComponent({
   name: 'withdrawDetail',
@@ -110,6 +110,7 @@ export default defineComponent({
     const router = useRouter();
     const couponStore = useMain();
     const { proxy } = getCurrentInstance() as any
+    const showModal= ref(false)
     const data = reactive({
       headerTitle: 'Withdraw USDT',
       address: '',
@@ -125,7 +126,7 @@ export default defineComponent({
       }] as any,
       receiveCrypto: {} as any,
       nowIndex: 0,
-      balances:0,
+      balances: 0,
       nowUrl: '' as any,
       nowChainType: '' as any,
       currency: '' as any,
@@ -139,10 +140,14 @@ export default defineComponent({
       formError: {
         address: false,
         email: false
-      } as any
+      } as any,
+      freeList: {} as any
     })
     const FormValidClone = (val: string) => {
       data.formError[val] = false;
+    }
+    const closeDialog = (val: boolean) => {
+      showModal.value = false;
     }
     //表单验证
     const FormValidation = (val: string, type: string) => {
@@ -151,7 +156,7 @@ export default defineComponent({
         return
       }
       if (val === "address") {
-        let reg = new RegExp(data.receiveCrypto?.networkAddressRegex)
+        let reg = new RegExp(data.freeList?.addressRegex)
         if (!data.formData.address.length || data.formData.address.length < 2 || !reg.test(data.formData.address)) {
           if (type === "blur") {
             data.formError.address = true;
@@ -179,9 +184,9 @@ export default defineComponent({
         data.nowUrl = items.networkLogoUrl
         data.nowNetwork = items.network
         data.nowChainType = items.chainType
-        await infoMethods.getFree(data.currency,data.nowNetwork)
+        await infoMethods.getFree(data.currency, data.nowNetwork)
         data.networkShow = false
-        
+
       },
       backHome() {
         router.replace({ path: '/' })
@@ -195,10 +200,10 @@ export default defineComponent({
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
-      async getFree(token: any,network: any) {
-        let res = await getNetworkFree(token,network)
+      async getFree(token: any, network: any) {
+        let res = await getNetworkFree(token, network)
         if (res.data.code == 0) {
-          data.networkList = res.data.model
+          data.freeList = res.data.model
           data.nowIndex = 0
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
@@ -211,6 +216,17 @@ export default defineComponent({
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
+      },
+      async sendWithdraw() {
+        let params = {
+          address: data.formData.address,
+          amount: data.formData.amount,
+          code: data.code,
+          network: data.nowNetwork,
+          token: data.currency,
+          type: data.type // 1、email 2、googleAuth
+        }
+        await putWithdraw(params)
       }
     }
     onBeforeMount(() => {
@@ -224,7 +240,7 @@ export default defineComponent({
         data.nowNetwork = route.query.network
         data.currencyUrl = route.query.url
         await infoMethods.findNetwork(data.currency)
-        await infoMethods.getFree(data.currency,data.nowNetwork)
+        await infoMethods.getFree(data.currency, data.nowNetwork)
         await infoMethods.onBalances(data.currency)
       } else {
         if (deposit) {
@@ -233,7 +249,7 @@ export default defineComponent({
           data.nowNetwork = deposit.network
           data.currencyUrl = deposit.url
           await infoMethods.findNetwork(data.currency)
-          await infoMethods.getFree(data.currency,data.nowNetwork)
+          await infoMethods.getFree(data.currency, data.nowNetwork)
           await infoMethods.onBalances(data.currency)
         }
       }
@@ -242,9 +258,11 @@ export default defineComponent({
     })
     return {
       ...toRefs(data),
+      showModal,
       ...infoMethods,
       FormValidClone,
-      FormValidation
+      FormValidation,
+      closeDialog
     };
   },
 })

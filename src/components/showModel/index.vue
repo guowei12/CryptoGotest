@@ -1,9 +1,10 @@
 <template>
   <div class="showModel-box">
-    <n-drawer :style="verificationMethod?'height: 480px; border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden':'border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden'" v-model:show="showModal" resizable :placement="'bottom'" @mask-click="closeDialog"
-       :trap-focus="trapFocus"
+    <n-drawer
+      :style="verificationMethod ? 'height: 480px; border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden' : 'border-top-right-radius: 24px; border-top-left-radius: 24px; overflow: hidden'"
+      v-model:show="showModal" resizable :placement="'bottom'" @mask-click="closeDialog" :trap-focus="trapFocus"
       :block-scroll="true">
-      <n-drawer-content >
+      <n-drawer-content>
         <div class="code">
           <div>
             <div class="line"><span></span></div>
@@ -31,8 +32,8 @@
               <div class="tip">Please enter the verification code send to </div>
               <div class="email">{{ email }}</div>
               <div class="code-input">
-                <CodeInput :keyboard="true" :autofocus="codeInputFocus" v-model:data="codeEmail" @submitCode="checkCodeByEmail"
-                  @blur="changeBlur" @focus="changeFocus"></CodeInput>
+                <CodeInput :keyboard="true" :autofocus="codeInputFocus" v-model:data="codeEmail"
+                  @submitCode="checkCodeByEmail" @blur="changeBlur" @focus="changeFocus"></CodeInput>
               </div>
               <div class="send-code-btn">
                 <div class="btn" v-if="!time && !sentCode">
@@ -66,19 +67,25 @@
 import { defineComponent, ref, nextTick, reactive, toRefs, onBeforeMount, onMounted, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NDrawer, NDrawerContent, NDatePicker, NSpace, type CountdownProps } from 'naive-ui'
-
+import { existBindAuth } from "@/apis/api"
 import CodeInput from "@/components/CodeInput/index.vue"
 export default defineComponent({
   name: '',
-  components: { NDrawer, NDrawerContent,CodeInput },
-  setup() {
+  props: {
+    showModal: {
+      type: [Number, String, Boolean],
+      required: false,
+    }
+  },
+  emits: ['closeModel'],
+  components: { NDrawer, NDrawerContent, CodeInput },
+  setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter();
     const codeInputFocus = ref(false);
     const time = ref(0);
     const sentCode = ref(false);
     const data = reactive({
-      showModal: true,
       verificationMethod: '',//email google
       verificationStore: {} as any,
       email: 'Jo****@gmail.com',
@@ -87,8 +94,24 @@ export default defineComponent({
     })
     const trapFocus = ref(true);
     const infoMethods = {
+      // 进入页面判断是否已经进行谷歌认证
+      async isAuthGoogle() {
+        try {
+          const res = await existBindAuth();
+          // verificationStore.setGoogleState(res.data?.model as boolean);
+          if (res.data?.code === '0' && res.data?.model) {
+            // 已经认证
+            data.verificationStore.googleVerification = 'google';
+          } else if (res.data?.code === '0' && res.data?.model === false) {
+            // 未认证
+            data.verificationStore.googleVerification = '';
+          }
+        } catch (err) {
+          console.log('err==>', err);
+        }
+      },
       closeDialog() {
-        data.showModal = false
+        emit('closeModel', false);
       },
       goEmailAuth() {
         data.verificationMethod = 'email';
@@ -208,13 +231,13 @@ export default defineComponent({
     watchEffect(() => {
     })
     // 只有移动端使用该方式
-    watch(data.codeEmail, (newVal:any) => {
+    watch(data.codeEmail, (newVal: any) => {
       if (newVal.length >= 6) {
         infoMethods.checkCodeByEmail(newVal.replace(/[^\d]/g, ''));
       }
     });
     // 只有移动端使用该方式
-    watch(data.codeGoogle, (newVal:any) => {
+    watch(data.codeGoogle, (newVal: any) => {
       if (newVal.length >= 6) {
         infoMethods.checkCodeByGoogle(newVal.replace(/[^\d]/g, ''));
       }

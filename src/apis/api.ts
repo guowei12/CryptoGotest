@@ -82,7 +82,7 @@ export function getTokens() {
 export function getNetworkFree(token: any, network: any) {
   return http.get(`${operate.networkFree}?token=${token}&network=${network}`);
 }
-export function getWithdraw(data: any) {
+export function putWithdraw(data: any) {
   return http.post(`${operate.withdraw}`, data);
 }
 export function getBalances(faitCurrency: any) {
