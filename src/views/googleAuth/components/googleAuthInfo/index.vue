@@ -3,7 +3,7 @@
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="input">
       <div class="title">Email code</div>
-      <myInput v-model:data="emailCode" :isCode="true" placeholder="" type="code" :disabled="disabledInp" :maxlength="6"
+      <myInput v-model:data="emailCode" :isCode="true" :codeShow="codeShow" placeholder="" type="code" :disabled="disabledInp" :maxlength="6"
         @input="handleInput" @click="sendCode" height="48"></myInput>
     </div>
     <div class="input code_input">
@@ -38,6 +38,7 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as any
     const data = reactive({
       headerTitle: 'Google Authenticator',
+      codeShow:true
     })
     const verificationStore = useVerificationStore();
     const physicalCardStore = usePhysicalCardStore();
@@ -57,12 +58,14 @@ export default defineComponent({
     const sendCode = async () => {
       time.value = 60 * 1000;
       if (time.value) {
-        // const res = await googleAuthSendEmail();
-        // if (res.data?.code === '0') {
-          // proxy.$successToast(t('googleCode.tip'), '', 3000)
-        // } else {
-          // proxy.$failToast(res.data.msg, 'failToast', 3000)
-        // }
+        const res = await googleAuthSendEmail();
+        if (res.data?.code === '0') {
+          data.codeShow = true
+          proxy.$successToast(t('googleCode.tip'), '', 3000)
+        } else {
+          data.codeShow = false
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
+        }
       }
     };
     const eventClick = async () => {
@@ -90,6 +93,7 @@ export default defineComponent({
           //   });
           // }
         } else {
+          proxy.$failToast(resData.data.msg, 'failToast', 3000)
           // errorMessage(resData.data.msg);
           loadingBtn.value = false;
         }

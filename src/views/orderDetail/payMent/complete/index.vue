@@ -1,6 +1,6 @@
 <template>
     <div class="complete-box">
-        <HeaderBar :logo="headerLogo" :headerLanguage="true"></HeaderBar>
+        <HeaderBar :logo="headerLogo" :headerLanguage="true" :showLanguage="true"></HeaderBar>
         <div class="complete-con-box">
             <div class="complete-con">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="complete-cont hidden-box"  ref="imageContainer">
+            <div class="complete-cont hidden-box" ref="imageContainer">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
                 <div class="complete-title">20,000 VND</div>
                 <div class="complete-text">Order Completed
@@ -99,12 +99,13 @@
                 <img class="complete-btn-icon" src="@/assets/images/status/save-icon.png" alt="" srcset="">
                 <div>Save</div>
             </div>
-            <div class="complete-btn-box">
+            <div class="complete-btn-box" @click="backHome">
                 <img class="complete-btn-icon" src="@/assets/images/status/home-icon.png" alt="" srcset="">
                 <div>Back home</div>
             </div>
         </div>
-        <img id="Image" v-if="imageUrl" :src="imageUrl" alt="Generated Image" />
+        <img id="Image" style="width: 0px;height: 0px; visibility: hidden;" v-show="imageUrl" :src="imageUrl"
+            alt="Generated Image" />
     </div>
 </template>
 
@@ -125,7 +126,7 @@ export default defineComponent({
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId: '661bbbc10cf7f20007e4ff48',
             total: '20,000',
-            amount:'20,000',
+            amount: '20,000',
             currency: 'VND',
             time: '2024-04-14 18:19 (UTC+8)',
             watermark: new URL('@/assets/images/status/watermark-icon.png', import.meta.url).href
@@ -182,7 +183,7 @@ export default defineComponent({
             // ctx.fillText(text, canvas.width / 2 - 80, canvas.height / 2 - 10);
         };
         // 下载动态生成的图片
-        const downloadGeneratedImage = (canvas:HTMLCanvasElement) => {
+        const downloadGeneratedImage = (canvas: HTMLCanvasElement) => {
             let oImg = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = oImg;
@@ -193,6 +194,11 @@ export default defineComponent({
         })
         onMounted(() => {
         })
+        const backHome = () => {
+            router.replace({
+                path: '/'
+            })
+        }
         watchEffect(() => {
         })
         return {
@@ -200,7 +206,8 @@ export default defineComponent({
             imageContainer,
             imageUrl,
             generateImage,
-            downloadGeneratedImage
+            downloadGeneratedImage,
+            backHome
         };
     },
 })

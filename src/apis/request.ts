@@ -39,7 +39,7 @@ service.interceptors.request.use(config => {
 
   var contentData = {
     "Content-Type": "application/json;charset=utf-8",
-    lang:lang,
+    // lang:lang,
     Authorization: userid,
   }
   // let merchantNo = localStorage.getItem("merchantNo");

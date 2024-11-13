@@ -23,6 +23,7 @@
   justify-content: space-between;
   border-bottom: 1px solid #E6E8EB;
   padding:0 20px;
+  z-index: 999;
 }
 .header-already{
   height: 76px;
@@ -92,13 +93,11 @@
   .arrow-btm{
     width: 12px;
     height: 12px;
-    margin-right: 4px;
     transition: transform 0.4s;
   }
   .arrow-btm-set{
     width: 12px;
     height: 12px;
-    margin-right: 4px;
     transition: transform 0.4s;
     transform: rotate(180deg); 
   }

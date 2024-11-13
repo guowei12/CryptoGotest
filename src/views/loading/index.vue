@@ -15,7 +15,7 @@
                 <div class="loading-progress-color">Sending fiat to merchant...</div>
                 <div class="loading-progress-con">
                     <img class="loading-tiem-icon" src="@/assets/images/status/tiem-icon.png" alt="" srcset="" />
-                    <div>This process may take a few minutes due to network conditions</div>
+                    <div class="loading-progress-con-text">This process may take a few minutes due to network conditions</div>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@ export default defineComponent({
         const route = useRoute();
         const router = useRouter();
         const data = reactive({
-            headerLogo: new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href,
+            headerLogo: new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href,
             headerTitle: ''
         })
         const onLoading = () => {

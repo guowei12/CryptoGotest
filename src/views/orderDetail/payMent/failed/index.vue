@@ -1,6 +1,6 @@
 <template>
     <div class="failed-box">
-        <HeaderBar :logo="headerLogo" :noLanguage="true" :headerLanguage="true"></HeaderBar>
+        <HeaderBar :logo="headerLogo" :headerLanguage="true"></HeaderBar>
         <div class="failed-con">
             <img class="status-icon" src="@/assets/images/status/failed-icon.png" alt="" sizes="" srcset="">
             <div class="failed-title">The payment failed</div>
@@ -12,13 +12,13 @@
                     </div>
                     <div class="failed-payment-text">
                         Your real deposit amount is under our limit (5 USD), please
-                                check the announcement email and get the refund.
+                        check the announcement email and get the refund.
                     </div>
                 </div>
             </div>
         </div>
         <div class="failed-btn">
-            <div class="failed-btn-box">
+            <div class="failed-btn-box" @click="backHome">
                 <div>Back home</div>
             </div>
         </div>
@@ -50,8 +50,14 @@ export default defineComponent({
         })
         watchEffect(() => {
         })
+        const backHome = () => {
+            router.replace({
+                path: '/'
+            })
+        }
         return {
-            ...toRefs(data)
+            ...toRefs(data),
+            backHome
         };
     },
 })

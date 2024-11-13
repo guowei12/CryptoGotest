@@ -29,6 +29,10 @@ export default defineComponent({
       value:'',
       required: false,
     },
+    codeShow: {
+      type: [Boolean],
+      required: false,
+    },
     error: {
       type: [Boolean],
       required: false,
@@ -153,7 +157,12 @@ export default defineComponent({
     onMounted(() => {
       //console.log('3.-组件挂载到页面之后执行-------onMounted')
     })
-
+    watch(
+      () => props.error,
+      (val) => {
+        error = props.error;
+      }
+    );
     // watch(
     //   () => props.data,
     //   (val) => {
@@ -161,7 +170,16 @@ export default defineComponent({
     //   }
     // );
 
-
+    watch(
+      () => props.codeShow,
+      (val) => {
+        console.log('1',val)
+        if(!val){
+          active.value = false
+        }
+      }
+    );
+    
     watch(
       () => props.error,
       (val) => {

@@ -158,7 +158,7 @@ export default defineComponent({
         })
         onMounted(async () => {
             activeTab.value = 'DEPOSIT';
-            console.log(props.currency)
+            // console.log(props.currency)
             await onRefresh()
         })
         watchEffect(() => {

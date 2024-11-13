@@ -66,7 +66,7 @@
       <div class="header-balance">
         <img class="header-logo-la" :src="heLogo" alt="" srcset="">
       </div>
-      <div v-if="noLanguage" class="header-default-right" @click="languageShow = !languageShow">
+      <div v-if="showLanguage" class="header-default-right" @click="languageShow = !languageShow">
         <div class="header-default-con">
           <img class="header-default-img" :src="nowLanguage.img" alt="" srcset="">
           <div class="header-default-text-la">{{ nowLanguage.name }}</div>
@@ -101,7 +101,7 @@ import {
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from '@/multilingual/index.ts';
 export default defineComponent({
-  emit: ['onBack' ],
+  emit: ['onBack'],
   props: {
     defaultH: {
       type: [Number, String, Boolean],
@@ -131,6 +131,10 @@ export default defineComponent({
       type: [Boolean],
       required: false,
     },
+    showLanguage: {
+      type: [Boolean],
+      required: false,
+    },
     title: {
       type: [String],
       required: false,
@@ -154,7 +158,7 @@ export default defineComponent({
 
     const data = reactive({
       merchantLogo: new URL('@/assets/images/header/default-img.png', import.meta.url).href,
-      heLogo: new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href,
+      heLogo: new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href,
       countryList: [
         { img: new URL('@/assets/images/header/VN.png', import.meta.url).href, name: 'Vietnam', value: 'vi' },
         { img: new URL('@/assets/images/header/TH.png', import.meta.url).href, name: 'Thailand', value: 'th' },
@@ -167,7 +171,6 @@ export default defineComponent({
       },
       countryShow: false,
       languageShow: false,
-      noLanguage: false,
       LanguageList: [
         {
           name: 'EN-US',
@@ -214,13 +217,13 @@ export default defineComponent({
         window.localStorage.setItem('locale', 'en')
       }
       data.merchantLogo = props.logo ? props.logo : new URL('@/assets/images/header/default-img.png', import.meta.url).href,
-        data.heLogo = props.logo ? props.logo : new URL('@/assets/images/loading/aeon-logo.png', import.meta.url).href
+        data.heLogo = props.logo ? props.logo : new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href
     });
 
     const infoMethods = {
       setCountry(ary: { img: string; name: string; value: any }) {
         data.nowCountry = { ...ary }
-        locale.value = ary.value 
+        locale.value = ary.value
         window.localStorage.setItem('locale', ary.value);
         data.countryShow = false
         // reload();
@@ -237,9 +240,9 @@ export default defineComponent({
         // window.history.go(-1);
 
       },
-      goBack(){
-        emit('onBack',{
-          cancel:true
+      goBack() {
+        emit('onBack', {
+          cancel: true
         })
       },
       goClose() {

@@ -1,6 +1,6 @@
 <template>
     <div class="failed-box">
-        <HeaderBar :logo="headerLogo" :noLanguage="true"  :headerLanguage="true"></HeaderBar>
+        <HeaderBar :logo="headerLogo"   :headerLanguage="true"></HeaderBar>
         <div class="failed-con">
             <img class="status-icon" src="@/assets/images/status/failed-icon.png" alt="" sizes="" srcset="">
             <div class="failed-title">20,000 VND</div>
