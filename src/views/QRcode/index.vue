@@ -115,7 +115,7 @@ export default defineComponent({
     }
     const onBtn = {
       onDecodeHandler: (res: any) => {
-        proxy.$closeToas
+        proxy.$closeToast()
         if (res.code && res.currency) {
           data.authCode = res
           data.showScanned = false
