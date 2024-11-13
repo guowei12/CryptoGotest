@@ -97,18 +97,24 @@ export default defineComponent({
             await onRefresh()
         };
         const goDetail = (obj: any) => {
-            console.log(obj)
             if (activeTab.value == 'DEPOSIT') {
-                
                 couponStore.SET_ORDERDETAIL(obj)
                 console.log(couponStore.$state.orderDetail)
                 router.push({
                     path: '/deposit',
+                    query:{
+                        id:obj.id,
+                        type:"DEPOSIT"
+                    }
                 })
             } else if (activeTab.value == 'WITHDRAW') {
                 couponStore.SET_ORDERDETAIL(obj)
                 router.push({
                     path: '/withdraw',
+                    query:{
+                        id:obj.id,
+                        type:"WITHDRAW"
+                    }
                 })
             }
 
@@ -152,6 +158,7 @@ export default defineComponent({
         })
         onMounted(async () => {
             activeTab.value = 'DEPOSIT';
+            console.log(props.currency)
             await onRefresh()
         })
         watchEffect(() => {

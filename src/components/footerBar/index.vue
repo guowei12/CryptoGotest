@@ -61,7 +61,6 @@ export default defineComponent({
     })
     watch(() => router,
     (newValue, oldValue) => {
-      console.log(newValue.currentRoute.value.fullPath);
      newValue.currentRoute.value.fullPath=='/'||newValue.currentRoute.value.fullPath==''? data.path='/': data.path=newValue.currentRoute.value.fullPath
     },{ immediate: true });
 

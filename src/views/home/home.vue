@@ -28,7 +28,7 @@
           <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0" v-model:loading="dataLoading" :finished="finished"
             finished-text="no data" @load="onLoad">
             <!-- <div class="QRPay-list" "> -->
-            <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index">
+            <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
               <div class="QRPay-list-li-left">
                 <img v-if="item.status == 'Completed'" class="shopping-img" src="@/assets/images/home/shopping-com.png"
                   alt="" srcset="">
@@ -79,7 +79,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect, onActivated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import qrcode from "../QRcode/index.vue"
 import fLoading from "@/components/fLoading/index.vue"
@@ -87,6 +87,8 @@ import tloading from '@/components/loading/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 import footerBar from '@/components/footerBar/index.vue'
 import { getTokenInfo, initWattle, getTransHistory, getBalances } from '@/apis/api'
+import { setToken, getToken, removeToken } from '@/utils/token';
+import { useMain } from '@/store';
 
 export default defineComponent({
   name: 'Home',
@@ -97,6 +99,8 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as any
     const list = ref([]);
     const finished = ref(false);
+    const couponStore = useMain();
+
     const data = reactive({
       faitCurrency: '',
       loadingText: '...',
@@ -104,7 +108,7 @@ export default defineComponent({
       dataLoading: false,
       loading: false,
       listShow: 1,
-      transactionList: [],
+      transactionList: [] as any,
       assetsList: [
         {
           img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
@@ -137,7 +141,6 @@ export default defineComponent({
     const infoMethods = {
       async onTokenInfo(token: any, type: any) {
         let res = await getTokenInfo({ token })
-
         if (res.data.code == 0) {
           // token ? window.localStorage.setItem('user_token', token) : window.localStorage.setItem('user_token', '')
           if (res.data.model) {
@@ -145,13 +148,14 @@ export default defineComponent({
             if (tokenObj.email) {
               let user = {
                 email: tokenObj.email,
-                model: token
+                aeonUserNo:tokenObj.aeonUserNo
+                // model: token
               }
               if (tokenObj.tgUserInfo) {
                 data.userInfo = tokenObj.tgUserInfo
               }
-
-              window.localStorage.setItem('user_token', token)
+              setToken(token)
+              // window.localStorage.setItem('user_token', token)
               window.localStorage.setItem('user', JSON.stringify(user))
               if (tokenObj.language) {
                 window.localStorage.setItem('locale', tokenObj.language)
@@ -173,7 +177,8 @@ export default defineComponent({
         }
       },
       async onBalances() {
-        let res = await getBalances(data.faitCurrency || '')
+        let currency= localStorage.getItem('currency')||'USD'
+        let res = await getBalances(currency)
         if (res.data.code == 0) {
           data.userBalances = res.data.model
         } else {
@@ -219,6 +224,15 @@ export default defineComponent({
         let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
         return flag
       },
+      goDetail(detail: { status: string; }){
+        couponStore.SET_ORDERDETAIL(detail)
+        if(detail.status == 'Completed'){
+          router.push({ path: '/transactionComplete' })
+        }else if(detail.status == 'Failed'){
+          router.push({ path: '/transactionFailed' })
+        }
+        
+      }
     }
     const onLoad = async () => {
       await infoMethods.onHistory()
@@ -239,9 +253,10 @@ export default defineComponent({
     }
 
     onBeforeMount(() => {
+      couponStore.SET_ORDERDETAIL({})
     })
     onMounted(async () => {
-      let stoken = window.localStorage.getItem('user_token') ? window.localStorage.getItem('user_token') : null
+      let stoken = getToken() //window.localStorage.getItem('user_token') ? window.localStorage.getItem('user_token') : null
       data.token = route.query.token
       data.loading = true
       if (stoken || data.token) {

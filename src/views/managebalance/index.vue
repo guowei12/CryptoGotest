@@ -19,7 +19,7 @@
 
       </div>
       <div class="QRPay-list" v-if="userBalances?.tropertyList">
-        <div class="QRPay-list-li" v-for="(item, index) in userBalances.tropertyList" :key="index" @click="goCurrency(item.currency)">
+        <div class="QRPay-list-li" v-for="(item, index) in userBalances.tropertyList" :key="index" @click="goCurrency(item.name)">
           <div class="QRPay-list-li-left">
             <img class="currency-img" :src="item.logoUrl" alt="" srcset="">
             <div class="QRPay-list-con">
@@ -82,7 +82,8 @@ export default defineComponent({
     })
     const infoMethods = {
       async onBalances() {
-        let res = await getBalances(data.faitCurrency || '')
+        let currency= localStorage.getItem('currency')||'USD'
+        let res = await getBalances(currency)
         if (res.data.code == 0) {
           data.userBalances = res.data.model
         } else {

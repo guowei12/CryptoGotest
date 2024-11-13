@@ -2,14 +2,14 @@
   <div class="google-auth-contaner">
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="tip">
-       <img class="tip-img" src="@/assets/images/verification/tip-icon.png" alt="">
-       <span>Please download the Google Authentication app and scan the QR code</span>
+      <img class="tip-img" src="@/assets/images/verification/tip-icon.png" alt="">
+      <span>Please download the Google Authentication app and scan the QR code</span>
     </div>
     <div class="qr_code">
       <div id="qrcodeImg"></div>
       <div class="qrcodeImg-text">
         <div class="qrcodeImg-span">{{ secret }}</div>
-        <copyCon :copyHtml="secret"/>
+        <copyCon :copyHtml="secret" />
       </div>
       <div class="download_button" @click="goDownload">Download APP</div>
     </div>
@@ -20,25 +20,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import QRCode from 'qrcodejs2-fix';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
-
-import { getGoogleAuth } from '../../apis/googleAuth';
+import { getGoogleAuth, existBindAuth } from '@/apis/googleAuth';
 // import { useAppStore } from '@/store';
 // const appStore = useAppStore();
 export default defineComponent({
   name: 'googleAuthInfo',
-  components:{HeaderBar,copyCon},
+  components: { HeaderBar, copyCon },
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const { proxy } = getCurrentInstance() as any
     let qrCodeUrl = ref('');
-    let secret = ref('WWFGSFVASWFGB');
+    let secret = ref('');
     const data = reactive({
-      headerTitle:'Google Authenticator'
+      headerTitle: 'Google Authenticator'
     })
     onBeforeMount(() => {
     })
@@ -51,7 +51,7 @@ export default defineComponent({
     // 点击按钮
     const goGoogleAuthInfo = () => {
       // if (secret.value) {
-        router.push('/googleAuthInfo');
+      router.push('/googleAuthInfo');
       // }
     };
     // 获取谷歌授权码
@@ -82,8 +82,24 @@ export default defineComponent({
       });
       qrcode.makeCode(url);
     };
-    onMounted(() => {
-      // initGoogleAuth();
+    const isAuthGoogle = async () => {
+      try {
+        const res = await existBindAuth();
+        // verificationStore.setGoogleState(res.data?.model as boolean);
+        if (res.data?.code === '0' && res.data?.model) {
+          // 已经认证
+          router.go(-1)
+        } else if (res.data?.code === '0' && res.data?.model === false) {
+          // 未认证
+          // data.googleVerification = false;
+        }
+      } catch (err) {
+        console.log('err==>', err);
+      }
+    }
+    onMounted(async () => {
+      await isAuthGoogle()
+      await initGoogleAuth();
     });
     watchEffect(() => {
     })

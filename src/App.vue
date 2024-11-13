@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive" v-slot="{ Component }">
+    <!-- <router-view v-if="isRouterAlive" v-slot="{ Component }">
       <keep-alive :include="keepAlive_list">
         <component :is="Component" :key="key" />
       </keep-alive>
-      <!-- <component :is="Component" :key="key" v-if="!route.meta.keepAlive" /> -->
-    </router-view>
+    </router-view> -->
+    <router-view v-if="isRouterAlive"></router-view>
+
   </div>
 </template>
 

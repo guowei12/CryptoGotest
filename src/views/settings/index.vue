@@ -37,7 +37,7 @@
             <div>{{ $t('settings.Email') }}</div>
           </div>
           <div class="settings-li-right">
-            <div>{{ hideEmail(email) }}</div>
+            <div>{{ hideEmail(userInfo.email) }}</div>
             <img class="already-icon" src="@/assets/images/set/already-icon.png" alt="" srcset="">
           </div>
         </div>
@@ -46,13 +46,17 @@
             <img class="settings-li-left-icon" src="@/assets/images/set/authenticator-icon.png" alt="" srcset="">
             <div>{{ $t('settings.GoogleAuthenticator') }}</div>
           </div>
-          <div class="settings-li-right">
+          <div class="settings-li-right" v-if="!googleVerification" @click="goGoogle">
             <div class="settings-li-btn">Activate</div>
+          </div>
+          <div class="settings-li-right" v-else>
+            <div>Approved</div>
+            <img class="already-icon" src="@/assets/images/set/already-icon.png" alt="" srcset="">
           </div>
         </div>
       </div>
       <div class="settings-list-li">
-        <div class="settings-li">
+        <div class="settings-li" @click="setOut">
           <div class="settings-li-left">
             <img class="settings-li-left-icon" src="@/assets/images/set/logout-icon.png" alt="" srcset="">
             <div>{{ $t('settings.LogOut') }}</div>
@@ -84,6 +88,12 @@ import { useRoute, useRouter } from 'vue-router';
 import Mask from '@/components/mask/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 import { useI18n } from '@/multilingual/index.ts';
+import { useMain } from '@/store';
+import { getToken, removeToken } from '@/utils/token';
+import { getTokenInfo } from '@/apis/api'
+import { existBindAuth } from "@/apis/googleAuth"
+
+
 const { t, locale } = useI18n();
 export default defineComponent({
   name: 'setting',
@@ -91,8 +101,9 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const couponStore = useMain();
     const data = reactive({
-      showLogOut: true,
+      showLogOut: false,
       headerTitle: t('headerTitle.Settings'),
       LanguageList: [
         {
@@ -112,13 +123,15 @@ export default defineComponent({
           value: 'zh'
         }
       ],
+      userInfo: {
+        email: ''
+      } as any,
       currency: 'USD',
       language: 'EN-US',
-      email: 'shasdsadasdasdasdsadasdsadsad@qq.com'
+      googleVerification: false
     })
     const getCurrency = () => {
       let currencyt = window.localStorage.getItem('currency') as any;
-      console.log(currencyt)
       if (currencyt) {
         data.currency = currencyt
       } else {
@@ -127,7 +140,6 @@ export default defineComponent({
     }
     const getLoale = () => {
       let localet = window.localStorage.getItem('locale') as any;
-      console.log(localet)
       if (['vi', 'th', 'en', 'zh'].includes(localet)) {
         data.LanguageList.forEach(item => {
           if (item.value == localet) {
@@ -138,6 +150,24 @@ export default defineComponent({
         locale.value = 'en'
         window.localStorage.setItem('locale', 'en');
       }
+    }
+    const isAuthGoogle = async () => {
+      try {
+        const res = await existBindAuth();
+        // verificationStore.setGoogleState(res.data?.model as boolean);
+        if (res.data?.code === '0' && res.data?.model) {
+          // 已经认证
+          data.googleVerification = true;
+        } else if (res.data?.code === '0' && res.data?.model === false) {
+          // 未认证
+          data.googleVerification = false;
+        }
+      } catch (err) {
+        console.log('err==>', err);
+      }
+    }
+    const setOut = () => {
+      data.showLogOut = true;
     }
     const cancelLoginOut = () => {
       data.showLogOut = false;
@@ -158,16 +188,37 @@ export default defineComponent({
       }
     }
     // 清空用户信息
-    const handleUserInfo = () => {
-      sessionStorage.removeItem('user_email');
-      sessionStorage.removeItem('userInfo');
+    const handleUserInfo = async () => {
+      await removeToken()
+      localStorage.removeItem('user');
+      // localStorage.removeItem('userInfo');
+    }
+    const getUser = async (token: any) => {
+      let res = await getTokenInfo({ token })
+      if (res.data.code == 0) {
+        // token ? window.localStorage.setItem('user_token', token) : window.localStorage.setItem('user_token', '')
+        if (res.data.model) {
+          data.userInfo = res.data.model
+        }
+      }
     }
     onBeforeMount(() => {
     })
     onMounted(async () => {
-      console.log('onMounted')
-      getCurrency()
-      getLoale()
+      let user = JSON.parse(window.localStorage.getItem('user') as any)
+      let token = await getToken()
+      if (token || user) {
+        if (user?.email) {
+          data.userInfo.email = user.email
+        } else {
+          await getUser(token)
+        }
+        await isAuthGoogle()
+        getCurrency()
+        getLoale()
+      } else {
+        router.replace({ path: '/' })
+      }
     })
     onActivated(() => {
       console.log('onActivated')
@@ -185,10 +236,13 @@ export default defineComponent({
       return email.replace(/^(.{2})(.*)(?=@)/, '$1****');
     }
     const goCurrency = () => {
-      router.replace({ path: '/currency' })
+      router.push({ path: '/currency' })
     }
     const goLanguage = () => {
-      router.replace({ path: '/language' })
+      router.push({ path: '/language' })
+    }
+    const goGoogle = () =>{
+      router.push({ path: '/googleAuth' })
     }
     watchEffect(() => {
     })
@@ -197,11 +251,14 @@ export default defineComponent({
       goCurrency,
       getCurrency,
       goLanguage,
+      goGoogle,
       getLoale,
       hideEmail,
       cancelLoginOut,
       confirmLoginOut,
-      handleUserInfo
+      handleUserInfo,
+      getUser,
+      setOut
     };
   },
 })

@@ -91,7 +91,7 @@ export default defineComponent({
         data.codeValue = '';
         isReadonly.value = true;
       }
-      console.log(event,data.codeValue)
+      // console.log(event,data.codeValue)
       if (data.codeValue) {
         data.codeValue = data.codeValue.replace(/[^\d]/g, '');
         emit('update:data', data.codeValue);

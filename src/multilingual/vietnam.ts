@@ -34,5 +34,13 @@ const vie = {
     Cancel: 'Hủy bỏ',
     Confirm: 'Xác nhận',
   },
+  googleCode: {
+    title: 'Google Authenticator',
+    Email_code: 'Email code',
+    Google_code: 'Google Authenticator code',
+    Send_code: 'Send code',
+    btn: 'Continue',
+    tip: 'verification code has been sent',
+  },
 }
 export default vie;

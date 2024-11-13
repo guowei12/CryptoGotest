@@ -22,6 +22,7 @@ import { useRoute, useRouter } from 'vue-router';
 import codeInput from '@/components/CodeInput/index.vue'
 import { sendEmail, sendLogin } from '@/apis/api'
 import HeaderBar from '@/components/headerBar/index.vue'
+import { setToken, getToken, removeToken } from '@/utils/token';
 
 export default defineComponent({
   name: 'verificationCode',
@@ -61,7 +62,7 @@ export default defineComponent({
         email: data.email
       }
       let res = await sendEmail(params)
-      if (res.data.code == 200) {
+      if (res.data.code == 0) {
 
       } else {
         proxy.$failToast(res.data.msg, 'failToast', 3000)
@@ -79,10 +80,10 @@ export default defineComponent({
       if (returnData.data.code === '0') {
         let user = {
           email: data.email,
-          model: returnData.data.model
+          // model: returnData.data.model
         }
-        
-        window.localStorage.setItem('user_token', returnData.data.model)
+        setToken(returnData.data.model)
+        // window.localStorage.setItem('user_token', returnData.data.model)
         window.localStorage.setItem('user', JSON.stringify(user))
         router.push('/');
         return

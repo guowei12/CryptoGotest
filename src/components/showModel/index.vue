@@ -67,13 +67,13 @@
 import { defineComponent, ref, nextTick, reactive, toRefs, onBeforeMount, onMounted, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NDrawer, NDrawerContent, NDatePicker, NSpace, type CountdownProps } from 'naive-ui'
-import { existBindAuth } from "@/apis/api"
+import { existBindAuth } from "@/apis/googleAuth"
 import CodeInput from "@/components/CodeInput/index.vue"
 export default defineComponent({
   name: '',
   props: {
     showModal: {
-      type: [Number, String, Boolean],
+      type: [Boolean],
       required: false,
     }
   },

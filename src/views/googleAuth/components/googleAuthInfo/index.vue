@@ -13,21 +13,20 @@
     </div>
     <div class="google-button">
       <!-- :disabled="disabledBtn" -->
-      <van-button class="qr_code-button" block :loading="loadingBtn"  @click="eventClick">
+      <van-button class="qr_code-button" :disabled="disabledBtn" block :loading="loadingBtn" @click="eventClick">
         Continue
       </van-button>
     </div>
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, computed, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, computed, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { googleAuthSendEmail, bindAuth } from './../../../../apis/googleAuth';
 import HeaderBar from '@/components/headerBar/index.vue'
 import myInput from '@/components/myInput/index.vue'
 import codeInput from "@/components/CodeInput/index.vue"
 import { useI18n } from 'vue-i18n';
-// const { t } = useI18n();
 import { useVerificationStore, usePhysicalCardStore } from '@/store';
 export default defineComponent({
   name: 'googleAuthInfo',
@@ -35,9 +34,10 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const { t, locale } = useI18n();
+    const { proxy } = getCurrentInstance() as any
     const data = reactive({
       headerTitle: 'Google Authenticator',
-      emailCode: ''
     })
     const verificationStore = useVerificationStore();
     const physicalCardStore = usePhysicalCardStore();
@@ -57,22 +57,14 @@ export default defineComponent({
     const sendCode = async () => {
       time.value = 60 * 1000;
       if (time.value) {
-        const res = await googleAuthSendEmail();
-        if (res.data?.code === '0') {
-          const sucMsgIcon = new URL('@/assets/images/dark/suc_msg_icon.png', import.meta.url).href;
-          // window.$message?.success(t('googleCode.tip'), {
-          //   icon: () => h('img', { src: sucMsgIcon, className: 'message-icon' }),
-          // });
-        }
+        // const res = await googleAuthSendEmail();
+        // if (res.data?.code === '0') {
+          // proxy.$successToast(t('googleCode.tip'), '', 3000)
+        // } else {
+          // proxy.$failToast(res.data.msg, 'failToast', 3000)
+        // }
       }
     };
-    //点击按钮
-    const disabledBtn = computed(() => {
-      if (emailCode.value?.length === 6 && googleCode.value?.length === 6) {
-        return false;
-      }
-      return true;
-    });
     const eventClick = async () => {
       loadingBtn.value = true;
       try {
@@ -82,19 +74,21 @@ export default defineComponent({
         };
         const resData = await bindAuth(objData);
         if (resData.data?.code === '0') {
-          if (physicalCardStore.lossAuthGoogle) {
-            router.push({
-              path: '/reportLoss',
-            });
-          } else {
-            if (verificationStore.source !== 'active') {
-              verificationStore.setSource('cvv');
-            }
-            router.push({
-              path: '/home',
-              query: { type: 'google' },
-            });
-          }
+          router.go(-1)
+          return
+          // if (physicalCardStore.lossAuthGoogle) {
+          //   router.push({
+          //     path: '/reportLoss',
+          //   });
+          // } else {
+          //   if (verificationStore.source !== 'active') {
+          //     verificationStore.setSource('cvv');
+          //   }
+          //   router.push({
+          //     path: '/home',
+          //     query: { type: 'google' },
+          //   });
+          // }
         } else {
           // errorMessage(resData.data.msg);
           loadingBtn.value = false;
@@ -111,12 +105,21 @@ export default defineComponent({
       //console.log('3.-组件挂载到页面之后执行-------onMounted')
     })
     watchEffect(() => {
+
     })
+    //点击按钮
+   const disabledBtn = computed(() => {
+      if (emailCode.value?.length === 6 && googleCode.value?.length === 6) {
+        return false;
+      }
+      return true;
+    });
     return {
       ...toRefs(data),
       verificationStore,
       physicalCardStore,
       disabledInp,
+      emailCode,
       googleCode,
       time,
       loadingBtn,
@@ -155,22 +158,27 @@ export default defineComponent({
       height: 48px;
     }
   }
-:deep(.van-button--default){
-  background: transparent !important;
-  border: none;
-}
-:deep(.van-button--normal){
-  font-size:16px;
-}
-:deep(.van-button__text){
-  color: #191B1F !important; 
 
-}
+  :deep(.van-button--default) {
+    background: transparent !important;
+    border: none;
+  }
+
+  :deep(.van-button--normal) {
+    font-size: 16px;
+  }
+
+  :deep(.van-button__text) {
+    color: #191B1F !important;
+
+  }
+
   .google-button {
     width: calc(100% - 32px) !important;
     margin: 36px auto;
     padding-bottom: 20px;
-    .qr_code-button{
+
+    .qr_code-button {
       height: 48px;
       color: #191B1F !important;
       background: #58F287 !important;

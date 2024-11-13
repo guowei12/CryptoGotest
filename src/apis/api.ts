@@ -2,6 +2,8 @@ import http from "./https";
 
 const Public = {
   getFait: "/api/config/faitList", //查询支付的法币币种
+  getFaitLi:"/api/config/faitLimit", //查询法币币种详情
+  getLanguage:"/api/config/languageList", //查询支持的语言
   code: "/api/scanCode", //扫码
   order: "/api/createOrder"// 下单
 };
@@ -15,7 +17,7 @@ const wallet = {
   getToken: "/open/api/wallet/accept",
   balances: "/api/wallet/account/balances",//钱包账户余额
   history: '/api/wallet/account/history',//钱包充值赎回记录
-  walletRecordDetail: "/api/wallet/queryWalletRecordDetail",//钱包记录详情
+  walletRecordDetail: "/api/wallet/account/queryWalletRecordDetail",//钱包记录详情
   transHistory: "/api/wallet/account/transactionHistory",//钱包交易记录
 }
 const operate = {
@@ -48,13 +50,19 @@ const QRCode = {
 }
 
 
-
+export function getFaitList() {
+  return http.get(`${Public.getFait}`);
+}
+export function getFaitLimit(currency: any) {
+  return http.get(`${Public.getFaitLi}?currency=${currency}`);
+}
+export function getLanguageList() {
+  return http.get(`${Public.getLanguage}`);
+}
 export function scanCode(code: any, currency: any) {
   return http.get(`${Public.code}?code=${code}&currency=${currency}`);
 }
-export function getFaitList(token: any) {
-  return http.get(`${Public.getFait}?token=${token}`);
-}
+
 export function createOrder(data: any) {
   return http.post(`${Public.order}`, data);
 }
@@ -86,12 +94,12 @@ export function putWithdraw(data: any) {
   return http.post(`${operate.withdraw}`, data);
 }
 export function getBalances(faitCurrency: any) {
-  return http.get(`${wallet.balances}?faitCurrency=${faitCurrency}`);
+  return http.get(`${wallet.balances}?currency=${faitCurrency}`);
 }
 export function getHistory(pageNo: any, pageSize: any, type: any) {
   return http.get(`${wallet.history}?pageNo=${pageNo}&pageSize=${pageSize}&type=${type}`);
 }
-export function getWalletRecordDetail(id: string, type: number) {
+export function getWalletRecordDetail(id: string, type: string) {
   return http.get(`${wallet.walletRecordDetail}?id=${id}&type=${type}`);
 }
 export function getTransHistory(pageNo: number, pageSize: number) {

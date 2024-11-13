@@ -16,7 +16,7 @@
   <div :class="error ? 'error-tip-show error-tip' : 'error-tip'">{{ errorTip }}</div>
 </template>
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watch } from 'vue';
+import { defineComponent, ref, reactive, toRefs, nextTick, onBeforeMount, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { type CountdownProps, NCountdown } from 'naive-ui';
 export default defineComponent({
@@ -24,15 +24,66 @@ export default defineComponent({
   emits: ['input', 'update:data', 'blur', 'focus', 'click'],
   components: { NCountdown },
   props: {
-    data: '' as any,
-    error: false,
-    isCode: false,
-    height: '' as any,
-    width: '' as any,
-    maxlength: 200,
-    type: 'text',
-    phone: true,
-    clear: false,
+    data: {
+      type: [String],
+      value:'',
+      required: false,
+    },
+    error: {
+      type: [Boolean],
+      required: false,
+    },
+    isCode: {
+      type: [Boolean],
+      required: false,
+    },
+    placeholder: {
+      type: [String],
+      default: "",
+      required: false,
+    },
+    height: {
+      type: [Number, String],
+      default: "",
+      required: false,
+    },
+    width: {
+      type: [Number, String],
+      default: "",
+      required: false,
+    },
+    maxlength: {
+      type: [Number, String],
+      default: 200,
+      required: false,
+    },
+    minlength: {
+      type: [Number, String],
+      default: 200,
+      required: false,
+    },
+    type: {
+      type: [String],
+      default: 'text',
+      required: false,
+    },
+    errorTip: {
+      type: [String],
+      default: '',
+      required: false,
+    },
+    disabled: {
+      type: [Boolean],
+      required: false,
+    },
+    phone: {
+      type: [Boolean],
+      required: false,
+    },
+    clear: {
+      type: [Boolean],
+      required: false,
+    }
   },
   setup(props, { emit }) {
     const route = useRoute();
@@ -45,26 +96,26 @@ export default defineComponent({
       updateVal.value = '';
       emit('update:data', updateVal.value);
     };
-    let data = props.data;
+    
     let error = props.error;
     const active = ref(false);
     const updateVal = ref('');
     const changeVal = (event: any) => {
       if (props.type === 'street') {
-        updateVal.value = data.replace(/[^a-zA-Z0-9~`!@#$%^&*()_+=-{}|\|"':;>.?<,《》？「」：～｜、……¥—— ]/g, '');
+        updateVal.value = props.data.replace(/[^a-zA-Z0-9~`!@#$%^&*()_+=-{}|\|"':;>.?<,《》？「」：～｜、……¥—— ]/g, '');
         // nextTick(() => {
         //   // emit('update:data', data);
         // });
       } else if (props.type === 'digit' || props.type === 'code') {
-        updateVal.value = data.replace(/[^\d]/g, '');
+        updateVal.value = props.data.replace(/[^\d]/g, '');
         // emit('update:data', data);
       } else if (props.type === 'city' || props.type === 'name') {
-        updateVal.value = data.replace(/[^a-zA-Z]/g, '');
+        updateVal.value = props.data.replace(/[^a-zA-Z]/g, '');
         // emit('update:data', data);
       } else if (props.type === 'address') {
-        updateVal.value = data.replace(/[^a-zA-Z\s~`!@#$%^&*()_+=\-{}|\:"';>.?<,]/g, '');
+        updateVal.value = props.data.replace(/[^a-zA-Z\s~`!@#$%^&*()_+=\-{}|\:"';>.?<,]/g, '');
       } else {
-        updateVal.value = data;
+        updateVal.value = props.data;
       }
 
       nextTick(() => {
@@ -82,9 +133,9 @@ export default defineComponent({
     };
 
     const handSendCode = (event: any) => {
-      if (props.phone) {
+      // if (props.phone) {
         active.value = true;
-      }
+      // }
       emit('click', event);
     };
 
@@ -103,12 +154,12 @@ export default defineComponent({
       //console.log('3.-组件挂载到页面之后执行-------onMounted')
     })
 
-    watch(
-      () => props.data,
-      (val) => {
-        data = props.data;
-      }
-    );
+    // watch(
+    //   () => props.data,
+    //   (val) => {
+    //     data = val;
+    //   }
+    // );
 
 
     watch(
@@ -118,7 +169,7 @@ export default defineComponent({
       }
     );
     return {
-      data,
+      active,
       ...props,
       updateChange,
       renderCountdown,
