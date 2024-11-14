@@ -59,8 +59,8 @@ export function getFaitLimit(currency: any) {
 export function getLanguageList() {
   return http.get(`${Public.getLanguage}`);
 }
-export function scanCode(code: any, currency: any) {
-  return http.get(`${Public.code}?code=${code}&currency=${currency}`);
+export function scanCode(data: any) {
+  return http.get(`${Public.code}?code=${data.code}&currency=${data.currency}`);
 }
 
 export function createOrder(data: any) {
@@ -76,7 +76,7 @@ export function getTokenInfo(data: any) {
   return http.post(`${login.tokenIn}`, data);
 }
 export function initWattle() {
-  return http.get(`${login.inWattle}`);
+  return http.post(`${login.inWattle}`);
 }
 export function getAddress(token: any, network: any) {
   return http.get(`${operate.address}?token=${token}&network=${network}`);

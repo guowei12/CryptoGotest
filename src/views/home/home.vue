@@ -128,7 +128,7 @@ export default defineComponent({
         },
       ],
       token: '' as any,
-      userInfo: {} as any,
+      userInfo: {} as any, //tg user
       userBalances: {
         faitIcon: '$',
         balances: '0',
@@ -142,20 +142,30 @@ export default defineComponent({
       async onTokenInfo(token: any, type: any) {
         let res = await getTokenInfo({ token })
         if (res.data.code == 0) {
-          // token ? window.localStorage.setItem('user_token', token) : window.localStorage.setItem('user_token', '')
           if (res.data.model) {
             let tokenObj = res.data.model
             if (tokenObj.email) {
+              
               let user = {
                 email: tokenObj.email,
                 aeonUserNo:tokenObj.aeonUserNo
-                // model: token
               }
               if (tokenObj.tgUserInfo) {
                 data.userInfo = tokenObj.tgUserInfo
               }
+              if(tokenObj.aeonUserNo){
+
+              }else{
+               let rest = await initWattle()
+               if(rest.data.code == 0){
+
+               } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+                return
+              }
+              }
+             
               setToken(token)
-              // window.localStorage.setItem('user_token', token)
               window.localStorage.setItem('user', JSON.stringify(user))
               if (tokenObj.language) {
                 window.localStorage.setItem('locale', tokenObj.language)
@@ -164,6 +174,8 @@ export default defineComponent({
               }
 
             } else {
+              removeToken(token)
+              // window.localStorage.setItem('user','')
               router.replace({ path: '/signin' })
             }
             data.loading = false
@@ -256,7 +268,7 @@ export default defineComponent({
       couponStore.SET_ORDERDETAIL({})
     })
     onMounted(async () => {
-      let stoken = getToken() //window.localStorage.getItem('user_token') ? window.localStorage.getItem('user_token') : null
+      let stoken = getToken() 
       data.token = route.query.token
       data.loading = true
       if (stoken || data.token) {

@@ -83,7 +83,6 @@ export default defineComponent({
           // model: returnData.data.model
         }
         setToken(returnData.data.model)
-        // window.localStorage.setItem('user_token', returnData.data.model)
         window.localStorage.setItem('user', JSON.stringify(user))
         router.push('/');
         return

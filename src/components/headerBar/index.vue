@@ -9,9 +9,9 @@
           <img class="header-default-img" :src="nowCountry.img" alt="" srcset="">
           <div class="header-default-text">{{ nowCountry.name }}</div>
         </div>
-        <img :class="countryShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
+        <img  :class="countryShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
           srcset="">
-        <div :class="!countryShow ? 'country-list-show' : 'country-list'" v-if="countryShow">
+        <div v-if="countryShow&&qrCountryShow" :class="!countryShow ? 'country-list-show' : 'country-list'" >
           <div @click.stop="setCountry(item)" :class="nowCountry.name == item.name ? 'country-li-set' : ''"
             class="country-li" v-for="item, index in countryList" :key="index">
             <img class="country-li-img" :src="item.img" alt="" srcset="">
@@ -117,6 +117,10 @@ export default defineComponent({
     },
     qrCode: {
       type: [Number, String, Boolean],
+      required: false,
+    },
+    qrCountryShow: {
+      type: [Boolean],
       required: false,
     },
     balance: {

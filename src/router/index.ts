@@ -121,6 +121,11 @@ const router = createRouter({
       component: () => import('../views/orderDetail/payMent/failed/index.vue')    
     },
     {
+      path: '/timeOut',
+      name: 'timeOut',
+      component: () => import('../views/orderDetail/payMent/timeOut/index.vue')    
+    },
+    {
       path: '/payWithdraw',
       name: 'payWithdraw',
       component: () => import('../views/orderDetail/payWithdraw/index.vue')    

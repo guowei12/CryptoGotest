@@ -1,6 +1,6 @@
 <template>
   <div :class="showScanned ? 'Qr-container-scanned' : 'Qr-container'">
-    <HeaderBar :qrCode="true"></HeaderBar>
+    <HeaderBar v-if="!showScanned" :qrCode="true" ></HeaderBar>
     <div class="top-img" v-if="!showScanned">
       <img src="@/assets/images/qr/aeon-logo.png" alt="">
     </div>
@@ -116,6 +116,7 @@ export default defineComponent({
     const onBtn = {
       onDecodeHandler: (res: any) => {
         proxy.$closeToast()
+        console.log(res)
         if (res.code && res.currency) {
           data.authCode = res
           data.showScanned = false

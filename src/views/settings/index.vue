@@ -196,7 +196,6 @@ export default defineComponent({
     const getUser = async (token: any) => {
       let res = await getTokenInfo({ token })
       if (res.data.code == 0) {
-        // token ? window.localStorage.setItem('user_token', token) : window.localStorage.setItem('user_token', '')
         if (res.data.model) {
           data.userInfo = res.data.model
         }

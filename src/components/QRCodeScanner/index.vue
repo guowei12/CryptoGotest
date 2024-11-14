@@ -12,9 +12,9 @@
           <!-- <button class="close-view" >X</button> -->
           <div class="qr-scanner">
             <div class="qrImg-box">
-             <img class="qrImg-box-img" v-for="item, index in qrImgList" :src="item" :key="index" alt="" srcset="">
+             <!-- <img class="qrImg-box-img" v-for="item, index in qrImgList" :src="item" :key="index" alt="" srcset=""> -->
             </div>
-            <img class="a-top-left" src="@/assets/images/qr/top-left.png" alt="">
+              <img class="a-top-left" src="@/assets/images/qr/top-left.png" alt="">
               <img class="a-top-right" src="@/assets/images/qr/top-right.png" alt="">
               <img class="a-btm-left" src="@/assets/images/qr/btm-left.png" alt="">
               <img class="a-btm-right" src="@/assets/images/qr/btm-right.png" alt="">
@@ -23,11 +23,11 @@
               <div class="angle"></div>
             </div>
           </div>
-          <div class="reader-btn">
+          <!-- <div class="reader-btn">
             A pioneering Payment Association uniting the entire payment ecosystem to seamlessly bridge crypto and
             real-world
             transactions.
-          </div>
+          </div> -->
         </div>
       </template>
     </QrStream>
@@ -110,7 +110,7 @@ defineExpose({ qrcodeData })
   .reader-header {
     width: 100%;
     position: absolute;
-    top: 68px;
+    top: 28px;
     text-align: center;
     height: 48px;
     font-size: 18px;

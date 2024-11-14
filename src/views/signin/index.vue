@@ -30,6 +30,7 @@ import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import verificationCode from './components/verificationCode/index.vue'
 import { sendEmail } from '@/apis/api'
+import { json } from 'stream/consumers';
 
 export default defineComponent({
     name: 'Signin',
@@ -85,7 +86,7 @@ export default defineComponent({
                     })
                     data.nextShow = true
                     return
-                }else{
+                } else {
 
                 }
 
@@ -97,7 +98,7 @@ export default defineComponent({
                 email: data.formData.email
             }
             let res = await sendEmail(params)
-            if (res.data.code == 0 ) {
+            if (res.data.code == 0) {
                 localStorage.setItem('countdown', '60')
                 return true
             } else {
@@ -108,6 +109,10 @@ export default defineComponent({
         onBeforeMount(() => {
         })
         onMounted(() => {
+            let user = JSON.parse(localStorage.getItem('user') as any)
+            if (user?.email) {
+                data.formData.email = user.email
+            }
         })
         watchEffect(() => {
         })
