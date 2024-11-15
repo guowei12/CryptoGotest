@@ -1,5 +1,6 @@
 .timeOut-box {
     font-family: 'sf-pro-display_regular_400';
+
     .timeOut-con {
         font-family: 'sf-pro-display_regular_400';
         color: #191B1F;
@@ -10,53 +11,100 @@
         margin: 0 auto;
 
         .status-icon {
-            width: 102px;
-            height: 102px;
+            width: 160px;
+            height: 160px;
             object-fit: contain;
-            margin-top: 32px;
+            margin-top: 8px;
         }
 
         .timeOut-title {
-            font-family: 'sf-pro-display_bold_700';
-            font-size: 24px;
-            line-height: 28.6px;
-            margin-top: 8px;
-            color: #F53F3F;
+            font-family: 'sf-pro-display_medium_500';
+            font-size: 16px;
+            line-height: 19.2px;
+            margin-top: 12px;
         }
 
     }
-    .timeOut-list{
-        .timeOut-li{
+
+    .timeOut-list {
+        width: calc(100% - 32px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 12px;
+        background: #FFFFFF;
+        margin: 16px auto;
+
+        .timeOut-li {
+            font-size: 14px;
+            font-family: 'sf-pro-display_medium_500';
+            width: calc(100% - 32px);
+            height: 45px;
+            line-height: 45px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+        .timeOut-li-title{
+            color: #737A86;
+        }
+        .timeOut-li-text{
+            display: flex;
+            align-items: center;
+            .crypto-icon{
+                width: 16px;
+                height: 16px;
+                margin-right: 4px;
+            }
+            .timeOut-li-text-font{
+                font-family: 'sf-pro-display_bold_700';
+                color: #1A72F6;
+                margin-right: 8px;
+            }
+        }
+
+        .line-t {
+            border-top:1px solid #E6E8EB;
+            border-bottom:1px solid #E6E8EB;
+        }
     }
-    .timeOut-payment{
+
+    .timeOut-con-text {
+        font-size: 12px;
+        line-height: 14.4px;
+        width: 284px;
+        margin: 12px auto;
+    }
+
+    .timeOut-payment {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        margin: 32px 16px 0;
+        margin: 16px 16px 0;
         background: #F53F3F1A;
         border-radius: 12px;
-        .info-circle{
+
+        .info-circle {
             width: 20px;
             height: 20px;
             object-fit: cover;
-            margin:12px 12px 0 12px;
+            margin: 12px 12px 0 12px;
         }
-        .timeOut-payment-content{
+
+        .timeOut-payment-content {
             color: #191B1F;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             margin: 12px 12px 12px 0;
-            .timeOut-payment-title{
+
+            .timeOut-payment-title {
                 font-family: 'sf-pro-display_medium_500';
                 font-size: 16px;
                 line-height: 19.2px;
             }
-            .timeOut-payment-text{
+
+            .timeOut-payment-text {
                 word-break: break-all;
                 text-align: left;
                 font-size: 14px;
@@ -65,7 +113,8 @@
             }
         }
     }
-    .timeOut-btn{
+
+    .timeOut-btn {
         width: 100%;
         font-family: 'sf-pro-display_medium_500';
         font-size: 16px;
@@ -75,10 +124,11 @@
         align-items: center;
         justify-content: center;
         position: fixed;
-        bottom:28px;
-        left: 50%; 
+        bottom: 28px;
+        left: 50%;
         transform: translate(-50%, 0);
-        .timeOut-btn-box{
+
+        .timeOut-btn-box {
             position: relative;
             width: calc(100% - 32px);
             display: flex;
@@ -88,10 +138,11 @@
             text-align: center;
             height: 48px;
             border-radius: 12px;
-            background: #58F287; 
+            background: #58F287;
         }
+
         timeOut-btn-box:hover:after {
-            width:100%;
+            width: 100%;
             background: rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             content: '';
@@ -103,9 +154,9 @@
             z-index: 2;
             cursor: pointer;
         }
-        
+
         .timeOut-btn-box:active:after {
-            width:100%;
+            width: 100%;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             content: '';
@@ -119,10 +170,11 @@
         }
     }
 }
+
 @media only screen and (min-width: 700px) {
-    .timeOut-btn{
-        .timeOut-btn-box{
+    .timeOut-btn {
+        .timeOut-btn-box {
             width: calc(100% - 32px);
         }
-    }  
+    }
 }

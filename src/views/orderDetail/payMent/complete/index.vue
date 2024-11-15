@@ -110,11 +110,13 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import html2canvas from 'html2canvas';
+import { getOrderDetail } from "@/apis/api"
+
 
 export default defineComponent({
     name: 'completeResult',
@@ -122,6 +124,7 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const { proxy } = getCurrentInstance() as any
         const data = reactive({
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId: '661bbbc10cf7f20007e4ff48',
@@ -129,7 +132,9 @@ export default defineComponent({
             amount: '20,000',
             currency: 'VND',
             time: '2024-04-14 18:19 (UTC+8)',
-            watermark: new URL('@/assets/images/status/watermark-icon.png', import.meta.url).href
+            watermark: new URL('@/assets/images/status/watermark-icon.png', import.meta.url).href,
+            orderNo: '' as any,
+            orderDetail: {} as any
         })
         const imageContainer = ref(null) as any;
         const imageUrl = ref(null) as any;
@@ -192,8 +197,18 @@ export default defineComponent({
         }
         onBeforeMount(() => {
         })
-        onMounted(() => {
+        onMounted( async () => {
+            data.orderNo = route.query.orderNo
+            await getOrder()
         })
+        const getOrder = async () => {
+            let res = await getOrderDetail(data.orderNo)
+            if (res.data.code == 0) {
+                data.orderDetail = res.data.model
+            } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+            }
+        }
         const backHome = () => {
             router.replace({
                 path: '/'

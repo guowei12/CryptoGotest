@@ -29,26 +29,6 @@ const operate = {
   withdraw: "/api/wallet/operate/withdraw" //提现
 }
 
-// 订单
-const order = {
-  getInfo: "/open/api/order/info",//查询订单信息
-  getPayInfo: "/open/api/findPayInfo",//查询支付信息
-  getPayStatus: "/open/api/queryPayStatus",//查询支付状态
-  cancelOrder: "/open/api/cancel",//支付取消
-  postPay: "/open/api/pay"//支付
-}
-// 商户
-const merchant = {
-  getMerchant: "/api/merchant/findMerchantInfo",//获取商户信息
-  getFindPayType: "/open/api/findPayType",//获取商户支付方式
-  postPayment: "/open/api/payment",//商户支付
-  getMeshUpdateStatus: "open/api/meshUpdateStatus",//查询MESH状态
-  cancelPay: "/open/api/meshCancel",//mesh手动取消
-}
-const QRCode = {
-  getInfor: "/api/merchant/findMerchantByAppid",
-  postQrPay: "/open/api/createOrder"
-}
 
 
 export function getFaitList() {

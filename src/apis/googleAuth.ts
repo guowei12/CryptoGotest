@@ -27,10 +27,10 @@ export function googleAuthSendEmail() {
  */
 interface Data {
   emailCode: string;
-  googleCode: string;
+  googleAuthCode: string;
 }
 export function bindAuth(data: Data) {
-  return http.get(`/api/card/googleAuth/bindAuth?emailCode=${data.emailCode}&googleCode=${data.googleCode}`);
+  return http.post(`/api/card/googleAuth/bindAuth`,data);
 }
 
 /**

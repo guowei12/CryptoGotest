@@ -22,7 +22,7 @@
 <script lang='ts'>
 import { defineComponent, ref, getCurrentInstance, reactive, toRefs, computed, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { googleAuthSendEmail, bindAuth } from './../../../../apis/googleAuth';
+import { googleAuthSendEmail, bindAuth } from '@/apis/googleAuth';
 import HeaderBar from '@/components/headerBar/index.vue'
 import myInput from '@/components/myInput/index.vue'
 import codeInput from "@/components/CodeInput/index.vue"
@@ -73,7 +73,7 @@ export default defineComponent({
       try {
         let objData = {
           emailCode: emailCode.value,
-          googleCode: googleCode.value,
+          googleAuthCode: googleCode.value,
         };
         const resData = await bindAuth(objData);
         if (resData.data?.code === '0') {

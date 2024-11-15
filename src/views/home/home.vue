@@ -197,6 +197,8 @@ export default defineComponent({
         let res = await getBalances(currency)
         if (res.data.code == 0) {
           data.userBalances = res.data.model
+          let list = data.userBalances.tropertyList
+          localStorage.setItem('tokenList',JSON.stringify(list))
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }

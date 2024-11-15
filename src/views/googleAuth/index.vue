@@ -61,7 +61,7 @@ export default defineComponent({
         if (res.data?.code === '0' && res.data?.model) {
           secret.value = res.data?.model?.secret;
           qrCodeUrl.value = res.data?.model?.qrCodeUrl;
-          initQrcode(`otpauth://totp/Crypto Card?secret=${secret.value}`);
+          initQrcode(`otpauth://totp/AEON QRpay?secret=${secret.value}`);
         }
       } catch (err) {
         console.log('err');

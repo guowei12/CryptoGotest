@@ -37,10 +37,11 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
+import { useMain } from '@/store';
 
 export default defineComponent({
     name: 'trFailedResult',
@@ -48,16 +49,22 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const couponStore = useMain();
         const data = reactive({
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId:'661bbbc10cf7f20007e4ff48',
             total:'20,000',
             currency:'VND',
-            time:'2024-04-14 18:19 (UTC+8)'
+            time:'2024-04-14 18:19 (UTC+8)',
+            detail: {} as any
         })
         onBeforeMount(() => {
         })
         onMounted(() => {
+            data.detail = couponStore.$state.orderDetail
+        })
+        onActivated(() => {
+            data.detail = couponStore.$state.orderDetail
         })
         watchEffect(() => {
         })

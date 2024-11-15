@@ -37,7 +37,7 @@ export default defineComponent({
       required: false,
     },
     autofocus: {
-      type: [Number, String, Boolean],
+      type: [Boolean],
       required: false,
     },
     keyboard: {
@@ -91,10 +91,13 @@ export default defineComponent({
         data.codeValue = '';
         isReadonly.value = true;
       }
-      // console.log(event,data.codeValue)
+      console.log(event,data.codeValue)
       if (data.codeValue) {
         data.codeValue = data.codeValue.replace(/[^\d]/g, '');
         emit('update:data', data.codeValue);
+      }
+      if (data.codeValue && data.codeValue.length >= 6 && props.keyboard) {
+        emit('submitCode', data.codeValue?.slice(0, 6));
       }
       if (data.codeValue && data.codeValue.length >= 6 && !props.keyboard) {
         emit('submitCode', data.codeValue?.slice(0, 6));
@@ -139,7 +142,7 @@ export default defineComponent({
     watch(
       () => data.codeValue,
       (newVal) => {
-        if (newVal?.length === 6 && props.type === 'phy' && !props.keyboard) {
+        if (newVal?.length === 6 && props.keyboard) {
           emit('submitCode', data.codeValue?.slice(0, 6));
         }
       }

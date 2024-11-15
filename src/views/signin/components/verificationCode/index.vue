@@ -70,6 +70,7 @@ export default defineComponent({
       }
     }
     const checkCodeByEmail = async (val: string | any[]) => {
+      console.log('aaa')
       if (!val || val.length < 6) return;
       // 登录
       let params = {

@@ -22,8 +22,8 @@
                 <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index"
                     @click="goDetail(item)">
                     <div class="QRPay-list-li-left">
-                        <img v-if="activeTab == 'DEPOSIT'" class="shopping-img" :src="img2" alt="" srcset="">
-                        <img v-else-if="activeTab == 'DEPOSIT' && item.type == 2" class="shopping-img" :src="img2"
+                        <img v-if="activeTab == 'DEPOSIT'&& item.type != 'REFUND'" class="shopping-img" :src="img2" alt="" srcset="">
+                        <img v-else-if="activeTab == 'DEPOSIT' && item.type == 'REFUND'" class="shopping-img" :src="img1"
                             alt="" srcset="">
                         <img v-else class="shopping-img" :src="img3" alt="" srcset="">
                         <div class="QRPay-list-con">

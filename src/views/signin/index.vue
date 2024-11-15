@@ -29,8 +29,8 @@ import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMou
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import verificationCode from './components/verificationCode/index.vue'
-import { sendEmail } from '@/apis/api'
-import { json } from 'stream/consumers';
+import { sendEmail, getTokenInfo } from '@/apis/api'
+import { getToken } from '@/utils/token';
 
 export default defineComponent({
     name: 'Signin',
@@ -106,9 +106,17 @@ export default defineComponent({
                 return false
             }
         }
-        onBeforeMount(() => {
+        onBeforeMount(async () => {
+            let stoken = getToken()
+            let res = await getTokenInfo({ stoken })
+            if (res.data.code == 0) {
+                router.push({ path: '/' })
+            } else {
+
+            }
         })
         onMounted(() => {
+
             let user = JSON.parse(localStorage.getItem('user') as any)
             if (user?.email) {
                 data.formData.email = user.email

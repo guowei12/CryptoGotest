@@ -34,7 +34,8 @@
           <div class="withdraw-detail-con-title">Withdraw amount</div>
           <div class="withdraw-detail-con-text">
             <div class="withdraw-detail-con-li-left">
-              <input type="number" @input="calculateRate" class="amount-text" v-model="formData.amount" placeholder="At least 1" />
+              <input type="number" @input="calculateRate" class="amount-text" v-model="formData.amount"
+                placeholder="At least 1" />
             </div>
             <div class="withdraw-detail-con-li-right">
               <img class="currency-icon" :src="currencyUrl" alt="">
@@ -57,7 +58,7 @@
         <div>{{ Number(formData.amount * freeList.networkFee) }} {{ currency }}</div>
       </div>
     </div>
-    <div class="withdraw-detail-btn" @click="backHome">
+    <div :style="!nexShow ? 'opacity: 0.5' : ''" class="withdraw-detail-btn" @click="onNext">
       Withdraw
     </div>
     <van-action-sheet v-model:show="networkShow">
@@ -89,7 +90,7 @@
         </div>
       </div>
     </van-action-sheet>
-    <showModel :showModal="showModal" @closeModel="closeDialog"></showModel>
+    <showModel :aeonUser="aeonUser" :showModal="showModal" @closeModel="closeDialog"></showModel>
   </div>
 </template>
 
@@ -125,6 +126,7 @@ export default defineComponent({
       currency: '' as any,
       currencyUrl: '' as any,
       nowNetwork: '' as any,
+      aeonUser: {} as any,
       formData: {
         amount: '',
         address: '',
@@ -135,7 +137,7 @@ export default defineComponent({
         email: false
       } as any,
       freeList: {
-        networkFee:0
+        networkFee: 0
       } as any,
       faitObj: {} as any
     })
@@ -182,10 +184,30 @@ export default defineComponent({
         data.nowChainType = items.chainType
         await infoMethods.getFree(data.currency, data.nowNetwork)
         data.networkShow = false
-
       },
-      backHome() {
-        router.replace({ path: '/' })
+      onNext() {
+        // if (!nexShow) {
+        //   if(!data.formData.address){
+        //     proxy.$failToast('Please enter the address！', 'failToast', 3000)
+        //   }else if(data.formData.amount == 0 || !data.formData.amount){
+        //     proxy.$failToast('Please enter the amount！', 'failToast', 3000)
+        //   }
+        //   return
+        // }
+        // if (data.formData.address && data.formData.amount > 0) {
+          data.aeonUser = {
+            address: data.formData.address,
+            amount: data.formData.amount,
+            network: data.nowNetwork,
+            token: data.currency
+          }
+          showModal.value = true
+        // } else {
+          // proxy.$failToast('', 'failToast', 3000)
+          // return
+        // }
+
+        // router.replace({ path: '/' })
       },
       async findNetwork(token: any) {
         let res = await getNetwork(token)
@@ -250,11 +272,18 @@ export default defineComponent({
       }
     }
     const quantityAmount = computed(() => {
-      if(data.formData.amount > 0 && data.balancesAmount > 0){
+      if (data.formData.amount > 0 && data.balancesAmount > 0) {
         let amount = data.formData.amount - data.formData.amount * data.freeList.networkFee
-        return   new Intl.NumberFormat().format(amount); 
+        return new Intl.NumberFormat().format(amount);
       }
       return 0
+    })
+    const nexShow = computed(() => {
+      if (data.nowNetwork && data.formData.amount > 0 && data.formData.address && !data.formData.formError) {
+        return true
+      } else {
+        false
+      }
     })
     onBeforeMount(() => {
     })
@@ -297,6 +326,7 @@ export default defineComponent({
       showModal,
       ...infoMethods,
       quantityAmount,
+      nexShow,
       FormValidClone,
       FormValidation,
       calculateRate,

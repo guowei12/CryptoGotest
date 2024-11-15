@@ -24,7 +24,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, nextTick, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, reactive, nextTick, toRefs, onBeforeMount, onMounted, onDeactivated, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import headerBar from '@/components/headerBar/index.vue'
 import LottieAni from "@/components/lottie-web/index.vue";
@@ -38,7 +38,11 @@ export default defineComponent({
         const router = useRouter();
         const data = reactive({
             headerLogo: new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href,
-            headerTitle: ''
+            headerTitle: '',
+            orderNo: '' as any,
+            orderDetail: {} as any,
+            statusList: ['SUCCESS', 'FAIL', 'TIMEOUT', 'CLOSE'],
+            timer: null as any
         })
         const onLoading = () => {
             const progressBar = document.getElementById('progress') as any;
@@ -53,26 +57,68 @@ export default defineComponent({
             })
 
         }
-        const getOrder = async (orderNo: any) => {
-            let res = await getOrderDetail(orderNo)
+        const goUrl = (status: any) => {
+            switch (status) {
+                case 'SUCCESS':
+                    router.replace({ path: '/complete', query: { orderNo: data.orderDetail.num } })
+                    break;
+                case 'FAIL':
+                    router.replace({ path: '/failed', query: { orderNo: data.orderDetail.num } })
+                    break;
+                default:
+                    router.replace({ path: '/timeOut', query: { orderNo: data.orderDetail.num } })
+                    break;
+            }
+        }
+        const getOrder = async () => {
+            let res = await getOrderDetail(data.orderNo)
             if (res.data.code == 0) {
-                
+                data.orderDetail = res.data.model
+                if (data.statusList.includes(data.orderDetail.status)) {
+                    goUrl(data.orderDetail.status)
+                }
+            } else {
+
             }
         }
         onBeforeMount(() => {
+            clearInterval(data.timer);
         })
         onMounted(async () => {
             onLoading()
-            let orderNo = route.query.orderNo
-            orderNo ? await getOrder(orderNo):''
+            data.orderNo = route.query.orderNo
+            await getOrder()
+            data.timer = setInterval(() => {
+                getOrder()
+            }, 6000);
         })
-        watchEffect(() => {
-        })
+        onDeactivated(() => {
+            if (data.timer) {
+                clearInterval(data.timer);
+            }
+        });
+        watch(
+            () => data.orderDetail?.status,
+            (newVal) => {
+                if (
+                    data.orderDetail?.status == "SUCCESS" ||
+                    data.orderDetail?.status == "TIMEOUT" ||
+                    data.orderDetail?.status == "FAIL" ||
+                    data.orderDetail?.status == "CLOSE"
+                ) {
+                    // console.log(newVal)
+                    nextTick(() => {
+                        clearInterval(data.timer);
+                    });
+                }
+            }
+        )
         return {
             ...toRefs(data),
             lottieData,
             onLoading,
-            getOrder
+            getOrder,
+            goUrl
         };
     },
 })
