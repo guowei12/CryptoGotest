@@ -23,7 +23,8 @@ export const useMain = defineStore('main', {
         currency: '',
         address: '',
         url:''
-      }
+      },
+      singleCurrency:{}
     }
   },
   // 相当于计算属性
@@ -54,6 +55,9 @@ export const useMain = defineStore('main', {
     },
     SET_WITHDRAW(e) {
       this.withdraw = e
+    },
+    SET_SINGLECURRENCY(e) {
+      this.singleCurrency = e
     }
   },
   // 额外配置

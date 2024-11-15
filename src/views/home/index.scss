@@ -1,34 +1,48 @@
-.QRPay-container{
+.QRPay-container {
     background: #F7F7F7;
     font-family: 'sf-pro-display_regular_400';
+
+    .QRPay-loading {
+        :deep(.van-overlay) {
+            // border-radius: 16px 16px 0 0;
+            background: transparent !important;
+        }
+    }
+
 }
-.fLoading-box{
+
+.fLoading-box {
     z-index: 1000;
 }
-.QRPay-con{
+
+.QRPay-con {
     margin: 0 16px;
 }
-.QRPay-balance{
+
+.QRPay-balance {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top:12px;
-    .QRPay-balance-title{
+    margin-top: 12px;
+
+    .QRPay-balance-title {
         font-size: 14px;
         line-height: 17px;
         display: flex;
         align-items: center;
         color: #737A86;
         font-family: 'sf-pro-display_medium_500';
-        .QRPay-balance-title-img{
+
+        .QRPay-balance-title-img {
             width: 16px;
             height: 16px;
             object-fit: cover;
             margin-left: 6px;
         }
     }
-    .QRPay-balance-number{
+
+    .QRPay-balance-number {
         font-size: 36px;
         line-height: 43px;
         color: #191B1F;
@@ -36,7 +50,8 @@
         margin-top: 6px;
     }
 }
-.QRPay-balance-btn{
+
+.QRPay-balance-btn {
     height: 36px;
     background: #FFFFFF;
     border-radius: 50px;
@@ -48,16 +63,19 @@
     align-items: center;
     justify-content: center;
     margin-top: 16px;
-    .QRPay-balance-btn-img{
+
+    .QRPay-balance-btn-img {
         width: 24px;
         height: 24px;
         margin-right: 8px;
     }
 }
-.QRPay-change-con{
-    margin:  0 16px;
+
+.QRPay-change-con {
+    margin: 0 16px;
 }
-.QRPay-change-tran{
+
+.QRPay-change-tran {
     display: flex;
     font-size: 16px;
     line-height: 36px;
@@ -66,12 +84,14 @@
     height: 36px;
     margin-top: 20px;
 }
-.QRPay-change{
+
+.QRPay-change {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 36px;
-    .QRPay-change-btn{
+
+    .QRPay-change-btn {
         cursor: pointer;
         width: 50%;
         font-size: 14px;
@@ -85,7 +105,8 @@
         transition: background-color 0.3s;
         border-radius: 12px;
     }
-    .QRPay-change-btn-set{
+
+    .QRPay-change-btn-set {
         flex-flow: 1;
         flex-shrink: 0;
         font-size: 16px;
@@ -100,10 +121,12 @@
         border-radius: 12px;
         transition: background-color 0.3s;
     }
-    .btn-class{
+
+    .btn-class {
         position: relative;
     }
-    .QRPay-change-btn:hover{
+
+    .QRPay-change-btn:hover {
         .btn-class::after {
             background: rgba(0, 0, 0, 0.1);
             border-radius: 12px;
@@ -117,7 +140,8 @@
             cursor: pointer;
         }
     }
-    .QRPay-change-btn:active{
+
+    .QRPay-change-btn:active {
         .btn-class::after {
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
@@ -132,44 +156,49 @@
         }
     }
 }
-.QRPay-list{
+
+.QRPay-list {
     font-size: 14px;
     font-family: 'sf-pro-display_medium_500';
-    color:#191B1F;
+    color: #191B1F;
     border-radius: 12px;
     background: #FFFFFF;
     z-index: 10;
     margin-bottom: 96px;
- 
-    .QRPay-list-li{
+
+    .QRPay-list-li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 13px 16px;
-        .shopping-img{
+
+        .shopping-img {
             width: 24px;
             height: 24px;
             object-fit: cover;
         }
-        .currency-img{
+
+        .currency-img {
             width: 32px;
             height: 32px;
             object-fit: cover;
             border-radius: 50%;
         }
 
-        .QRPay-list-con{
+        .QRPay-list-con {
             display: flex;
             flex-direction: column;
             margin-left: 16px;
-            .QRPay-list-con-name{
+
+            .QRPay-list-con-name {
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 font-size: 14px;
                 line-height: 20px;
             }
-            .QRPay-list-con-time{
+
+            .QRPay-list-con-time {
                 flex-shrink: 0;
                 font-size: 12px;
                 font-family: 'sf-pro-display_regular_400';
@@ -178,33 +207,39 @@
                 margin-top: 2px;
             }
         }
-        .QRPay-list-li-left{
+
+        .QRPay-list-li-left {
             display: flex;
             align-items: center;
         }
-        .QRPay-list-right{
+
+        .QRPay-list-right {
             font-size: 12px;
             line-height: 16px;
             display: flex;
-            flex-direction: column; 
-            .QRPay-list-con-num{
+            flex-direction: column;
+
+            .QRPay-list-con-num {
                 text-align: end;
                 font-size: 14px;
                 line-height: 20px;
             }
-            .QRPay-list-con-status{
+
+            .QRPay-list-con-status {
                 text-align: end;
                 font-size: 12px;
                 line-height: 16px;
                 color: #737A86;
             }
-            .completed-color{
+
+            .completed-color {
                 font-family: 'sf-pro-display_regular_400';
                 text-align: right;
                 color: #00B42A;
                 margin-top: 2px;
             }
-            .failed-color{
+
+            .failed-color {
                 font-family: 'sf-pro-display_regular_400';
                 text-align: right;
                 color: #F53F3F;
@@ -213,31 +248,36 @@
         }
     }
 }
-.no-data{
+
+.no-data {
     margin-top: 57px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
-    .no-data-img{
+    justify-content: center;
+
+    .no-data-img {
         width: 101px;
         height: 114.49px;
     }
-    .no-data-title{
+
+    .no-data-title {
         font-size: 14px;
         line-height: 16.8px;
         color: #191B1F;
         font-family: 'sf-pro-display_medium_500';
-        margin:22.5px 0 6px 0;
+        margin: 22.5px 0 6px 0;
     }
-    .no-data-text{
+
+    .no-data-text {
         font-size: 12px;
         line-height: 14.4px;
         color: #737A86;
     }
 }
+
 @media only screen and (min-width: 700px) {
-    .QRPay-container{
+    .QRPay-container {
         // width: 375px;
     }
 }

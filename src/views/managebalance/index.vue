@@ -19,7 +19,7 @@
 
       </div>
       <div class="QRPay-list" v-if="userBalances?.tropertyList">
-        <div class="QRPay-list-li" v-for="(item, index) in userBalances.tropertyList" :key="index" @click="goCurrency(item.name)">
+        <div class="QRPay-list-li" v-for="(item, index) in userBalances.tropertyList" :key="index" @click="goCurrency(item.name,item.logoUrl)">
           <div class="QRPay-list-li-left">
             <img class="currency-img" :src="item.logoUrl" alt="" srcset="">
             <div class="QRPay-list-con">
@@ -93,13 +93,18 @@ export default defineComponent({
       goUrl(url: any) {
         router.push({ path: '/' + url })
       },
-      goCurrency(currency: any) {
+      goCurrency(currency: any,logoUrl: any) {
+        couponStore.SET_SINGLECURRENCY({
+          currency:currency,
+          logoUrl:logoUrl
+        })
         router.push({ path: '/siCurrency', query: { currency: currency } })
       },
     }
     onBeforeMount(() => {
       couponStore.SET_WITHDRAW({})
       couponStore.SET_DEPOSIT({})
+      couponStore.SET_SINGLECURRENCY({})
     })
     onMounted(() => {
       infoMethods.onBalances()

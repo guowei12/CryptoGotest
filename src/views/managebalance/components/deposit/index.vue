@@ -1,3 +1,4 @@
+<!-- depositb List -->
 <template>
   <div class="deposit-box">
     <HeaderBar :title="headerTitle" :balance="true"></HeaderBar>
@@ -23,7 +24,7 @@
         </div>
       </view>  
       <div class="network-list">
-        <div @click="setNetwork(item.network,index)" :class="nowIndext==index?'network-li-set':''" class="network-list-li" v-for="(item, index) in networkList" :key="index">
+        <div @click="setNetwork(item.network,item.networkLogoUrl,index)" :class="nowIndext==index?'network-li-set':''" class="network-list-li" v-for="(item, index) in networkList" :key="index">
           <div class="network-li-left"> 
           <img  class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
           <div class="network-list-con">
@@ -64,8 +65,8 @@ export default defineComponent({
         headerTitle:'Deposit',
         depositList:[] as any,
         networkList:[] as any,
-        nowIndex:0,
-        nowIndext:0,
+        nowIndex:-1,
+        nowIndext:-1,
         network:'',
         currency:'' as any,
         show:false
@@ -77,10 +78,11 @@ export default defineComponent({
           data.nowIndex=idx
           data.show=true
         },
-        setNetwork(network:any,index:any){
+        setNetwork(network:any,logoUrl:any,index:any){
           couponStore.SET_DEPOSIT({
             networkList:data.networkList,
             network:network,
+            logoUrl:logoUrl,
             currency:'',
             address:''
           })
@@ -104,7 +106,7 @@ export default defineComponent({
           let res = await getNetwork(token)
           if(res.data.code == 0){
             data.networkList = res.data.model
-            data.nowIndext = 0
+            data.nowIndext = -1
           }else{
             proxy.$failToast(res.data.msg, 'failToast', 3000)
           }

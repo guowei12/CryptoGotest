@@ -34,9 +34,9 @@
                     <div class="QRPay-list-right">
                         <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-"}} {{ item.confirmedNum }} </div>
                         <div class="QRPay-list-con-status">
-                            <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
-                            <div class="failed-color" v-if="item.status == 'FAIL'">Failed</div>
-                            <div class="Refund-color" v-if="item.type == 2 && item.status == 'Refund'">Refund</div>
+                            <div class="completed-color" v-if="item.type !='REFUND'&&item.status == 'SUCCESS'">Completed</div>
+                            <div class="failed-color" v-if="item.type !='REFUND'&&item.status == 'FAIL'">Failed</div>
+                            <div class="Refund-color" v-if="item.type =='REFUND' && item.status == 'SUCCESS'">Refund</div>
                         </div>
                     </div>
                 </div>

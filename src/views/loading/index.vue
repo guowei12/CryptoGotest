@@ -15,7 +15,8 @@
                 <div class="loading-progress-color">Sending fiat to merchant...</div>
                 <div class="loading-progress-con">
                     <img class="loading-tiem-icon" src="@/assets/images/status/tiem-icon.png" alt="" srcset="" />
-                    <div class="loading-progress-con-text">This process may take a few minutes due to network conditions</div>
+                    <div class="loading-progress-con-text">This process may take a few minutes due to network conditions
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,6 +29,7 @@ import { useRoute, useRouter } from 'vue-router';
 import headerBar from '@/components/headerBar/index.vue'
 import LottieAni from "@/components/lottie-web/index.vue";
 import lottieData from '@/assets/js/aircraft.json';
+import { getOrderDetail } from "@/apis/api"
 export default defineComponent({
     name: 'Loading',
     components: { headerBar, LottieAni },
@@ -41,27 +43,36 @@ export default defineComponent({
         const onLoading = () => {
             const progressBar = document.getElementById('progress') as any;
             // 模拟加载完成后的状态
-            nextTick(()=>{
+            nextTick(() => {
                 setTimeout(() => {
-                // 加载完成后停止进度
-                progressBar.style.width = '98%';
-                // 添加闪烁效果
-                progressBar.classList.add('flash');
-            }, 10000); // 2秒后加载完成
+                    // 加载完成后停止进度
+                    progressBar.style.width = '98%';
+                    // 添加闪烁效果
+                    progressBar.classList.add('flash');
+                }, 10000); // 2秒后加载完成
             })
-   
+
+        }
+        const getOrder = async (orderNo: any) => {
+            let res = await getOrderDetail(orderNo)
+            if (res.data.code == 0) {
+                
+            }
         }
         onBeforeMount(() => {
         })
-        onMounted(() => {
+        onMounted(async () => {
             onLoading()
+            let orderNo = route.query.orderNo
+            orderNo ? await getOrder(orderNo):''
         })
         watchEffect(() => {
         })
         return {
             ...toRefs(data),
             lottieData,
-            onLoading
+            onLoading,
+            getOrder
         };
     },
 })

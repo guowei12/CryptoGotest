@@ -3,10 +3,31 @@
     font-family: 'sf-pro-display_regular_400';
     background: #FFFFFF;
     padding-bottom:24px;
+    border-radius: 12px;
     .deposit-detail-qrCode{
-        width: 200px;
-        height: 200px;
-        margin: 16px auto 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 32px;
+        .img-center{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            .networkLogo{
+                width: 54px;
+                height: 54pc;
+                object-fit: contain;
+            }
+        }
     }
     .deposit-detail-address{
         margin: 32px 24px 0;

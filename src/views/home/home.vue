@@ -1,54 +1,55 @@
 <template>
   <div class="QRPay-container">
     <!-- <fLoading class="fLoading-box" v-if="loading" /> -->
-    <tloading v-if="loading"></ tloading>
-    <div v-else>
-      <HeaderBar :home="true"></HeaderBar>
-      <div class="QRPay-con">
-        <div class="QRPay-balance">
-          <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
-              src="@/assets/images/home/see-icon.png" alt=""></div>
-          <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+    <tloading class="QRPay-loading" v-if="loading">
+      </ tloading>
+      <div v-else>
+        <HeaderBar :home="true"></HeaderBar>
+        <div class="QRPay-con">
+          <div class="QRPay-balance">
+            <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
+                src="@/assets/images/home/see-icon.png" alt=""></div>
+            <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+          </div>
+          <div class="QRPay-balance-btn" @click="goManagebalance">
+            <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
+            <div>Manage balance</div>
+          </div>
         </div>
-        <div class="QRPay-balance-btn" @click="goManagebalance">
-          <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
-          <div>Manage balance</div>
-        </div>
-      </div>
-      <div class="QRPay-change-con">
-        <div class="QRPay-change-tran">
-          Transaction
-        </div>
-        <!-- <div class="QRPay-change">
+        <div class="QRPay-change-con">
+          <div class="QRPay-change-tran">
+            Transaction
+          </div>
+          <!-- <div class="QRPay-change">
         <div @click="onChange(1)" :class="listShow==1?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Transaction</div>
         <div @click="onChange(2)" :class="listShow==2?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Assets</div>
       </div> -->
-        <van-pull-refresh  :pulling-text="loadingText" :loosing-text="loadingText"
-          :loading-text="loadingText" v-model="refLoading" @refresh="onRefresh">
-          <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0" v-model:loading="dataLoading" :finished="finished"
-            finished-text="no data" @load="onLoad">
-            <!-- <div class="QRPay-list" "> -->
-            <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
-              <div class="QRPay-list-li-left">
-                <img v-if="item.status == 'Completed'" class="shopping-img" src="@/assets/images/home/shopping-com.png"
-                  alt="" srcset="">
-                <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
-                <div class="QRPay-list-con">
-                  <div class="QRPay-list-con-name">{{ item.name }}</div>
-                  <div class="QRPay-list-con-time">{{ item.time }}</div>
+          <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
+            v-model="refLoading" @refresh="onRefresh">
+            <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0"
+              v-model:loading="dataLoading" :finished="finished" finished-text="no data" @load="onLoad">
+              <!-- <div class="QRPay-list" "> -->
+              <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
+                <div class="QRPay-list-li-left">
+                  <img v-if="item.status == 'Completed'" class="shopping-img"
+                    src="@/assets/images/home/shopping-com.png" alt="" srcset="">
+                  <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
+                  <div class="QRPay-list-con">
+                    <div class="QRPay-list-con-name">{{ item.name }}</div>
+                    <div class="QRPay-list-con-time">{{ item.time }}</div>
+                  </div>
+                </div>
+                <div class="QRPay-list-right">
+                  <div class="QRPay-list-con-num">{{ item.number }} {{ item.currency }}</div>
+                  <div class="QRPay-list-con-status">
+                    <div class="completed-color" v-if="item.status == 'Completed'">Completed</div>
+                    <div class="failed-color" v-if="item.status == 'Failed'">Failed</div>
+                  </div>
                 </div>
               </div>
-              <div class="QRPay-list-right">
-                <div class="QRPay-list-con-num">{{ item.number }} {{ item.currency }}</div>
-                <div class="QRPay-list-con-status">
-                  <div class="completed-color" v-if="item.status == 'Completed'">Completed</div>
-                  <div class="failed-color" v-if="item.status == 'Failed'">Failed</div>
-                </div>
-              </div>
-            </div>
-            <!-- </div> -->
-          </van-list>
-          <!-- <div class="QRPay-list" v-if="listShow == 2">
+              <!-- </div> -->
+            </van-list>
+            <!-- <div class="QRPay-list" v-if="listShow == 2">
             <div class="QRPay-list-li" v-for="(item, index) in assetsList" :key="index">
               <div class="QRPay-list-li-left">
                 <img class="currency-img" :src="item.img" alt="" srcset="">
@@ -65,16 +66,17 @@
               </div>
             </div>
           </div> -->
-          <div class="no-data" v-if="transactionList.length == 0 && listShow == 1">
-            <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
-            <div class="no-data-title">You haven't topped up yet</div>
-            <div class="no-data-text">Please complete the first top-up to activate the card</div>
-          </div>
-        </van-pull-refresh>
+            <div class="no-data" v-if="transactionList.length == 0 && listShow == 1">
+              <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
+              <div class="no-data-title">You haven't topped up yet</div>
+              <div class="no-data-text">Please complete the first top-up to activate the card</div>
+            </div>
+          </van-pull-refresh>
+        </div>
+        <footerBar v-if="!loading"></footerBar>
+        <!-- <qrcode/> -->
       </div>
-      <footerBar v-if="!loading"></footerBar>
-      <!-- <qrcode/> -->
-    </div>
+      <InstallCryptoGo @close="onClose" v-if="icShow"></InstallCryptoGo>
   </div>
 </template>
 
@@ -89,10 +91,11 @@ import footerBar from '@/components/footerBar/index.vue'
 import { getTokenInfo, initWattle, getTransHistory, getBalances } from '@/apis/api'
 import { setToken, getToken, removeToken } from '@/utils/token';
 import { useMain } from '@/store';
+import InstallCryptoGo from './components/InstallCryptoGo/index.vue'
 
 export default defineComponent({
   name: 'Home',
-  components: { HeaderBar, footerBar, qrcode, fLoading, tloading },
+  components: { HeaderBar, footerBar, qrcode, fLoading, tloading, InstallCryptoGo },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -103,6 +106,7 @@ export default defineComponent({
 
     const data = reactive({
       faitCurrency: '',
+      icShow: true ,
       loadingText: '...',
       refLoading: false,
       dataLoading: false,
@@ -145,26 +149,26 @@ export default defineComponent({
           if (res.data.model) {
             let tokenObj = res.data.model
             if (tokenObj.email) {
-              
+
               let user = {
                 email: tokenObj.email,
-                aeonUserNo:tokenObj.aeonUserNo
+                aeonUserNo: tokenObj.aeonUserNo
               }
               if (tokenObj.tgUserInfo) {
                 data.userInfo = tokenObj.tgUserInfo
               }
-              if(tokenObj.aeonUserNo){
+              if (tokenObj.aeonUserNo) {
+                await infoMethods.onHistory()
+              } else {
+                let rest = await initWattle()
+                if (rest.data.code == 0) {
 
-              }else{
-               let rest = await initWattle()
-               if(rest.data.code == 0){
+                } else {
+                  proxy.$failToast(res.data.msg, 'failToast', 3000)
+                  return
+                }
+              }
 
-               } else {
-                proxy.$failToast(res.data.msg, 'failToast', 3000)
-                return
-              }
-              }
-             
               setToken(token)
               window.localStorage.setItem('user', JSON.stringify(user))
               if (tokenObj.language) {
@@ -180,7 +184,7 @@ export default defineComponent({
             }
             data.loading = false
             await infoMethods.onBalances()
-          }else{
+          } else {
             router.replace({ path: '/signin' })
           }
         } else {
@@ -189,7 +193,7 @@ export default defineComponent({
         }
       },
       async onBalances() {
-        let currency= localStorage.getItem('currency')||'USD'
+        let currency = localStorage.getItem('currency') || 'USD'
         let res = await getBalances(currency)
         if (res.data.code == 0) {
           data.userBalances = res.data.model
@@ -236,14 +240,18 @@ export default defineComponent({
         let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
         return flag
       },
-      goDetail(detail: { status: string; }){
+      goDetail(detail: { status: string; }) {
         couponStore.SET_ORDERDETAIL(detail)
-        if(detail.status == 'Completed'){
+        if (detail.status == 'Completed') {
           router.push({ path: '/transactionComplete' })
-        }else if(detail.status == 'Failed'){
+        } else if (detail.status == 'Failed') {
           router.push({ path: '/transactionFailed' })
         }
-        
+
+      },
+      onClose() {
+        data.icShow = false
+        localStorage.setItem('tipShow', '1')
       }
     }
     const onLoad = async () => {
@@ -266,9 +274,11 @@ export default defineComponent({
 
     onBeforeMount(() => {
       couponStore.SET_ORDERDETAIL({})
+      let tipShow = localStorage.getItem('tipShow')
+      tipShow == '1' ? data.icShow = false : data.icShow = true
     })
     onMounted(async () => {
-      let stoken = getToken() 
+      let stoken = getToken()
       data.token = route.query.token
       data.loading = true
       if (stoken || data.token) {
@@ -278,7 +288,7 @@ export default defineComponent({
         } else {
           await infoMethods.onTokenInfo(stoken, '2')
         }
-        data.loading=false
+        data.loading = false
       } else {
         if (infoMethods.isMobile()) {
           router.replace({

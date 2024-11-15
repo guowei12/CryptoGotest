@@ -98,29 +98,15 @@ import headerBar from './components/headerBar/index.vue'
 import { scanCode, createOrder, getFaitLimit } from '@/apis/api'
 import loading from './components/loading/index.vue'
 import { getUrlData, getUrlDataTg } from '@/common/index'
-import type { get } from 'http';
 
-/**
-* 仓库
-*/
 export default defineComponent({
   name: 'payMent',
   components: { headerBar, loading },
   setup() {
-    /**
-    * 路由对象
-    */
     const route = useRoute();
-    /**
-    * 路由实例
-    */
     const router = useRouter();
     const { proxy } = getCurrentInstance() as any
     const inputValue = ref('');
-    //console.log('1-开始创立组件-setup')
-    /**
-    * 数据局部
-    */
     const data = reactive({
       displayChars: [],
       showCursor: false,
@@ -140,11 +126,11 @@ export default defineComponent({
       merchantName: null as any,
       bankAccountName: null as any,
       bankAccountNumber: null as any,
+      preAuthorizationNumber: null as any,
       merchantLogo: new URL('@/assets/images/qr/logo.png', import.meta.url).href,
       scanLogo: null as any,
     })
     onBeforeMount(() => {
-      //console.log('2.组件挂载页面之前执行----onBeforeMount')
     })
     const infoMethods = {
       showInputMethod() {
@@ -158,7 +144,7 @@ export default defineComponent({
           inputField.focus();
         }
       },
-      measureCursorOffset(position) {
+      measureCursorOffset(position: any) {
         const inputField = this.$refs.inputField.$el.querySelector('.van-field-input');
         const textBeforeCursor = this.inputValue.substring(0, position);
         const dummy = document.createElement('span');
@@ -383,6 +369,7 @@ export default defineComponent({
             }
             data.bankAccountName = res.data.model.bankAccountName
             data.bankAccountNumber = res.data.model.bankAccountNumber
+            data.preAuthorizationNumber = res.data.model.preAuthorizationNumber
             // data.merchantLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).merchantLogo : ''
             // data.scanLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).scanLogo : ''
             if (data.faitCurrency) {
@@ -452,11 +439,11 @@ export default defineComponent({
         data.mechShow = true
         let params = {
           amount: data.digit ? data.digit : data.number,
-          preAuthorizationNumber: data.currencyResponseList.faitCurrency,
+          preAuthorizationNumber: data.preAuthorizationNumber,
           // appId: data.appid,
           // code: data.code,
           // payCurrency: data.currencyResponseList.faitCurrency,
-          redirectUrl: window.location.href
+          // redirectUrl: window.location.href
         }
         // let res = await pustQrPay(params)
         let res = await createOrder(params)

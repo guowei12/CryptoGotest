@@ -126,6 +126,7 @@ export default defineComponent({
     })
     onMounted(async () => {
       data.faitCurrency = route.query.currency
+      data.currencyImg=couponStore.$state.singleCurrency.logoUrl
       data.headerTitle = route.query.currency
       await infoMethods.onBalances()
     })

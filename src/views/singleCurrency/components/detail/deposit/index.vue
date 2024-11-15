@@ -131,8 +131,7 @@ export default defineComponent({
        onBeforeMount(() => {
        })
        onMounted(() => {
-        console.log(couponStore.$state.deposit)
-        data.headerTitle='Deposit '+(route.query.currency?route.query.currency:'USDT1')
+        data.headerTitle='Deposit '+(route.query.currency?route.query.currency:'USDT')
        })
        watchEffect(()=>{
        })

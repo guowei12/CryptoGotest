@@ -8,6 +8,7 @@ import { createTimeZoneString } from '@/utils/common';
 import warn from "@/assets/images/warn-icon.png"
 import {
   showFailToast,
+  closeToast
 } from 'vant';
 let lang = window.sessionStorage.getItem('locale') || 'en';
 const failToast = (message: any, className: any, duration: any) => {
@@ -58,9 +59,13 @@ service.interceptors.response.use(
     // console.log('response', response)
     if (response.data) {
       switch (response.data.code) {
+  
         case "10014":
+          closeToast()
           failToast(response.data.msg, 'failToast', 3000)
-          localStorage.clear();
+          // localStorage.clear();
+          localStorage.removeItem('token');
+          localStorage.removeItem('countdown');
           sessionStorage.clear();
           setTimeout(() => {
             router.replace({
