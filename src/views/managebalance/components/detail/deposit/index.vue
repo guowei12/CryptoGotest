@@ -92,7 +92,7 @@ export default defineComponent({
     const couponStore = useMain();
     const { proxy } = getCurrentInstance() as any
     const qrcodeContainer = ref(null) as any;
-    let qrcodeInstance = null;
+    let qrcodeInstance: { clear: () => void; } | null = null;
 
     let qrCodeUrl = ref('');
     const data = reactive({
@@ -115,6 +115,12 @@ export default defineComponent({
           qrCodeUrl.value = data.address
           await initQrcode(qrCodeUrl.value)
         } else {
+          console.log('11')
+          data.address = ''
+          // 清除二维码容器中的内容
+          // if (qrcodeContainer.value) {
+          //   qrcodeContainer.value.innerHTML = '';
+          // }
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },

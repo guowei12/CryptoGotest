@@ -303,6 +303,32 @@ export default defineComponent({
         }
       }
     })
+    onActivated(async () => {
+      let stoken = getToken()
+      data.token = route.query.token
+      data.loading = true
+      if (stoken || data.token) {
+        if (data.token) {
+          // url
+          await infoMethods.onTokenInfo(data.token, '1')
+        } else {
+          await infoMethods.onTokenInfo(stoken, '2')
+        }
+        data.loading = false
+      } else {
+        if (infoMethods.isMobile()) {
+          router.replace({
+            path: '/signin'
+          })
+          return
+        } else {
+          router.replace({
+            path: '/login'
+          })
+          return
+        }
+      }
+    })
     watchEffect(() => {
     })
     return {

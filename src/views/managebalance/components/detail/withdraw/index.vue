@@ -34,7 +34,7 @@
           <div class="withdraw-detail-con-title">Withdraw amount</div>
           <div class="withdraw-detail-con-text">
             <div class="withdraw-detail-con-li-left">
-              <input type="number" class="amount-text" v-model="formData.amount" placeholder="At least 1" />
+              <input type="number" @input="calculateRate" class="amount-text" v-model="formData.amount" placeholder="At least 1" />
             </div>
             <div class="withdraw-detail-con-li-right">
               <img class="currency-icon" :src="currencyUrl" alt="">
@@ -50,11 +50,11 @@
     </div>
     <div class="withdraw-detail-quantity">
       <div class="withdraw-detail-quantity-title">
-        Estimated arrival quantity <span class="font-strong">0.00 USDT</span>
+        Estimated arrival quantity <span class="font-strong">{{ formData.quantityAmount }} {{ currency }}</span>
       </div>
       <div class="withdraw-detail-quantity-con">
         <div>Network fee</div>
-        <div>0.00 USDT</div>
+        <div>{{ Number(formData.amount * freeList.networkFee) }} {{ currency }}</div>
       </div>
     </div>
     <div class="withdraw-detail-btn" @click="backHome">
@@ -94,13 +94,13 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, computed, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
 import showModel from '@/components/showModel/index.vue'
-import { getNetworkFree, getNetwork, getBalances, putWithdraw } from '@/apis/api'
+import { getNetworkFree, getNetwork, getBalances, putWithdraw, getFaitLimit } from '@/apis/api'
 
 export default defineComponent({
   name: 'withdrawDetail',
@@ -110,23 +110,16 @@ export default defineComponent({
     const router = useRouter();
     const couponStore = useMain();
     const { proxy } = getCurrentInstance() as any
-    const showModal= ref(false)
+    const showModal = ref(false)
     const data = reactive({
       headerTitle: 'Withdraw USDT',
+      type: 1,
       address: '',
       networkShow: false,
-      networkList: [{
-        networkLogoUrl: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-        network: 'Bitcoin',
-        chainType: 'BTC',
-      }, {
-        networkLogoUrl: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-        network: 'Bitcoin',
-        chainType: 'BTC',
-      }] as any,
-      receiveCrypto: {} as any,
+      networkList: [] as any,
       nowIndex: 0,
-      balances: 0,
+      balances: {},
+      balancesAmount: 0,
       nowUrl: '' as any,
       nowChainType: '' as any,
       currency: '' as any,
@@ -141,7 +134,10 @@ export default defineComponent({
         address: false,
         email: false
       } as any,
-      freeList: {} as any
+      freeList: {
+        networkFee:0
+      } as any,
+      faitObj: {} as any
     })
     const FormValidClone = (val: string) => {
       data.formError[val] = false;
@@ -195,7 +191,20 @@ export default defineComponent({
         let res = await getNetwork(token)
         if (res.data.code == 0) {
           data.networkList = res.data.model
-          data.nowIndex = 0
+          if (data.type == 1) {
+            data.nowNetwork = data.networkList[0].network
+            data.nowUrl = data.networkList[0].networkLogoUrl
+            data.nowChainType = data.networkList[0].chainType
+            data.nowIndex = 0
+          } else if (data.nowNetwork) {
+            data.networkList.forEach((item: { network: any; networkLogoUrl: any; }, index: number) => {
+              if (data.nowNetwork == item.network) {
+                data.nowIndex = index
+                data.nowUrl = item.networkLogoUrl
+              }
+            })
+
+          }
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
@@ -204,15 +213,21 @@ export default defineComponent({
         let res = await getNetworkFree(token, network)
         if (res.data.code == 0) {
           data.freeList = res.data.model
-          data.nowIndex = 0
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
-      async onBalances(currency: any) {
+      async onBalances() {
+        let currency = localStorage.getItem('currency') || 'USD'
         let res = await getBalances(currency)
         if (res.data.code == 0) {
           data.balances = res.data.model.balances
+          data.balances.tropertyList.forEach(item => {
+            if (item.name == data.currency) {
+              data.balancesAmount == item.faitAmount
+            }
+          })
+
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
@@ -229,28 +244,49 @@ export default defineComponent({
         await putWithdraw(params)
       }
     }
+    const calculateRate = () => {
+      if (data.formData.amount > data.balancesAmount) {
+        data.formData.amount = data.balancesAmount;
+      }
+    }
+    const quantityAmount = computed(() => {
+      if(data.formData.amount > 0 && data.balancesAmount > 0){
+        let amount = data.formData.amount - data.formData.amount * data.freeList.networkFee
+        return   new Intl.NumberFormat().format(amount); 
+      }
+      return 0
+    })
     onBeforeMount(() => {
     })
     onMounted(async () => {
       console.log(couponStore.$state.withdraw)
-      let deposit = couponStore.$state.deposit
+      let withdraw = couponStore.$state.withdraw
       if (route.query.currency) {
         data.headerTitle = 'Withdraw ' + route.query.currency
         data.currency = route.query.currency
-        data.nowNetwork = route.query.network
-        data.currencyUrl = route.query.url
-        await infoMethods.findNetwork(data.currency)
-        await infoMethods.getFree(data.currency, data.nowNetwork)
-        await infoMethods.onBalances(data.currency)
-      } else {
-        if (deposit) {
-          data.headerTitle = 'Withdraw ' + deposit
-          data.currency = deposit.currency
-          data.nowNetwork = deposit.network
-          data.currencyUrl = deposit.url
+        if (route.query.network) {
+          data.nowNetwork = route.query.network
+          data.currencyUrl = route.query.url
+          data.type = 2
           await infoMethods.findNetwork(data.currency)
           await infoMethods.getFree(data.currency, data.nowNetwork)
-          await infoMethods.onBalances(data.currency)
+          await infoMethods.onBalances()
+        } else {
+          data.type = 1
+          await infoMethods.findNetwork(data.currency)
+          await infoMethods.getFree(data.currency, data.nowNetwork)
+          await infoMethods.onBalances()
+        }
+      } else {
+        if (withdraw) {
+          data.type = 3
+          data.headerTitle = 'Withdraw ' + withdraw
+          data.currency = withdraw.currency
+          data.nowNetwork = withdraw.network
+          data.currencyUrl = withdraw.url
+          await infoMethods.findNetwork(data.currency)
+          await infoMethods.getFree(data.currency, data.nowNetwork)
+          await infoMethods.onBalances()
         }
       }
     })
@@ -260,8 +296,10 @@ export default defineComponent({
       ...toRefs(data),
       showModal,
       ...infoMethods,
+      quantityAmount,
       FormValidClone,
       FormValidation,
+      calculateRate,
       closeDialog
     };
   },
