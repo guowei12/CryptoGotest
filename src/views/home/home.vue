@@ -27,7 +27,7 @@
           <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
             v-model="refLoading" @refresh="onRefresh">
             <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0"
-              v-model:loading="dataLoading" :finished="finished" finished-text="no data" @load="onLoad">
+              v-model:loading="dataLoading" :finished="finished" finished-text="" @load="onLoad">
               <!-- <div class="QRPay-list" "> -->
               <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
                 <div class="QRPay-list-li-left">
@@ -35,14 +35,14 @@
                     src="@/assets/images/home/shopping-com.png" alt="" srcset="">
                   <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
                   <div class="QRPay-list-con">
-                    <div class="QRPay-list-con-name">{{ item.name }}</div>
-                    <div class="QRPay-list-con-time">{{ item.time }}</div>
+                    <div class="QRPay-list-con-name">{{ item.name }}111</div>
+                    <div class="QRPay-list-con-time">{{ item.updateTime }}</div>
                   </div>
                 </div>
                 <div class="QRPay-list-right">
-                  <div class="QRPay-list-con-num">{{ item.number }} {{ item.currency }}</div>
+                  <div class="QRPay-list-con-num">{{ item.number }}1111 {{ item.currency }}</div>
                   <div class="QRPay-list-con-status">
-                    <div class="completed-color" v-if="item.status == 'Completed'">Completed</div>
+                    <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
                     <div class="failed-color" v-if="item.status == 'Failed'">Failed</div>
                   </div>
                 </div>
@@ -92,7 +92,7 @@ import { getTokenInfo, initWattle, getTransHistory, getBalances } from '@/apis/a
 import { setToken, getToken, removeToken } from '@/utils/token';
 import { useMain } from '@/store';
 import InstallCryptoGo from './components/InstallCryptoGo/index.vue'
-
+import moment from 'moment';
 export default defineComponent({
   name: 'Home',
   components: { HeaderBar, footerBar, qrcode, fLoading, tloading, InstallCryptoGo },
@@ -106,7 +106,7 @@ export default defineComponent({
 
     const data = reactive({
       faitCurrency: '',
-      icShow: true ,
+      icShow: true,
       loadingText: '...',
       refLoading: false,
       dataLoading: false,
@@ -198,15 +198,16 @@ export default defineComponent({
         if (res.data.code == 0) {
           data.userBalances = res.data.model
           let list = data.userBalances.tropertyList
-          localStorage.setItem('tokenList',JSON.stringify(list))
+          localStorage.setItem('tokenList', JSON.stringify(list))
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
       async onRefresh() {
         data.refLoading = true
-        data.pageNo = 0
-        data.pageSize = 1
+        data.pageNo = 1
+        data.pageSize = 10
+        data.transactionList=[]
         await infoMethods.onHistory()
         data.refLoading = false
       },
@@ -214,16 +215,26 @@ export default defineComponent({
         let res = await getTransHistory(data.pageNo, data.pageSize)
         if (res.data.code == 0) {
           if (res.data.model.data) {
-            data.transactionList = res.data.model.data
+            let transactionList = res.data.model.data
+            transactionList.forEach((item: { updateTime: moment.MomentInput; }) => {
+              item.updateTime = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
+              item.time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
+            })
+            data.transactionList = transactionList.concat(data.transactionList)
           } else {
             data.transactionList = []
           }
+          // finished.value = true;
           // 加载状态结束
           data.dataLoading = false;
           data.refLoading = false
+          data.lastPage = true
           // 数据全部加载完成
-          if (data.lastPage) {
+          if (res.data.model.sumPage == data.pageNo) {
             finished.value = true;
+          } else {
+            data.pageNo = data.pageNo + 1
+            finished.value = false;
           }
         } else {
           data.dataLoading = false;
@@ -242,14 +253,27 @@ export default defineComponent({
         let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
         return flag
       },
-      goDetail(detail: { status: string; }) {
-        couponStore.SET_ORDERDETAIL(detail)
-        if (detail.status == 'Completed') {
-          router.push({ path: '/transactionComplete' })
-        } else if (detail.status == 'Failed') {
-          router.push({ path: '/transactionFailed' })
+      async goUrl(status: any) {
+        switch (status) {
+          case 'SUCCESS':
+            router.push({ path: '/transactionComplete' })
+            break;
+          case 'FAIL':
+            router.push({ path: '/transactionFailed' })
+            break;
+          case 'ERROR':
+            router.push({ path: '/transactionFailed' })
+            break;
+          case 'TIMEOUT':
+            router.push({ path: '/timeOut' })
+            break;
+          default:
+            break;
         }
-
+      },
+      async goDetail(detail: { status: string; }) {
+        couponStore.SET_ORDERDETAIL(detail)
+        await infoMethods.goUrl(detail.status)
       },
       onClose() {
         data.icShow = false
@@ -280,6 +304,8 @@ export default defineComponent({
       tipShow == '1' ? data.icShow = false : data.icShow = true
     })
     onMounted(async () => {
+      data.pageNo = 1
+      data.pageSize = 10
       let stoken = getToken()
       data.token = route.query.token
       data.loading = true

@@ -18,7 +18,9 @@
             <div class="timeOut-li">
                 <div class="timeOut-li-title">You need to pay</div>
                 <div class="timeOut-li-text">
-                    <img class="crypto-icon" :src="'https://static.alchemypay.org/alchemypay/crypto-images/' + detail.currency + '.png'" alt="">
+                    <img class="crypto-icon"
+                        :src="'https://static.alchemypay.org/alchemypay/crypto-images/' + detail.currency + '.png'"
+                        alt="">
                     <div class="timeOut-li-text-font">
                         {{ detail.number }} {{ detail.currency }}
                     </div>
@@ -58,6 +60,7 @@ import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { getOrderDetail } from "@/apis/api"
+import { useMain } from '@/store';
 
 export default defineComponent({
     name: 'timeOutResult',
@@ -66,6 +69,7 @@ export default defineComponent({
         const route = useRoute();
         const router = useRouter();
         const { proxy } = getCurrentInstance() as any
+        const couponStore = useMain();
 
         const data = reactive({
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
@@ -84,9 +88,13 @@ export default defineComponent({
         })
         onBeforeMount(() => {
         })
-        onMounted( async () => {
-            data.orderNo = route.query.orderNo
-            await getOrder()
+        onMounted(async () => {
+            data.detail = couponStore.$state.orderDetail
+            if (data.detail) {
+            } else {
+                data.orderNo = route.query.orderNo
+                await getOrder()
+            }
         })
         const getOrder = async () => {
             let res = await getOrderDetail(data.orderNo)

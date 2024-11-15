@@ -18,13 +18,14 @@
         <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
             v-model="refLoading" @refresh="onRefresh">
             <van-list class="QRPay-list" v-show="transactionList?.length > 0" v-model:loading="dataLoading"
-                :finished="finished" finished-text="no data" @load="onRefresh">
+                :finished="finished" finished-text="" @load="onRefresh">
                 <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index"
                     @click="goDetail(item)">
                     <div class="QRPay-list-li-left">
-                        <img v-if="activeTab == 'DEPOSIT'&& item.type != 'REFUND'" class="shopping-img" :src="img2" alt="" srcset="">
-                        <img v-else-if="activeTab == 'DEPOSIT' && item.type == 'REFUND'" class="shopping-img" :src="img1"
+                        <img v-if="activeTab == 'DEPOSIT' && item.type != 'REFUND'" class="shopping-img" :src="img2"
                             alt="" srcset="">
+                        <img v-else-if="activeTab == 'DEPOSIT' && item.type == 'REFUND'" class="shopping-img"
+                            :src="img1" alt="" srcset="">
                         <img v-else class="shopping-img" :src="img3" alt="" srcset="">
                         <div class="QRPay-list-con">
                             <div class="QRPay-list-con-name">{{ item.crypto }}</div>
@@ -32,11 +33,14 @@
                         </div>
                     </div>
                     <div class="QRPay-list-right">
-                        <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-"}} {{ item.confirmedNum }} </div>
+                        <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-" }} {{ item.confirmedNum }}
+                        </div>
                         <div class="QRPay-list-con-status">
-                            <div class="completed-color" v-if="item.type !='REFUND'&&item.status == 'SUCCESS'">Completed</div>
-                            <div class="failed-color" v-if="item.type !='REFUND'&&item.status == 'FAIL'">Failed</div>
-                            <div class="Refund-color" v-if="item.type =='REFUND' && item.status == 'SUCCESS'">Refund</div>
+                            <div class="completed-color" v-if="item.type != 'REFUND' && item.status == 'SUCCESS'">Completed
+                            </div>
+                            <div class="failed-color" v-if="item.type != 'REFUND' && item.status == 'FAIL'">Failed</div>
+                            <div class="Refund-color" v-if="item.type == 'REFUND' && item.status == 'SUCCESS'">Refund
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,14 +89,15 @@ export default defineComponent({
             img2: new URL('@/assets/images/balance/arrow-down-icon.png', import.meta.url).href,
             img3: new URL('@/assets/images/balance/arrow-up-icon.png', import.meta.url).href,
             transactionList: [] as any,
-            pageNo: 0,
+            pageNo: 1,
             pageSize: 10,
             dataLoading: false,
             lastPage: false
         })
         const activeTab = ref();
-        activeTab.value = 'DEPOSIT';
+        activeTab.value = props.type ? props.type : 'DEPOSIT';
         const changeTab = async (tab: string | number) => {
+            console.log(tab)
             activeTab.value = tab;
             await onRefresh()
         };
@@ -102,32 +107,33 @@ export default defineComponent({
                 console.log(couponStore.$state.orderDetail)
                 router.push({
                     path: '/deposit',
-                    query:{
-                        id:obj.id,
-                        type:"DEPOSIT"
+                    query: {
+                        id: obj.id,
+                        type: "DEPOSIT"
                     }
                 })
             } else if (activeTab.value == 'WITHDRAW') {
                 couponStore.SET_ORDERDETAIL(obj)
                 router.push({
                     path: '/withdraw',
-                    query:{
-                        id:obj.id,
-                        type:"WITHDRAW"
+                    query: {
+                        id: obj.id,
+                        type: "WITHDRAW"
                     }
                 })
             }
 
         }
         const onHistory = async () => {
-            let res = await getHistory(data.pageNo, data.pageSize, props.type)
+            let res = await getHistory(data.pageNo, data.pageSize, activeTab.value)
             if (res.data.code == 0) {
                 if (res.data.model.data && res.data.model.data.length > 0) {
-                    data.transactionList = res.data.model.data
-                    data.transactionList.forEach((item: { createTime: any; }) => {
+                    let transactionList = res.data.model.data
+                    transactionList.forEach((item: { createTime: any; }) => {
                         item.createTime = proxy.$moment(item.createTime).local().format('YYYY-MM-DD HH:mm:ss')
                         item.UTCTime = proxy.$moment.utc(item.createTime).local().format('YYYY-MM-DD HH:mm:ss')
                     })
+                    data.transactionList = transactionList.concat(data.transactionList)
                 } else {
                     data.transactionList = []
                 }
@@ -136,8 +142,11 @@ export default defineComponent({
                 data.dataLoading = false
                 data.refLoading = false
                 // 数据全部加载完成
-                if (data.lastPage && res.data.model.sumPage == res.data.model.pageNo) {
+                if (res.data.model.sumPage == data.pageNo) {
                     finished.value = true;
+                } else {
+                    data.pageNo = data.pageNo + 1
+                    finished.value = false;
                 }
 
             } else {
@@ -148,10 +157,11 @@ export default defineComponent({
         }
         const onRefresh = async () => {
             data.refLoading = true
-            data.pageNo = 0
-            data.pageSize = 1
+            data.pageNo = 1
+            data.pageSize = 10
+            data.transactionList = []
+            await onHistory()
             data.refLoading = false
-            onHistory()
         }
         onBeforeMount(() => {
             couponStore.SET_ORDERDETAIL({})

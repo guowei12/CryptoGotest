@@ -110,7 +110,12 @@ export default defineComponent({
             let stoken = getToken()
             let res = await getTokenInfo({ stoken })
             if (res.data.code == 0) {
-                router.push({ path: '/' })
+                if(res.data.model){
+                    if(res.data.model.email){
+                        router.push({ path: '/' })
+                    }
+                }
+           
             } else {
 
             }

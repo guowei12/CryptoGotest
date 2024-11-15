@@ -3,7 +3,10 @@
         <HeaderBar :logo="headerLogo"   :headerLanguage="true"></HeaderBar>
         <div class="failed-con">
             <img class="status-icon" src="@/assets/images/status/failed-icon.png" alt="" sizes="" srcset="">
-            <div class="failed-title">20,000 VND</div>
+            <div class="failed-title">
+                <!-- 20,000 VND -->
+                {{ detail.faitAmount }} {{ detail.fait }}
+            </div>
             <div class="failed-text">Failed</div>
             <div class="failed-payment">
                 <img class="info-circle" src="@/assets/images/status/info-circle.png" alt="" srcset="">
@@ -12,8 +15,9 @@
                         Failed reason
                     </div>
                     <div class="failed-payment-text">
-                        Your real deposit amount is under our limit (5 USD), please
-                                check the announcement email and get the refund.
+                        {{ detail.failReason }}
+                        <!-- Your real deposit amount is under our limit (5 USD), please
+                                check the announcement email and get the refund. -->
                     </div>
                 </div>
             </div>
