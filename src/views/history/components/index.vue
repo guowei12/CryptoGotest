@@ -18,7 +18,7 @@
         <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
             v-model="refLoading" @refresh="onRefresh">
             <van-list class="QRPay-list" v-show="transactionList?.length > 0" v-model:loading="dataLoading"
-                :finished="finished" finished-text="" @load="onRefresh">
+                :finished="finished" finished-text="" @load="onHistory">
                 <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index"
                     @click="goDetail(item)">
                     <div class="QRPay-list-li-left">
@@ -83,7 +83,7 @@ export default defineComponent({
         const couponStore = useMain();
 
         const data = reactive({
-            refLoading: false,
+            refLoading: true,
             loadingText: '...',
             img1: new URL('@/assets/images/balance/arrow-retract-icon.png', import.meta.url).href,
             img2: new URL('@/assets/images/balance/arrow-down-icon.png', import.meta.url).href,
