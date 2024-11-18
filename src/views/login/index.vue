@@ -44,11 +44,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import verificationCode from './components/verificationCode/index.vue'
-import { getTokenInfo,initWattle,sendEmail,sendLogin } from '@/apis/api'
+import { sendEmail, getTokenInfo } from '@/apis/api'
+import { getToken } from '@/utils/token';
 
 export default defineComponent({
     name: 'Login',
@@ -56,10 +57,11 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const { proxy } = getCurrentInstance() as any
         const data = reactive({
             checkVal: false,
             headerTitle: 'Login',
-            showCode: false,
+            showCode: true,
             nextShow: false,
             formData: {
                 email: ''
@@ -93,10 +95,34 @@ export default defineComponent({
                 }
             }
         }
-        const setBtn = () => {
+        const getCode = async () => {
+            let params = {
+                email: data.formData.email
+            }
+            let res = await sendEmail(params)
+            if (res.data.code == 0) {
+                localStorage.setItem('countdown', '60')
+                return true
+            } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+                return false
+            }
+        }
+        const setBtn = async () => {
             data.nextShow = false
             if (data.formError.email) {
-                data.nextShow = true
+                if (await getCode()) {
+                    router.push({
+                        name: 'scode',
+                        params: {
+                            email: data.formData.email
+                        }
+                    })
+                    data.nextShow = true
+                    return
+                } else {
+
+                }
                 return
             }
         }
@@ -120,9 +146,25 @@ export default defineComponent({
             //     router.push('/privacyPolicy');
             // }
         };
-        onBeforeMount(() => {
+        onBeforeMount(async () => {
+            let stoken = getToken()
+            let res = await getTokenInfo({ stoken })
+            if (res.data.code == 0) {
+                if(res.data.model){
+                    if(res.data.model.email){
+                        router.push({ path: '/' })
+                    }
+                }
+           
+            } else {
+
+            }
         })
         onMounted(() => {
+            let user = JSON.parse(localStorage.getItem('user') as any)
+            if (user?.email) {
+                data.formData.email = user.email
+            }
         })
         watchEffect(() => {
         })
@@ -133,7 +175,8 @@ export default defineComponent({
             setBtn,
             handleCheckedChange,
             goTermsOfService,
-            goPrivacyPolicy
+            goPrivacyPolicy,
+            getCode
         };
     },
 })
