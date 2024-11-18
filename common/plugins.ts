@@ -8,6 +8,7 @@ import {
 } from 'vant';
 import warn from "@/assets/images/warn-icon.png"
 import success from "@/assets/images/suc_icon.png"
+import { debounce } from 'lodash';
 
 // 全局复制
 const copyBtn = (value: string) => {
@@ -22,7 +23,7 @@ const copyBtn = (value: string) => {
 };
 export default {
   install: (app: { config: { globalProperties: {
-    $closeToast: (all?: boolean) => void; $toast: (options?: string | ToastOptions) => ToastWrapperInstance; $copyBtn: (value: string) => void; $failToast: (message: any, className: any, duration: any) => void; $successToast: (message: any, className: any, duration: any) => void; 
+    $closeToast: (all?: boolean) => void; $debounce: (all?: boolean) => void; $toast: (options?: string | ToastOptions) => ToastWrapperInstance; $copyBtn: (value: string) => void; $failToast: (message: any, className: any, duration: any) => void; $successToast: (message: any, className: any, duration: any) => void; 
 }; }; }) => {
     // 全局提示弹窗
     app.config.globalProperties.$toast = showToast
@@ -50,5 +51,8 @@ export default {
         position: 'top',
       });
     } 
+    app.config.globalProperties.$debounce = (fn:any, delay = 2000) => {
+      return debounce(fn, delay);
+    };
   }
 }

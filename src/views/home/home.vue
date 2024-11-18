@@ -325,8 +325,8 @@ export default defineComponent({
       tipShow == '1' ? data.icShow = false : data.icShow = true
     })
     onMounted(async () => {
-      let user=JSON.parse(localStorage.getItem('user') as any).aeonUserNo
-      if(user&& user.aeonUserNo){
+      let user=JSON.parse(localStorage.getItem('user') as any)?.aeonUserNo
+      if(user && user.aeonUserNo){
         data.loading = true
       }
       data.pageNo = 1

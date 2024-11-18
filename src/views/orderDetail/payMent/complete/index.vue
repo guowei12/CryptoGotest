@@ -49,7 +49,7 @@
             </div>
             <div class="complete-cont hidden-box" ref="imageContainer">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
-                <div class="complete-title">20,000 VND</div>
+                <div class="complete-title">{{orderDetail.paymentAmount }} {{ orderDetail.paymentUnit }}</div>
                 <div class="complete-text">Order Completed
                 </div>
                 <div class="complete-payment">
@@ -62,8 +62,8 @@
                             <div class="complete-payment-header-li">
                                 <div class="complete-payment-header-li-title">NGUYEN VANA</div>
                                 <div class="complete-payment-header-li-text">
-                                    <div>9019948815</div>
-                                    <div class="complete-li-text-line">MB Bank</div>
+                                    <div>{{ orderDetail.bankAccountNumber }}</div>
+                                    <div class="complete-li-text-line">{{ orderDetail.bankAccountName }}</div>
                                 </div>
                             </div>
                         </div>
@@ -73,20 +73,20 @@
                         <div class="complete-payment-con-li">
                             <div class="complete-payment-con-li-title">OrderID</div>
                             <div class="complete-payment-con-li-text">
-                                {{ orderId }}
-                                <copyCon :copyHtml="orderId" />
+                                {{ orderDetail.orderNo }}
+                                <copyCon :copyHtml="orderDetail.orderNo" />
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">Total Payment</div>
                             <div class="complete-payment-con-li-text">
-                                {{ amount }}{{ currency }}
+                                <!-- {{ amount }}{{ currency }} -->
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">Payment time</div>
                             <div class="complete-payment-con-li-text">
-                                {{ time }}
+                                {{ orderDetail.paymentTime }}
                             </div>
                         </div>
                         <img res="canvas" id="watermark" src="@/assets/images/status/watermark-icon.png" alt="Logo" />

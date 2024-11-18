@@ -41,7 +41,7 @@ export default defineComponent({
             headerTitle: '',
             orderNo: '' as any,
             orderDetail: {} as any,
-            statusList: ['SUCCESS', 'FAIL', 'TIMEOUT', 'CLOSE'],
+            statusList: ['COMPLETED', 'FAILED', 'TIMEOUT', 'CLOSE'],
             timer: null as any
         })
         const onLoading = () => {
@@ -59,14 +59,14 @@ export default defineComponent({
         }
         const goUrl = (status: any) => {
             switch (status) {
-                case 'SUCCESS':
-                    router.replace({ path: '/complete', query: { orderNo: data.orderDetail.num } })
+                case 'COMPLETED':
+                    router.replace({ path: '/complete', query: { orderNo: data.orderNo } })
                     break;
-                case 'FAIL':
-                    router.replace({ path: '/failed', query: { orderNo: data.orderDetail.num } })
+                case 'FAILED':
+                    router.replace({ path: '/failed', query: { orderNo: data.orderNo } })
                     break;
                 default:
-                    router.replace({ path: '/timeOut', query: { orderNo: data.orderDetail.num } })
+                    router.replace({ path: '/timeOut', query: { orderNo:data.orderNo } })
                     break;
             }
         }

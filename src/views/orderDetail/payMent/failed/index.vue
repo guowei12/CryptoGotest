@@ -11,8 +11,7 @@
                         Failed reason
                     </div>
                     <div class="failed-payment-text">
-                        Your real deposit amount is under our limit (5 USD), please
-                        check the announcement email and get the refund.
+                        {{ orderDetail.failReason}}
                     </div>
                 </div>
             </div>

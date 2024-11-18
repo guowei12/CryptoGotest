@@ -14,9 +14,12 @@
                     <div v-if="formError.email " class="wrong-text">You email is wrong</div>
                     <!-- <div v-else class="wrong-text-no">You email is wrong</div> -->
                 </div>
-                <div class="proceed-btn" @click="setBtn">
-                    <div class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
+                <div class="proceed-btn" @click="debounceBtn">
+                    <div v-if="!nextShow" class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
                         Proceed
+                    </div>
+                    <div v-else class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
+                        <van-loading type="spinner" size="24px" color="#000" />
                     </div>
                 </div>
             </div>
@@ -105,6 +108,7 @@ export default defineComponent({
                 return false
             }
         }
+        const debounceBtn=proxy.$debounce(setBtn, 2000)
         onBeforeMount(async () => {
             let stoken = getToken()
             if (stoken) {
@@ -123,7 +127,6 @@ export default defineComponent({
 
         })
         onMounted(() => {
-
             let user = JSON.parse(localStorage.getItem('user') as any)
             if (user?.email) {
                 data.formData.email = user.email
@@ -136,7 +139,8 @@ export default defineComponent({
             FormValidClone,
             FormValidation,
             setBtn,
-            getCode
+            getCode,
+            debounceBtn
         };
     },
 })
