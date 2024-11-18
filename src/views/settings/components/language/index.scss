@@ -10,6 +10,8 @@
             padding: 4px 0;
         }
         .language-li{
+            position: relative;
+            z-index: 1;
             color: #191B1F;
             line-height: 20px;
             height: 54px;
@@ -32,23 +34,21 @@
                 color: #31CF61;
             }
         }
-        .set-language{
-            position: relative;
-            z-index: 1;
-        }
-        .set-language::before{
-            width:calc(100% - 8px);
-            height: 100%;
-            margin: 0 auto;
-            content: '';
-            position:absolute;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, 0);
-            border-radius: 12px;
-            background-color: #f5f5f5;
-            transition: background-color 0.3s;
-            z-index: -1;
+        .language-li-con:hover{
+            .language-li::before{
+                width:calc(100% - 8px);
+                height: 100%;
+                margin: 0 auto;
+                content: '';
+                position:absolute;
+                top: 0;
+                left: 50%;
+                transform: translate(-50%, 0);
+                border-radius: 12px;
+                background-color: #f5f5f5;
+                transition: background-color 0.3s;
+                z-index: -1;
+            }
         }
     }
 }

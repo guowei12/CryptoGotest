@@ -3,12 +3,14 @@
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="language-list">
       <div class="language-list-li">
-        <div :class="nowLanguage == item.langName ? 'set-language' : ''" class="language-li" @click="setLanguage(item)"
+        <div  class="language-li-con" @click="setLanguage(item)"
           v-for="item, index in LanguageList" :key="index">
+          <div class="language-li set-language">
           <div class="language-li-left">
             <img class="language-li-left-icon" :src="item.langIcon" alt="" srcset="">
             <div :class="nowLanguage == item.langName ?'language-li-font':''">{{ item.langName }}</div>
           </div>
+        </div>
           <div>
           </div>
         </div>

@@ -3,12 +3,14 @@
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="currency-list">
       <div class="currency-list-li">
-        <div :class="nowCurrency == item.name ? 'set-currency' : ''" class="currency-li" @click="setCurrency(item)"
+        <div  class="currency-li-con" @click="setCurrency(item)"
           v-for="item, index in currencyList" :key="index">
-          <div class="currency-li-left">
-            <div class="currency-li-left-faitIcon">{{ item.faitIcon }}</div>
-            <!-- <img class="currency-li-left-icon" :src="item.countryPicture" alt="" srcset=""> -->
-            <div :class="nowCurrency == item.faitCurrency ?'currency-li-font':''">{{ item.faitCurrency }}</div>
+          <div class="currency-li">
+            <div class="currency-li-left">
+              <div class="currency-li-left-faitIcon">{{ item.faitIcon }}</div>
+              <!-- <img class="currency-li-left-icon" :src="item.countryPicture" alt="" srcset=""> -->
+              <div :class="nowCurrency == item.faitCurrency ? 'currency-li-font' : ''">{{ item.faitCurrency }}</div>
+            </div>
           </div>
           <div>
           </div>
@@ -33,7 +35,7 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as any
     const data = reactive({
       headerTitle: 'Displayed Currency',
-      currencyList:[] as any,
+      currencyList: [] as any,
       // currencyList: [
       //   {
       //     faitCurrency: 'USD',
@@ -75,7 +77,7 @@ export default defineComponent({
     })
     onBeforeMount(() => {
     })
-    onMounted( async () => {
+    onMounted(async () => {
       await getList()
       let currency = window.localStorage.getItem('currency') as any;
       if (currency) {
@@ -89,15 +91,15 @@ export default defineComponent({
       window.localStorage.setItem('currency', item.faitCurrency);
       router.replace({ path: '/settings' })
     }
-    const getList = async () =>{
+    const getList = async () => {
       let res = await getFaitList()
-      if(res.data.code == 0){
+      if (res.data.code == 0) {
         data.currencyList = res.data.model
-      }else{
+      } else {
         proxy.$failToast(res.data.msg, 'failToast', 3000)
         return
       }
-    } 
+    }
     watchEffect(() => {
     })
     return {

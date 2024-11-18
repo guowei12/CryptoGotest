@@ -325,6 +325,10 @@ export default defineComponent({
       tipShow == '1' ? data.icShow = false : data.icShow = true
     })
     onMounted(async () => {
+      let user=JSON.parse(localStorage.getItem('user') as any).aeonUserNo
+      if(user&& user.aeonUserNo){
+        data.loading = true
+      }
       data.pageNo = 1
       data.pageSize = 10
       let stoken = getToken()
@@ -351,6 +355,10 @@ export default defineComponent({
       }
     })
     onActivated(async () => {
+      let user=JSON.parse(localStorage.getItem('user') as any).aeonUserNo
+      if(user&& user.aeonUserNo){
+        data.loading = true
+      }
       let stoken = getToken()
       data.token = route.query.token
       if (stoken || data.token) {

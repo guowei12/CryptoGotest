@@ -1,6 +1,6 @@
 <template>
     <div class="complete-box">
-        <HeaderBar :logo="headerLogo" :headerLanguage="true"></HeaderBar>
+        <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
         <div class="complete-con">
             <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
             <div class="complete-title">{{ detail.confirmedNum }} {{ detail.crypto }}</div>
@@ -63,6 +63,7 @@ export default defineComponent({
         const router = useRouter();
         const couponStore = useMain();
         const data = reactive({
+            headerTitle:'Transaction details',
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId: '661bbbc10cf7f20007e4ff48',
             detail: {} as any
