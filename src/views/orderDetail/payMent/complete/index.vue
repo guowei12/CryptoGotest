@@ -80,7 +80,7 @@
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">Total Payment</div>
                             <div class="complete-payment-con-li-text">
-                                <!-- {{ amount }}{{ currency }} -->
+                                {{ orderDetail.total }}{{ orderDetail.orderCurrency }}
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">

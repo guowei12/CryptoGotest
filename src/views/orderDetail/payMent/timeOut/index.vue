@@ -22,9 +22,9 @@
                         :src="'https://static.alchemypay.org/alchemypay/crypto-images/' + detail.currency + '.png'"
                         alt="">
                     <div class="timeOut-li-text-font">
-                        {{ detail.number }} {{ detail.currency }}
+                        {{ detail.paymentAmount }} {{ detail.paymentUnit }}
                     </div>
-                    <copyCon :copyHtml="detail.number" />
+                    <copyCon :copyHtml="detail.paymentAmount" />
                 </div>
             </div>
         </div>

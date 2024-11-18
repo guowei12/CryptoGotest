@@ -14,7 +14,7 @@
                     <div v-if="formError.email " class="wrong-text">You email is wrong</div>
                     <!-- <div v-else class="wrong-text-no">You email is wrong</div> -->
                 </div>
-                <div class="proceed-btn" @click="debounceBtn">
+                <div class="proceed-btn" @click="setBtn">
                     <div v-if="!nextShow" class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
                         Proceed
                     </div>
@@ -108,7 +108,7 @@ export default defineComponent({
                 return false
             }
         }
-        const debounceBtn=proxy.$debounce(setBtn, 2000)
+        // const debounceBtn=proxy.$debounce(setBtn, 2000)
         onBeforeMount(async () => {
             let stoken = getToken()
             if (stoken) {
@@ -140,7 +140,7 @@ export default defineComponent({
             FormValidation,
             setBtn,
             getCode,
-            debounceBtn
+            // debounceBtn
         };
     },
 })

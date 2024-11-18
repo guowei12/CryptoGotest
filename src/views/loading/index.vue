@@ -60,13 +60,17 @@ export default defineComponent({
         const goUrl = (status: any) => {
             switch (status) {
                 case 'COMPLETED':
-                    router.replace({ path: '/complete', query: { orderNo: data.orderNo } })
+                    setTimeout(() => {
+                        router.replace({ path: '/complete', query: { orderNo: data.orderNo } })
+                    }, 2000)
                     break;
                 case 'FAILED':
-                    router.replace({ path: '/failed', query: { orderNo: data.orderNo } })
+                    setTimeout(() => {
+                        router.replace({ path: '/failed', query: { orderNo: data.orderNo } })
+                    }, 2000)
                     break;
                 default:
-                    router.replace({ path: '/timeOut', query: { orderNo:data.orderNo } })
+                    router.replace({ path: '/timeOut', query: { orderNo: data.orderNo } })
                     break;
             }
         }
