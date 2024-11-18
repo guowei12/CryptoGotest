@@ -443,7 +443,7 @@ export default defineComponent({
           // appId: data.appid,
           // code: data.code,
           // payCurrency: data.currencyResponseList.faitCurrency,
-          redirectURL: window.location.href
+          redirectURL: 'https://localhost:3000/loading'//window.location.href
         }
         // let res = await pustQrPay(params)
         let res = await createOrder(params)

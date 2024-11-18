@@ -1,55 +1,61 @@
 <template>
   <div class="QRPay-container">
-    <!-- <fLoading class="fLoading-box" v-if="loading" /> -->
-    <tloading class="QRPay-loading" v-if="loading">
-      </ tloading>
-      <div v-else>
-        <HeaderBar :home="true"></HeaderBar>
-        <div class="QRPay-con">
-          <div class="QRPay-balance">
-            <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
-                src="@/assets/images/home/see-icon.png" alt=""></div>
-            <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
-          </div>
-          <div class="QRPay-balance-btn" @click="goManagebalance">
-            <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
-            <div>Manage balance</div>
-          </div>
+    <fLoading class="fLoading-box" v-if="Faloading" />
+    <Tloading class="QRPay-loading" v-if="loading" />
+    <div v-else>
+      <HeaderBar :home="true"></HeaderBar>
+      <div class="QRPay-con">
+        <div class="QRPay-balance">
+          <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
+              src="@/assets/images/home/see-icon.png" alt=""></div>
+          <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
         </div>
-        <div class="QRPay-change-con">
-          <div class="QRPay-change-tran">
-            Transaction
-          </div>
-          <!-- <div class="QRPay-change">
+        <div class="QRPay-balance-btn" @click="goManagebalance">
+          <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
+          <div>Manage balance</div>
+        </div>
+      </div>
+      <div class="QRPay-change-con">
+        <div class="QRPay-change-tran">
+          Transaction
+        </div>
+        <!-- <div class="QRPay-change">
         <div @click="onChange(1)" :class="listShow==1?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Transaction</div>
         <div @click="onChange(2)" :class="listShow==2?'QRPay-change-btn-set':''" class="QRPay-change-btn btn-class">Assets</div>
       </div> -->
-          <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
-            v-model="refLoading" @refresh="onRefresh">
-            <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0"
-              v-model:loading="dataLoading" :finished="finished" finished-text="" @load="onLoad">
-              <!-- <div class="QRPay-list" "> -->
-              <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
-                <div class="QRPay-list-li-left">
-                  <img v-if="item.status == 'Completed'" class="shopping-img"
-                    src="@/assets/images/home/shopping-com.png" alt="" srcset="">
-                  <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
-                  <div class="QRPay-list-con">
-                    <div class="QRPay-list-con-name">{{ item.name }}111</div>
-                    <div class="QRPay-list-con-time">{{ item.updateTime }}</div>
-                  </div>
-                </div>
-                <div class="QRPay-list-right">
-                  <div class="QRPay-list-con-num">{{ item.number }}1111 {{ item.currency }}</div>
-                  <div class="QRPay-list-con-status">
-                    <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
-                    <div class="failed-color" v-if="item.status == 'Failed'">Failed</div>
-                  </div>
+        <van-pull-refresh :pulling-text="loadingText" :loosing-text="loadingText" :loading-text="loadingText"
+          v-model="refLoading" @refresh="onRefresh">
+          <van-list class="QRPay-list" v-if="listShow == 1 && transactionList.length > 0" v-model:loading="dataLoading"
+            :finished="finished" finished-text="" @load="onLoad">
+            <!-- <div class="QRPay-list" "> -->
+            <div class="QRPay-list-li" v-for="(item, index) in transactionList" :key="index" @click="goDetail(item)">
+              <div class="QRPay-list-li-left">
+                <img v-if="item.status == 'Completed'" class="shopping-img" src="@/assets/images/home/shopping-com.png"
+                  alt="" srcset="">
+                <img v-else-if="item.status == 'REFUND'" class="shopping-img" src="@/assets/images/home/Refund-icon.png"
+                  alt="" srcset="">
+                <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
+                <div class="QRPay-list-con">
+                  <div class="QRPay-list-con-name">{{ item.name }}</div>
+                  <div class="QRPay-list-con-time">{{ item.updateTime }}</div>
                 </div>
               </div>
-              <!-- </div> -->
-            </van-list>
-            <!-- <div class="QRPay-list" v-if="listShow == 2">
+              <div class="QRPay-list-right">
+                <div class="QRPay-list-con-num">{{ item.status == 'SUCCESS' ? '-' : '+' }}{{ item.number }} {{ item.fait
+                  }}
+                </div>
+                <div class="QRPay-list-con-status">
+                  <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
+                  <div class="failed-color" v-if="item.status == 'FAIL'">Failed</div>
+                  <div class="completed-color" v-if="item.status == 'REFUND'">Refund</div>
+                  <div class="fail-reason" v-if="item.status == 'FAIL' && item.failReason">{{ item.failReason }}</div>
+                  <!-- INIT, PENDING, SUCCESS, FAIL, ERROR, TIMEOUT  -->
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+          </van-list>
+          <!-- <div class="QRPay-list" v-if="listShow == 2">
             <div class="QRPay-list-li" v-for="(item, index) in assetsList" :key="index">
               <div class="QRPay-list-li-left">
                 <img class="currency-img" :src="item.img" alt="" srcset="">
@@ -66,17 +72,17 @@
               </div>
             </div>
           </div> -->
-            <div class="no-data" v-if="transactionList.length == 0 && listShow == 1">
-              <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
-              <div class="no-data-title">You haven't topped up yet</div>
-              <div class="no-data-text">Please complete the first top-up to activate the card</div>
-            </div>
-          </van-pull-refresh>
-        </div>
-        <footerBar v-if="!loading"></footerBar>
-        <!-- <qrcode/> -->
+          <div class="no-data" v-if="transactionList.length == 0 && listShow == 1">
+            <img class="no-data-img" src="@/assets/images/balance/no-data-icon.png" alt="" srcset="">
+            <div class="no-data-title">You haven't topped up yet</div>
+            <div class="no-data-text">Please complete the first top-up to activate the card</div>
+          </div>
+        </van-pull-refresh>
       </div>
-      <InstallCryptoGo @close="onClose" v-if="icShow"></InstallCryptoGo>
+      <footerBar v-if="!loading"></footerBar>
+      <!-- <qrcode/> -->
+    </div>
+    <InstallCryptoGo @close="onClose" v-if="icShow"></InstallCryptoGo>
   </div>
 </template>
 
@@ -85,7 +91,7 @@ import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMou
 import { useRoute, useRouter } from 'vue-router';
 import qrcode from "../QRcode/index.vue"
 import fLoading from "@/components/fLoading/index.vue"
-import tloading from '@/components/loading/index.vue'
+import Tloading from '@/components/loading/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 import footerBar from '@/components/footerBar/index.vue'
 import { getTokenInfo, initWattle, getTransHistory, getBalances } from '@/apis/api'
@@ -95,7 +101,7 @@ import InstallCryptoGo from './components/InstallCryptoGo/index.vue'
 import moment from 'moment';
 export default defineComponent({
   name: 'Home',
-  components: { HeaderBar, footerBar, qrcode, fLoading, tloading, InstallCryptoGo },
+  components: { HeaderBar, footerBar, qrcode, fLoading, Tloading, InstallCryptoGo },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -103,7 +109,7 @@ export default defineComponent({
     const list = ref([]);
     const finished = ref(false);
     const couponStore = useMain();
-
+    const Faloading = ref(false)
     const data = reactive({
       faitCurrency: '',
       icShow: true,
@@ -158,17 +164,23 @@ export default defineComponent({
                 data.userInfo = tokenObj.tgUserInfo
               }
               if (tokenObj.aeonUserNo) {
+                Faloading.value = false
+                data.loading = true
                 await infoMethods.onHistory()
+                data.loading = false
               } else {
+                Faloading.value = true
                 let rest = await initWattle()
                 if (rest.data.code == 0) {
-
+                  Faloading.value = false
                 } else {
+                  Faloading.value = false
+                  data.loading = false
                   proxy.$failToast(res.data.msg, 'failToast', 3000)
                   return
                 }
-              }
 
+              }
               setToken(token)
               window.localStorage.setItem('user', JSON.stringify(user))
               if (tokenObj.language) {
@@ -207,7 +219,7 @@ export default defineComponent({
         data.refLoading = true
         data.pageNo = 1
         data.pageSize = 10
-        data.transactionList=[]
+        data.transactionList = []
         await infoMethods.onHistory()
         data.refLoading = false
       },
@@ -216,11 +228,19 @@ export default defineComponent({
         if (res.data.code == 0) {
           if (res.data.model.data) {
             let transactionList = res.data.model.data
+            transactionList = transactionList.concat([
+              { failReason: '', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'REFUND', updateTime: "2024-11-13T07:34:51.000+0000" },
+              { failReason: 'Fiat transfer rejected by bank. ', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'FAIL', updateTime: "2024-11-13T07:34:51.000+0000" },
+            ])
             transactionList.forEach((item: { updateTime: moment.MomentInput; }) => {
               item.updateTime = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
               item.time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
             })
+
             data.transactionList = transactionList.concat(data.transactionList)
+            // data.transactionList = data.transactionList.push({
+
+            // })
           } else {
             data.transactionList = []
           }
@@ -241,6 +261,7 @@ export default defineComponent({
           finished.value = true
           data.lastPage = true
           data.refLoading = false
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
       onChange(num: number) {
@@ -308,7 +329,6 @@ export default defineComponent({
       data.pageSize = 10
       let stoken = getToken()
       data.token = route.query.token
-      data.loading = true
       if (stoken || data.token) {
         if (data.token) {
           // url
@@ -316,7 +336,6 @@ export default defineComponent({
         } else {
           await infoMethods.onTokenInfo(stoken, '2')
         }
-        data.loading = false
       } else {
         if (infoMethods.isMobile()) {
           router.replace({
@@ -334,7 +353,6 @@ export default defineComponent({
     onActivated(async () => {
       let stoken = getToken()
       data.token = route.query.token
-      data.loading = true
       if (stoken || data.token) {
         if (data.token) {
           // url
@@ -342,7 +360,6 @@ export default defineComponent({
         } else {
           await infoMethods.onTokenInfo(stoken, '2')
         }
-        data.loading = false
       } else {
         if (infoMethods.isMobile()) {
           router.replace({
@@ -364,7 +381,8 @@ export default defineComponent({
       ...infoMethods,
       list,
       onLoad,
-      finished
+      finished,
+      Faloading
     };
   },
 })

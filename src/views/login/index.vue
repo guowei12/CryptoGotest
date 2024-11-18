@@ -23,11 +23,11 @@
                             <span @click="goPrivacyPolicy">Privacy policy.</span>
                         </div>
                     </div>
-                    <!-- <div v-if="formError.email&&nextShow" class="wrong-text">You email is wrong</div>
-                    <div v-else class="wrong-text-no" >You email is wrong</div> -->
+                    <div v-if="formError.email" class="wrong-text">You email is wrong</div>
+                    <!-- <div v-else class="wrong-text-no" >You email is wrong</div> -->
                 </div>
                 <div class="proceed-btn" @click="setBtn">
-                    <div class="btn-class">
+                    <div class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
                         Sign in
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <verificationCode v-if="!showCode"></verificationCode>
+        <!-- <verificationCode v-if="!showCode"></verificationCode> -->
     </div>
 </template>
 
@@ -80,7 +80,6 @@ export default defineComponent({
                 data.formError[val] = false;
                 return
             }
-
             if (val === "email") {
                 let reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 // console.log(data.formData.email)
@@ -109,8 +108,8 @@ export default defineComponent({
             }
         }
         const setBtn = async () => {
-            data.nextShow = false
-            if (data.formError.email) {
+            // data.nextShow = false
+            if (data.formData.email&&!data.formError.email) {
                 if (await getCode()) {
                     router.push({
                         name: 'scode',
@@ -121,9 +120,9 @@ export default defineComponent({
                     data.nextShow = true
                     return
                 } else {
-
                 }
-                return
+            } else if( data.formError.email) {
+                proxy.$failToast('Invalid email', 'failToast', 3000)
             }
         }
         const handleCheckedChange = (checked: boolean) => {
@@ -148,16 +147,18 @@ export default defineComponent({
         };
         onBeforeMount(async () => {
             let stoken = getToken()
-            let res = await getTokenInfo({ stoken })
-            if (res.data.code == 0) {
-                if(res.data.model){
-                    if(res.data.model.email){
-                        router.push({ path: '/' })
+            if (stoken) {
+                let res = await getTokenInfo({ stoken })
+                if (res.data.code == 0) {
+                    if (res.data.model) {
+                        if (res.data.model.email) {
+                            router.push({ path: '/' })
+                        }
                     }
-                }
-           
-            } else {
 
+                } else {
+
+                }
             }
         })
         onMounted(() => {

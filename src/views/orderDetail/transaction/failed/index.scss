@@ -32,9 +32,9 @@
 
     }
     .failed-payment{
+        width: calc(100% - 32px);
         display: flex;
         align-items: flex-start;
-        justify-content: space-between;
         margin: 32px 16px 8px;
         background: #F53F3F1A;
         border-radius: 12px;

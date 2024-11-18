@@ -1,6 +1,6 @@
 <template>
   <div class="fLoading">
-    <div>Lading...</div>
+    <div class="fLoading-text">Lading...</div>
   </div>
 </template>
 
@@ -47,5 +47,11 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
+    .fLoading-text{
+      color: #191B1F;
+      font-size: 16px;
+      font-family: 'sf-pro-display_bold_700';
+      line-height: 19px;
+    }
 }
 </style>

@@ -11,8 +11,8 @@
                     <input @input="FormValidation('email', 'input')" @focus="FormValidClone('email')"
                         @blur="FormValidation('email', 'blur')" :class="formError.email ? 's-b-e-input-wrong' : ''"
                         class="s-b-e-input " type="text" v-model="formData.email" placeholder="Esther@example.com">
-                    <div v-if="formError.email && nextShow" class="wrong-text">You email is wrong</div>
-                    <div v-else class="wrong-text-no">You email is wrong</div>
+                    <div v-if="formError.email " class="wrong-text">You email is wrong</div>
+                    <!-- <div v-else class="wrong-text-no">You email is wrong</div> -->
                 </div>
                 <div class="proceed-btn" @click="setBtn">
                     <div class="btn-class" :class="formData.email ? '' : 'btn-class-opacity'">
@@ -76,7 +76,7 @@ export default defineComponent({
         }
         const setBtn = async () => {
             data.nextShow = false
-            if (data.formData.email) {
+            if (data.formData.email&&!data.formError.email) {
                 if (await getCode()) {
                     router.push({
                         name: 'scode',
@@ -87,11 +87,10 @@ export default defineComponent({
                     data.nextShow = true
                     return
                 } else {
-
                 }
-
+            } else if( data.formError.email) {
+                proxy.$failToast('Invalid email', 'failToast', 3000)
             }
-
         }
         const getCode = async () => {
             let params = {
@@ -108,17 +107,20 @@ export default defineComponent({
         }
         onBeforeMount(async () => {
             let stoken = getToken()
-            let res = await getTokenInfo({ stoken })
-            if (res.data.code == 0) {
-                if(res.data.model){
-                    if(res.data.model.email){
-                        router.push({ path: '/' })
+            if (stoken) {
+                let res = await getTokenInfo({ stoken })
+                if (res.data.code == 0) {
+                    if (res.data.model) {
+                        if (res.data.model.email) {
+                            router.push({ path: '/' })
+                        }
                     }
-                }
-           
-            } else {
 
+                } else {
+
+                }
             }
+
         })
         onMounted(() => {
 
