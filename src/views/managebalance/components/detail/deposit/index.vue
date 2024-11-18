@@ -3,19 +3,24 @@
   <div class="deposit-detail">
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
     <div class="deposit-detail-box">
-      <div class="deposit-detail-qrCode">
-        <div ref="qrcodeContainer" id="qrcodeImg"></div>
-        <!-- <div class="img-center">
-          <img class="networkLogo" :src="networkLogo" alt="" srcset="">
-        </div> -->
-      </div>
-      <div class="deposit-detail-address">
-        <div class="deposit-detail-address-title">Wallet address</div>
-        <div class="deposit-detail-address-hash-box">
-          <div class="deposit-detail-address-hash">{{ address }}</div>
-          <copyCon :copyHtml="address" />
+      <!-- token -->
+      <div class="deposit-detail-token">
+        <div class="deposit-detail-token-title">
+          Token
+        </div>
+        <div class="deposit-detail-token-con" @click="onShowt()">
+          <div class="deposit-detail-token-con-left">
+            <img class="currency-icon" :src="cryptoLogoUrl" alt="">
+            <div class="deposit-detail-token-con-font">
+              <div class="detail-currency-text">{{ currency }}</div>
+              <div class="detail-network-text">{{ cryptoFullName }}</div>
+            </div>
+          </div>
+          <img :class="showt ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png" alt="">
+          <!-- <img class="net-change-icon" src="@/assets/images/balance/net-change-icon.png" alt="" srcset=""> -->
         </div>
       </div>
+      <!-- network -->
       <div class="deposit-detail-network">
         <div class="deposit-detail-network-title">
           Network
@@ -28,12 +33,37 @@
               <div class="detail-network-text">{{ chainType }}</div>
             </div>
           </div>
-          <img class="net-change-icon" src="@/assets/images/balance/net-change-icon.png" alt="" srcset="">
+          <img :class="show ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png" alt="">
+          <!-- <img class="net-change-icon" src="@/assets/images/balance/net-change-icon.png" alt="" srcset=""> -->
         </div>
+      </div>
+      <div class="deposit-detail-qrCode">
+        <div ref="qrcodeContainer" id="qrcodeImg"></div>
+        <!-- <div class="img-center">
+          <img class="networkLogo" :src="networkLogo" alt="" srcset="">
+        </div> -->
+      </div>
+      <div class="deposit-text">
+        Only deposit {{ currency }} to this address
+      </div>
+      <div class="deposit-detail-address">
         <div class="deposit-detail-network-tip">
-          <img class="network-tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
-          <div class="network-tip-text">Sending coin or token other than USDT to this
-            address may result in the loss of your deposit</div>
+          <div class="deposit-detail-address-title">Wallet address</div>
+          <div class="deposit-detail-address-hash-box">
+            <div class="deposit-detail-address-hash">{{ address }}</div>
+            <copyCon :copyHtml="address" />
+          </div>
+        </div>
+      </div>
+      <div class="deposit-detail-btm">
+        <div class="deposit-detail-btm-title">* Min Deposit Amount > 1 {{ currency }}</div>
+        <div class="deposit-detail-btm-text"> 
+          Please don't deposit any other digital assets except <span class="font-we">{{ currency }}</span> to the above address.
+        </div>
+        <div class="deposit-detail-btm-text"> 
+          Minimum deposit amount <span class="font-we">1 {{ currency }}</span> . Any deposits less than the minimum will not be credited.        </div>
+        <div class="deposit-detail-btm-text"> 
+          Please make sure that your computer and browser are secure and your information is protected from being tampered or leaked.
         </div>
       </div>
     </div>
@@ -69,7 +99,35 @@
         </div>
       </div>
     </van-action-sheet>
-    <!-- <showModel ></showModel> -->
+    <van-action-sheet v-model:show="showt">
+      <!-- 自定义 header 插槽 -->
+      <view slot="header">
+        <div class="van-action-box-header">
+          <div class="action-title-line"></div>
+          <div>Select token</div>
+          <img @click="showt = false" class="back-icon" src="@/assets/images/balance/back-icon.png" alt="">
+        </div>
+      </view>
+      <div class="network-list">
+        <div @click="setCurrency(item, index)" :class="nowIndext == index ? 'network-li-set' : ''" class="network-list-li"
+          v-for="(item, index) in depositList" :key="index">
+          <div class="network-li-left">
+            <img class="currency-img" :src="item.cryptoLogoUrl" alt="" srcset="">
+            <div class="network-list-con">
+              <div class="network-list-con-name">{{ item.crypto }}</div>
+              <div class="network-list-con-time">{{ item.cryptoFullName }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='action-btm'>
+        <img class="tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
+        <div class="tip-con">
+          When you recharge this currency, please only recharge through the supported networks below. If you recharge
+          through other networks, funds will be lost.
+        </div>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
@@ -80,7 +138,8 @@ import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
 import showModel from '@/components/showModel/index.vue'
-import { getAddress, getNetwork } from '@/apis/api'
+import { getAddress, getTokens, getNetwork } from '@/apis/api'
+
 import QRCode from 'qrcodejs2-fix';
 
 export default defineComponent({
@@ -100,9 +159,14 @@ export default defineComponent({
       address: '',
       type: 1,
       show: false,
+      showt: false,
       networkList: [] as any,
+      depositList: [] as any,
+      nowIndext: -1,
       nowIndex: -1,
       currency: '' as any,
+      cryptoFullName: '' as any,
+      cryptoLogoUrl: '' as any,
       chainType: '' as any,
       network: '' as any,
       networkLogo: '' as any
@@ -122,6 +186,23 @@ export default defineComponent({
           //   qrcodeContainer.value.innerHTML = '';
           // }
           proxy.$failToast(res.data.msg, 'failToast', 3000)
+        }
+      },
+      async getList() {
+        let res = await getTokens()
+        if (res.data.code == 0) {
+          data.depositList = res.data.model
+          if (data.currency) {
+            data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; }) => {
+              if (item.crypto == data.currency) {
+                data.cryptoFullName = item.cryptoFullName
+                data.cryptoLogoUrl = item.cryptoLogoUrl
+              }
+            })
+          }
+        } else {
+          proxy.$failToast(res.data.msg, 'failToast', 3000)
+          return
         }
       },
       async findNetwork(token: any) {
@@ -156,8 +237,21 @@ export default defineComponent({
         await infoMethods.findAddress(data.currency, data.network)
         data.show = false
       },
+      async setCurrency(item: any, index: number) {
+        data.nowIndext = index
+        data.currency = item.crypto
+        data.cryptoLogoUrl = item.cryptoLogoUrl
+        data.cryptoFullName = item.cryptoFullName
+        await infoMethods.findNetwork(data.currency)
+        await infoMethods.findAddress(data.currency, data.network)
+        data.showt = false
+      },
       async onShow() {
         data.show = true
+        console.log(data.nowIndex)
+      },
+      async onShowt() {
+        data.showt = true
         console.log(data.nowIndex)
       },
       backHome() {
@@ -170,8 +264,8 @@ export default defineComponent({
       qrcodeInstance = new QRCode(qrcodeImgEl, {
         // width: appStore.equipmentType === 'pc' ? 185 : 148,
         text: url,
-        width: 200,
-        height: 200,
+        width: 140,
+        height: 140,
         margin: 1,
         colorDark: '#000000',
         colorLight: '#ffffff',
@@ -184,14 +278,14 @@ export default defineComponent({
       if (canvas) {
         const ctx = canvas.getContext('2d');
         const img = new Image();
-        img.src = data.networkLogo;
+        img.src = data.cryptoLogoUrl;
         console.log(img.src)
         img.onload = () => {
           // 计算图标的位置
-          const x = 70;
-          const y = 70;
+          const x = 55;
+          const y = 55;
           // 在二维码的中心绘制图标
-          ctx.drawImage(img, x, y, 54, 54);
+          ctx.drawImage(img, x, y, 35, 35);
         };
       }
     };
@@ -203,6 +297,7 @@ export default defineComponent({
         data.headerTitle = 'Deposit ' + route.query.currency
         data.networkLogo = deposit ? deposit.logoUrl : ''
         data.currency = route.query.currency
+        await infoMethods.getList()
         if (route.query.network) {
           data.network = route.query.network
           data.type = 2

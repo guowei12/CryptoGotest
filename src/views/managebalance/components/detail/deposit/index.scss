@@ -11,8 +11,8 @@
         justify-content: center;
         padding-top: 32px;
         #qrcodeImg{
-            width:200px;
-            height: 200px;
+            width:140px;
+            height: 140px;
             overflow: hidden;
         }
         .img-center{
@@ -31,6 +31,117 @@
                 width: 54px;
                 height: 54pc;
                 object-fit: contain;
+            }
+        }
+    }
+    .deposit-detail-token{
+        margin: 0 24px;
+        padding-top:20px;
+        .deposit-detail-token-title{
+            font-size: 12px;
+            line-height: 14.4px;
+            color: #737A86;
+        }
+        .deposit-detail-token-con{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            border: 1px solid #E6E8EB;
+            border-radius: 12px;
+            padding: 16px 12px;
+            background: #EDEFF2;
+            .deposit-detail-token-con-left{
+                display: flex;
+                align-items: center;
+            }
+            .deposit-detail-token-con-font{
+                margin-left:12px;
+                .detail-currency-text{
+                    font-size: 16px;
+                    line-height: 20px;
+                    font-family: 'sf-pro-display_medium_500';
+                    color: #191B1F;
+                }
+                .detail-network-text{
+                    font-size: 12px;
+                    line-height: 12px;
+                    line-height: 14.32px;
+                    color: #737A86;
+                }
+            }
+            .currency-icon{
+                width: 32px;
+                height: 32px;
+            }
+            .arrow-btm {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+                transition: transform 0.4s;
+            }
+    
+            .arrow-btm-set {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+                transition: transform 0.4s;
+                transform: rotate(180deg);
+            }
+        }
+    }
+    .deposit-detail-network{
+        margin: 20px 24px 0;
+        .deposit-detail-network-title{
+            font-size: 12px;
+            line-height: 14.4px;
+            color: #737A86;
+        }
+        .deposit-detail-network-con{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            border: 1px solid #E6E8EB;
+            border-radius: 12px;
+            padding: 16px 12px;
+            background: #EDEFF2;
+            .deposit-detail-network-con-left{
+                display: flex;
+                align-items: center;
+            }
+            .deposit-detail-network-con-font{
+                margin-left:12px;
+                .detail-currency-text{
+                    font-size: 16px;
+                    line-height: 20px;
+                    font-family: 'sf-pro-display_medium_500';
+                    color: #191B1F;
+                }
+                .detail-network-text{
+                    font-size: 12px;
+                    line-height: 12px;
+                    line-height: 14.32px;
+                    color: #737A86;
+                }
+            }
+            .currency-icon{
+                width: 32px;
+                height: 32px;
+            }
+            .arrow-btm {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+                transition: transform 0.4s;
+            }
+    
+            .arrow-btm-set {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+                transition: transform 0.4s;
+                transform: rotate(180deg);
             }
         }
     }
@@ -56,64 +167,45 @@
 
         }
     }
-    .deposit-detail-network{
-        margin: 20px 24px 0;
-        .deposit-detail-network-title{
-            font-size: 12px;
-            line-height: 14.4px;
-            color: #737A86;
+    .deposit-detail-network-tip{
+        font-size: 12px;
+        line-height: 14.4px;
+        margin-top: 20px;
+        border-radius: 12px;
+        background: #F5F5F5;
+        padding: 12px;
+        .network-tip-icon{
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+            margin-right: 12px;
         }
-        .deposit-detail-network-con{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 4px;
-            border: 1px solid #E6E8EB;
-            border-radius: 12px;
-            padding: 16px 12px;
-            .deposit-detail-network-con-left{
-                display: flex;
-                align-items: center;
-            }
-            .deposit-detail-network-con-font{
-                margin-left:12px;
-                .detail-currency-text{
-                    font-size: 16px;
-                    line-height: 20px;
-                    font-family: 'sf-pro-display_medium_500';
-                    color: #191B1F;
-                }
-                .detail-network-text{
-                    font-size: 12px;
-                    line-height: 12px;
-                    line-height: 14.32px;
-                    color: #737A86;
-                }
-            }
-            .currency-icon{
-                width: 32px;
-                height: 32px;
-            }
-            .net-change-icon{
-                width: 16px;
-                height: 16px;
-                object-fit: cover;  
-            }
+    }
+    .deposit-text{
+        font-size: 12px;
+        line-height: 14.4px;
+        color: #737A86;
+        text-align: center;
+        margin-top: 12px;
+    }
+    .deposit-detail-btm{
+        width: calc(100% - 32px);
+        margin: 0 auto;
+        color: #737A86;
+        line-height: 16px;
+        margin-top: 16px;
+        .deposit-detail-btm-title{
+            font-family: 'sf-pro-display_medium_500';
+            font-size: 10px;
+            color: #191B1F;
+            margin-bottom: 24px;
         }
-        .deposit-detail-network-tip{
-            font-size: 12px;
-            line-height: 14.4px;
-            display: flex;
-            margin-top: 20px;
-            border-radius: 12px;
-            background: #F5F5F5;
-            padding: 12px;
-            .network-tip-icon{
-                width: 16px;
-                height: 16px;
-                object-fit: cover;
-                margin-right: 12px;
-            }
+        .deposit-detail-btm-text{
+            margin-top: 5px;
+        }
+        .font-we{
+            color: #191B1F;
+            font-family: 'sf-pro-display_medium_500';
         }
     }
 }
@@ -191,6 +283,7 @@
     border-radius: 12px;
 
     .network-list-li {
+
         height: 38px;
         display: flex;
         align-items: center;
