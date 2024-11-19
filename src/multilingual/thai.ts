@@ -19,6 +19,13 @@ const thai = {
     History: "ประวัติความเป็นมา",
     Payment: "การชำระเงิน"
   },
+  orderDetail:{
+    ordercompleted:"คำสั่งซื้อเสร็จสมบูรณ์",
+    receivingaccount:"บัญชีรับเงิน",
+    orderID:"หมายเลขการสั่งซื้อ",
+    totalPayment:"การชำระเงินทั้งหมด",
+    paymenttime:"ระยะเวลาการชำระเงิน"
+  },
   settings: {
     General: 'ภาพรวม',
     Security: 'ความปลอดภัย',

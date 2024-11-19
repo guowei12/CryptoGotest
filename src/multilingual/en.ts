@@ -28,6 +28,13 @@ const en = {
     LogOut:'Log Out',
     Activate:'Activate'
   },
+  orderDetail:{
+    ordercompleted:"Order Completed",
+    receivingaccount:"Receiving account",
+    orderID:"OrderID",
+    totalPayment:"Total Payment",
+    paymenttime:"Payment time"
+  },
   logout:{
     msg: 'Whether you still want to Logout?',
     Cancel: 'Cancel',

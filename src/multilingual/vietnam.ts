@@ -29,6 +29,13 @@ const vie = {
     LogOut: 'Đăng xuất',
     Activate: 'Kích hoạt',
   },
+  orderDetail:{
+    ordercompleted:"Lệnh đã hoàn thành",
+    receivingaccount:"Tài khoản nhận tiền",
+    orderID:"Số thứ tự",
+    totalPayment:"Tổng số tiền thanh toán",
+    paymenttime:"Thời gian thanh toán"
+  },
   logout: {
     msg: 'Bạn vẫn muốn đăng xuất?',
     Cancel: 'Hủy bỏ',

@@ -5,11 +5,11 @@
             <div class="complete-con">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
                 <div class="complete-title">20,000 VND</div>
-                <div class="complete-text">Order Completed
+                <div class="complete-text">{{  $t('orderDetail.ordercompleted') }}
                 </div>
                 <div class="complete-payment">
                     <div class="complete-payment-header">
-                        <div class="complete-payment-header-title">Receiving account</div>
+                        <div class="complete-payment-header-title">{{  $t('orderDetail.receivingaccount') }}</div>
                         <div class="complete-payment-header-con">
                             <div class="complete-payment-header-left">
                                 <img src="@/assets/images/status/momo-logo.png" alt="" srcset="">
@@ -26,20 +26,20 @@
                     <div class="dashed-line"></div>
                     <div class="complete-payment-con">
                         <div class="complete-payment-con-li">
-                            <div class="complete-payment-con-li-title">OrderID</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.orderID') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ orderId }}
                                 <copyCon :copyHtml="orderId" />
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
-                            <div class="complete-payment-con-li-title">Total Payment</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.totalPayment') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ amount }}{{ currency }}
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
-                            <div class="complete-payment-con-li-title">Payment time</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.paymenttime') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ time }}
                             </div>
@@ -50,11 +50,12 @@
             <div class="complete-cont hidden-box" ref="imageContainer">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
                 <div class="complete-title">{{orderDetail.paymentAmount }} {{ orderDetail.paymentUnit }}</div>
-                <div class="complete-text">Order Completed
+                <div class="complete-text">
+                    {{  $t('orderDetail.ordercompleted') }}
                 </div>
                 <div class="complete-payment">
                     <div class="complete-payment-header">
-                        <div class="complete-payment-header-title">Receiving account</div>
+                        <div class="complete-payment-header-title">{{  $t('orderDetail.receivingaccount') }}</div>
                         <div class="complete-payment-header-con">
                             <div class="complete-payment-header-left">
                                 <img src="@/assets/images/status/momo-logo.png" alt="" srcset="">
@@ -71,20 +72,20 @@
                     <div class="dashed-line"></div>
                     <div class="complete-payment-con">
                         <div class="complete-payment-con-li">
-                            <div class="complete-payment-con-li-title">OrderID</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.orderID') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ orderDetail.orderNo }}
                                 <copyCon :copyHtml="orderDetail.orderNo" />
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
-                            <div class="complete-payment-con-li-title">Total Payment</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.totalPayment') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ orderDetail.total }}{{ orderDetail.orderCurrency }}
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
-                            <div class="complete-payment-con-li-title">Payment time</div>
+                            <div class="complete-payment-con-li-title">{{  $t('orderDetail.paymenttime') }}</div>
                             <div class="complete-payment-con-li-text">
                                 {{ orderDetail.paymentTime }}
                             </div>
@@ -116,7 +117,9 @@ import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import html2canvas from 'html2canvas';
 import { getOrderDetail } from "@/apis/api"
+import { useI18n } from '@/multilingual/index.ts';
 
+const { t, locale } = useI18n();
 
 export default defineComponent({
     name: 'completeResult',

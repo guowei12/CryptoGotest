@@ -189,11 +189,11 @@ export default defineComponent({
           img: new URL('@/assets/images/set/VN-icon.png', import.meta.url).href,
           value: 'vi',
         },
-        {
-          name: 'Thai',
-          img: new URL('@/assets/images/set/TH-icon.png', import.meta.url).href,
-          value: 'th',
-        },
+        // {
+        //   name: 'Thai',
+        //   img: new URL('@/assets/images/set/TH-icon.png', import.meta.url).href,
+        //   value: 'th',
+        // },
       ],
       nowLanguage: {
         name: 'EN-US',
