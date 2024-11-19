@@ -199,7 +199,7 @@ export default defineComponent({
               }
 
             } else {
-              removeToken(token)
+              removeToken()
               // window.localStorage.setItem('user','')
               router.replace({ path: '/signin' })
             }
