@@ -33,10 +33,12 @@
                         </div>
                     </div>
                     <div class="QRPay-list-right">
-                        <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-" }} {{ item.confirmedNum }}
+                        <div class="QRPay-list-con-num"> {{ activeTab == "DEPOSIT" ? "+" : "-" }} {{ item.confirmedNum
+                            }}
                         </div>
                         <div class="QRPay-list-con-status">
-                            <div class="completed-color" v-if="item.type != 'REFUND' && item.status == 'SUCCESS'">Completed
+                            <div class="completed-color" v-if="item.type != 'REFUND' && item.status == 'SUCCESS'">
+                                Completed
                             </div>
                             <div class="failed-color" v-if="item.type != 'REFUND' && item.status == 'FAIL'">Failed</div>
                             <div class="Refund-color" v-if="item.type == 'REFUND' && item.status == 'SUCCESS'">Refund
@@ -103,15 +105,28 @@ export default defineComponent({
         };
         const goDetail = (obj: any) => {
             if (activeTab.value == 'DEPOSIT') {
-                couponStore.SET_ORDERDETAIL(obj)
-                console.log(couponStore.$state.orderDetail)
-                router.push({
-                    path: '/deposit',
-                    query: {
-                        id: obj.id,
-                        type: "DEPOSIT"
-                    }
-                })
+                if (obj.type == "REFUND") {
+                    couponStore.SET_ORDERDETAIL(obj)
+                    console.log(couponStore.$state.orderDetail)
+                    router.push({
+                        path: '/refund',
+                        query: {
+                            id: obj.id,
+                            type: "REFUND"
+                        }
+                    })
+                } else {
+                    couponStore.SET_ORDERDETAIL(obj)
+                    console.log(couponStore.$state.orderDetail)
+                    router.push({
+                        path: '/deposit',
+                        query: {
+                            id: obj.id,
+                            type: "DEPOSIT"
+                        }
+                    })
+                }
+
             } else if (activeTab.value == 'WITHDRAW') {
                 couponStore.SET_ORDERDETAIL(obj)
                 router.push({

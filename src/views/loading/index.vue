@@ -1,6 +1,6 @@
 <template>
     <div class="loading-box">
-        <headerBar :logo='headerLogo' :headerLogo="true"></headerBar>
+        <headerBar :logo='headerLogo' :previousShow="true" @onBack="goHome" :headerLogo="true"></headerBar>
         <div class="ani-box">
             <LottieAni :src="lottieData" class="lottie-box" />
         </div>
@@ -78,11 +78,18 @@ export default defineComponent({
             let res = await getOrderDetail(data.orderNo)
             if (res.data.code == 0) {
                 data.orderDetail = res.data.model
-                if (data.statusList.includes(data.orderDetail.status)) {
-                    goUrl(data.orderDetail.status)
+                if (data.orderDetail && data.orderDetail.status) {
+                    if (data.statusList.includes(data.orderDetail.status)) {
+                        goUrl(data.orderDetail.status)
+                    }
                 }
             } else {
 
+            }
+        }
+        const goHome =(data: { cancel: any; })=>{
+            if(data.cancel){
+                router.push({path:'/'})
             }
         }
         onBeforeMount(() => {
@@ -90,7 +97,7 @@ export default defineComponent({
         })
         onMounted(async () => {
             onLoading()
-            data.orderNo = route.query.orderNum
+            data.orderNo = route.query.orderNo|| route.query.orderNum
             await getOrder()
             data.timer = setInterval(() => {
                 getOrder()
@@ -122,7 +129,8 @@ export default defineComponent({
             lottieData,
             onLoading,
             getOrder,
-            goUrl
+            goUrl,
+            goHome
         };
     },
 })

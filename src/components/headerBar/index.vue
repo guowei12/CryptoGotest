@@ -51,7 +51,10 @@
       </div>
     </div>
     <div class="header-default" v-if="headerLogo">
-      <div class="header-arrow-left" @click="setBack">
+      <div v-if="!previousShow" class="header-arrow-left" @click="setBack">
+        <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
+      </div>
+      <div v-else class="header-arrow-left" @click="goBack">
         <img class="arrow-left" src="@/assets/images/header/arrow-left.png" alt="" srcset="">
       </div>
       <div class="header-balance">

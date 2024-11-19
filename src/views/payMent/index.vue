@@ -20,7 +20,7 @@
         </div>
         <div class="pay-box-con-right">
           <div>{{ bankAccountNumber }}</div>
-          <div class="pay-box-con-right-btn">MB Bank</div>
+          <div class="pay-box-con-right-btn">{{ bankCode }}</div>
         </div>
       </div>
       <div class="pay-box-amount">
@@ -125,6 +125,7 @@ export default defineComponent({
       currencyResponseList: null as any,
       merchantName: null as any,
       bankAccountName: null as any,
+      bankCode:'MB Bank' as any,
       bankAccountNumber: null as any,
       preAuthorizationNumber: null as any,
       merchantLogo: new URL('@/assets/images/qr/logo.png', import.meta.url).href,
@@ -370,6 +371,7 @@ export default defineComponent({
             data.bankAccountName = res.data.model.bankAccountName
             data.bankAccountNumber = res.data.model.bankAccountNumber
             data.preAuthorizationNumber = res.data.model.preAuthorizationNumber
+            data.bankCode = res.data.model.bankCode
             // data.merchantLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).merchantLogo : ''
             // data.scanLogo = res.data.model?.ui ? JSON.parse(res.data.model.ui).scanLogo : ''
             if (data.faitCurrency) {
