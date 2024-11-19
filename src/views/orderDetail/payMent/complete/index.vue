@@ -4,7 +4,7 @@
         <div class="complete-con-box">
             <div class="complete-con">
                 <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
-                <div class="complete-title">20,000 VND</div>
+                <div class="complete-title">{{orderDetail.paymentAmount }} {{ orderDetail.paymentUnit }}</div>
                 <div class="complete-text">{{  $t('orderDetail.ordercompleted') }}
                 </div>
                 <div class="complete-payment">
@@ -15,10 +15,10 @@
                                 <img src="@/assets/images/status/momo-logo.png" alt="" srcset="">
                             </div>
                             <div class="complete-payment-header-li">
-                                <div class="complete-payment-header-li-title">NGUYEN VANA</div>
+                                <div class="complete-payment-header-li-title">{{ orderDetail.bankAccountName }}</div>
                                 <div class="complete-payment-header-li-text">
-                                    <div>9019948815</div>
-                                    <div class="complete-li-text-line">MB Bank</div>
+                                    <div>{{ orderDetail.bankAccountNumber }}</div>
+                                    <div class="complete-li-text-line">{{ orderDetail.bankAccountName }}</div>
                                 </div>
                             </div>
                         </div>
@@ -28,20 +28,19 @@
                         <div class="complete-payment-con-li">
                             <div class="complete-payment-con-li-title">{{  $t('orderDetail.orderID') }}</div>
                             <div class="complete-payment-con-li-text">
-                                {{ orderId }}
-                                <copyCon :copyHtml="orderId" />
+                                {{ orderDetail.orderNo }}
+                                <copyCon :copyHtml="orderDetail.orderNo" />
                             </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">{{  $t('orderDetail.totalPayment') }}</div>
                             <div class="complete-payment-con-li-text">
-                                {{ amount }}{{ currency }}
-                            </div>
+                                {{ orderDetail.total }}{{ orderDetail.orderCurrency }}                            </div>
                         </div>
                         <div class="complete-payment-con-li matop-24">
                             <div class="complete-payment-con-li-title">{{  $t('orderDetail.paymenttime') }}</div>
                             <div class="complete-payment-con-li-text">
-                                {{ time }}
+                                {{ orderDetail.paymentTime }}
                             </div>
                         </div>
                     </div>
