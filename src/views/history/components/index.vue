@@ -116,7 +116,7 @@ export default defineComponent({
                     router.push({
                         path: '/refund',
                         query: {
-                            id: obj.id,
+                            num: obj.num,
                             type: "REFUND"
                         }
                     })
@@ -126,7 +126,7 @@ export default defineComponent({
                     router.push({
                         path: '/deposit',
                         query: {
-                            id: obj.id,
+                            num: obj.num,
                             type: "DEPOSIT"
                         }
                     })
@@ -137,7 +137,7 @@ export default defineComponent({
                 router.push({
                     path: '/withdraw',
                     query: {
-                        id: obj.id,
+                        num: obj.num,
                         type: "WITHDRAW"
                     }
                 })

@@ -40,11 +40,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import copyCon from '@/components/copy/index.vue'
 import HeaderBar from '@/components/headerBar/index.vue'
 import { useMain } from '@/store';
+import { getWalletRecordDetail } from '@/apis/api'
 
 export default defineComponent({
     name: 'refundResult',
@@ -52,13 +53,24 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const { proxy } = getCurrentInstance() as any
         const couponStore = useMain();
         const data = reactive({
             successIcon: new URL('@/assets/images/detail/success-icon.png', import.meta.url).href,
             failIcon: new URL('@/assets/images/detail/fail-icon.png', import.meta.url).href,
             headerTitle: 'Refund details',
-            detail:{} as any
+            detail:{} as any,
+            num: '' as any,
+            type: '' as any
         })
+        const getDetail = async () => {
+            let res = await getWalletRecordDetail(data.num, data.type)
+            if(res.data.code == 0){
+                data.detail = res.data.model
+            }else{
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+            }
+        }
         onBeforeMount(() => {
         })
         onMounted(() => {
@@ -71,7 +83,8 @@ export default defineComponent({
         watchEffect(() => {
         })
         return {
-            ...toRefs(data)
+            ...toRefs(data),
+            getDetail
         };
     },
 })

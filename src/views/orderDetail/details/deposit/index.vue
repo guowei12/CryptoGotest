@@ -63,20 +63,25 @@ export default defineComponent({
             failIcon: new URL('@/assets/images/detail/fail-icon.png', import.meta.url).href,
             detail: {} as any,
             headerTitle: 'Deposit details',
-            id: '' as any,
+            num: '' as any,
             type: '' as any
         })
         onBeforeMount(() => {
         })
         const getDetail = async () => {
-            await getWalletRecordDetail(data.id, data.type)
+            let res = await getWalletRecordDetail(data.num, data.type)
+            if(res.data.code == 0){
+                data.detail = res.data.model
+            }else{
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+            }
         }
         onMounted(async () => {
-            data.id=route.query.id
+            data.num=route.query.num
             data.type=route.query.type
             data.detail = couponStore.$state.orderDetail
             console.log('orderDetail',couponStore.$state.orderDetail)
-            // await getDetail()
+            await getDetail()
         })
         onActivated(() => {
             data.detail = couponStore.$state.orderDetail
