@@ -69,7 +69,7 @@
     </div>
     <div class="withdraw-detail-quantity">
       <div class="withdraw-detail-quantity-title">
-        Estimated arrival quantity <span class="font-strong">{{ formData.quantityAmount }} {{ currency }}</span>
+        Estimated arrival quantity <span class="font-strong">{{ quantityAmount }} {{ currency }}</span>
       </div>
       <div class="withdraw-detail-quantity-con">
         <div>Network fee</div>
@@ -302,6 +302,7 @@ export default defineComponent({
         if (res.data.code == 0) {
           data.freeList = res.data.model
         } else {
+          data.freeList.networkFee=0
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
@@ -323,8 +324,9 @@ export default defineComponent({
         }
       },
       async getBalancesAmount() {
-        data.tropertyList.forEach((item: { name: any; faitAmount: number; }) => {
+        data.tropertyList.forEach((item: { name: any; faitAmount: number; },index) => {
           if (item.name == data.currency) {
+            data.nowIndext = index
             data.balancesAmount = item.faitAmount
           }
         })
@@ -350,7 +352,7 @@ export default defineComponent({
     }
     const quantityAmount = computed(() => {
       if (data.formData.amount > 0 && data.balancesAmount > 0) {
-        let amount = data.formData.amount - data.formData.amount * data.freeList.networkFee
+        let amount = data.formData.amount - (data.formData.amount * data.freeList.networkFee)
         return new Intl.NumberFormat().format(amount);
       }
       return 0
@@ -374,7 +376,6 @@ export default defineComponent({
           data.nowNetwork = route.query.network
           data.currencyUrl = route.query.url
           data.type = 2
-
         } else {
           data.type = 1
         }

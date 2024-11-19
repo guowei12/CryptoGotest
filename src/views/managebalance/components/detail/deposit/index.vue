@@ -202,8 +202,9 @@ export default defineComponent({
       },
       async changeCurrency() {
         if (data.currency) {
-          data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; }) => {
+          data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; },index) => {
             if (item.crypto == data.currency) {
+              data.nowIndext = index
               data.cryptoFullName = item.cryptoFullName
               data.cryptoLogoUrl = item.cryptoLogoUrl
             }
