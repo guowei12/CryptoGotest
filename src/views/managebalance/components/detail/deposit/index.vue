@@ -44,6 +44,8 @@
           <img class="networkLogo" :src="networkLogo" alt="" srcset="">
         </div> -->
       </div>
+     <!-- <QrCodeWithIcon  :iconUrl="qrIconUrl" :size="200" :iconSize="40"></QrCodeWithIcon> -->
+
       <div class="deposit-text">
         Only deposit {{ currency }} to this address
       </div>
@@ -71,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div class="deposit-detail-btn" @click="backHome" v-show="!TLoading">
+    <div class="deposit-detail-btn" @click="backHome" >
       Back Home
     </div>
     <div style="height: 68px;"></div>
@@ -147,11 +149,11 @@ import { getAddress, getTokens, getNetwork } from '@/apis/api'
 import Loading from '@/components/loading/index.vue'
 
 import QRCode from 'qrcodejs2-fix';
-import { nextTick } from 'process';
+import QrCodeWithIcon from "@/components/qrcode/index.vue";
 
 export default defineComponent({
   name: 'depositDetail',
-  components: { HeaderBar, copyCon, showModel, Loading },
+  components: { HeaderBar, copyCon, showModel, Loading,QrCodeWithIcon },
   setup() {
     const route = useRoute();
     const router = useRouter();
