@@ -7,14 +7,16 @@
       <div class="QRPay-con">
         <div class="QRPay-balance">
           <div class="QRPay-balance-title">AEON balance
-            <div class="QRPay-balance-title-imgs" @click="balanceShow=!balanceShow">
-              <img class="QRPay-balance-title-img" :src="balanceShow?seeImg:seeCloseImg" alt="">
+            <div class="QRPay-balance-title-imgs" @click="balanceShow = !balanceShow">
+              <img class="QRPay-balance-title-img" :src="balanceShow ? seeImg : seeCloseImg" alt="">
               <!-- <van-icon class="closed-eye-icon" v-else name="closed-eye" /> -->
               <!-- <img v-else cla ss="QRPay-balance-title-img" src="@/assets/images/home/see-close-icon.png" alt=""> -->
             </div>
           </div>
-          <div class="QRPay-balance-number" v-if="balanceShow">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
-          <div class="QRPay-balance-number" v-else>{{ userBalances.faitIcon }} <span class="special-font">******</span></div>
+          <div class="QRPay-balance-number" v-if="balanceShow">{{ userBalances.faitIcon }}{{ userBalances.balances }}
+          </div>
+          <div class="QRPay-balance-number" v-else>{{ userBalances.faitIcon }} <span class="special-font">******</span>
+          </div>
         </div>
         <div class="QRPay-balance-btn" @click="goManagebalance">
           <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
@@ -42,13 +44,13 @@
                   alt="" srcset="">
                 <img v-else class="shopping-img" src="@/assets/images/home/shopping-failed.png" alt="" srcset="">
                 <div class="QRPay-list-con">
-                  <div class="QRPay-list-con-name">{{ item.name }}</div>
+                  <div class="QRPay-list-con-name">{{ item.productName }}</div>
                   <div class="QRPay-list-con-time">{{ item.updateTime }}</div>
                 </div>
               </div>
               <div class="QRPay-list-right">
-                <div class="QRPay-list-con-num">{{ item.status == 'SUCCESS' ? '-' : '+' }}{{ item.number }} {{ item.fait
-                  }}
+                <div class="QRPay-list-con-num">{{ item.status == 'SUCCESS' ? '-' : '+' }}{{ item.orderAmount }} {{
+                  item.orderCurrency}}
                 </div>
                 <div class="QRPay-list-con-status">
                   <div class="completed-color" v-if="item.status == 'SUCCESS'">Completed</div>
@@ -243,7 +245,7 @@ export default defineComponent({
             ])
             transactionList.forEach((item: { updateTime: moment.MomentInput; }) => {
               item.updateTime = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
-              item.time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
+              // item.time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
             })
 
             data.transactionList = transactionList.concat(data.transactionList)
@@ -283,27 +285,43 @@ export default defineComponent({
         let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
         return flag
       },
-      async goUrl(status: any) {
+      async goUrl(status: any, orderNo: any) {
         switch (status) {
           case 'SUCCESS':
-            router.push({ path: '/transactionComplete' })
+            router.push({
+              path: '/transactionComplete', query: {
+                orderNo:orderNo
+            }
+            })
             break;
           case 'FAIL':
-            router.push({ path: '/transactionFailed' })
+            router.push({
+              path: '/transactionFailed', query: {
+                orderNo: orderNo
+              }
+            })
             break;
           case 'ERROR':
-            router.push({ path: '/transactionFailed' })
+            router.push({
+              path: '/transactionFailed', query: {
+                orderNo: orderNo
+              }
+            })
             break;
           case 'TIMEOUT':
-            router.push({ path: '/timeOut' })
+            router.push({
+              path: '/timeOut', query: {
+                orderNo: orderNo
+              }
+            })
             break;
           default:
             break;
         }
       },
-      async goDetail(detail: { status: string; }) {
+      async goDetail(detail: { status: string; num: string;}) {
         couponStore.SET_ORDERDETAIL(detail)
-        await infoMethods.goUrl(detail.status)
+        await infoMethods.goUrl(detail.status, detail.num)
       },
       onClose() {
         data.icShow = false

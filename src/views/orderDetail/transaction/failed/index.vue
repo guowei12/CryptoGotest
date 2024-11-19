@@ -41,11 +41,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
+import { getOrderDetail } from "@/apis/api"
 
 export default defineComponent({
     name: 'trFailedResult',
@@ -54,6 +55,8 @@ export default defineComponent({
         const route = useRoute();
         const router = useRouter();
         const couponStore = useMain();
+        const { proxy } = getCurrentInstance() as any
+
         const data = reactive({
             headerTitle:'Transaction details',
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
@@ -61,15 +64,36 @@ export default defineComponent({
             total:'20,000',
             currency:'VND',
             time:'2024-04-14 18:19 (UTC+8)',
-            detail: {} as any
+            detail: {} as any,
+            orderNo:'' as any
         })
+        const getOrder = async () => {
+            let res = await getOrderDetail(data.orderNo)
+            if (res.data.code == 0) {
+                data.detail = res.data.model
+            } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+            }
+        }
         onBeforeMount(() => {
         })
-        onMounted(() => {
-            data.detail = couponStore.$state.orderDetail
+        onMounted(async () => {
+            let orderNo = route.query.orderNo
+            if (orderNo) {
+                data.orderNo = orderNo
+                await getOrder()
+            } else {
+                data.detail = couponStore.$state.orderDetail
+            }
         })
-        onActivated(() => {
-            data.detail = couponStore.$state.orderDetail
+        onActivated(async () => {
+            let orderNo = route.query.orderNo
+            if (orderNo) {
+                data.orderNo = orderNo
+                await getOrder()
+            } else {
+                data.detail = couponStore.$state.orderDetail
+            }
         })
         watchEffect(() => {
         })

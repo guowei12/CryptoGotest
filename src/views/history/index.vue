@@ -21,7 +21,7 @@ export default defineComponent({
             headerTitle: 'History',
             tranList:{
                 type:'DEPOSIT',
-                currency:'USDT'
+                currency:''
             }
         })
         const activeTab = ref();

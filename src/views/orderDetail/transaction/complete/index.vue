@@ -3,7 +3,7 @@
         <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
         <div class="complete-con">
             <img class="status-icon" src="@/assets/images/status/completed-icon.png" alt="" sizes="" srcset="">
-            <div class="complete-title">{{ detail.confirmedNum }} {{ detail.crypto }}</div>
+            <div class="complete-title">{{ detail.paymentAmount }} {{ detail.paymentUnit }}</div>
             <div class="complete-text">Success</div>
             <div class="complete-payment">
                 <div class="complete-payment-header">
@@ -13,9 +13,9 @@
                             <img src="@/assets/images/status/momo-logo.png" alt="" srcset="">
                         </div>
                         <div class="complete-payment-header-li">
-                            <div class="complete-payment-header-li-title">NGUYEN VANA</div>
+                            <div class="complete-payment-header-li-title">{{ detail.bankAccountName }}</div>
                             <div class="complete-payment-header-li-text">
-                                <div>9019948815</div>
+                                <div>{{ detail.bankAccountNumber }}</div>
                                 <div class="complete-li-text-line">MB Bank</div>
                             </div>
                         </div>
@@ -26,8 +26,8 @@
                     <div class="complete-payment-con-li">
                         <div class="complete-payment-con-li-title">OrderID</div>
                         <div class="complete-payment-con-li-text">
-                            {{ detail.orderId }}
-                            <copyCon :copyHtml="detail.orderId" />
+                            {{ detail.orderNo }}
+                            <copyCon :copyHtml="detail.orderNo" />
                         </div>
                     </div>
                     <div class="complete-payment-con-li matop-24">
@@ -39,7 +39,7 @@
                     <div class="complete-payment-con-li matop-24">
                         <div class="complete-payment-con-li-title">Payment time</div>
                         <div class="complete-payment-con-li-text">
-                            {{ detail.time }}
+                            {{ detail.paymentTime }}
                         </div>
                     </div>
                 </div>
@@ -49,11 +49,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
+import { defineComponent, ref, getCurrentInstance, reactive, toRefs, onBeforeMount, onMounted, onActivated, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import HeaderBar from '@/components/headerBar/index.vue'
 import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
+import { getOrderDetail } from "@/apis/api"
 
 export default defineComponent({
     name: 'trCompleteResult',
@@ -62,19 +63,41 @@ export default defineComponent({
         const route = useRoute();
         const router = useRouter();
         const couponStore = useMain();
+        const { proxy } = getCurrentInstance() as any
         const data = reactive({
-            headerTitle:'Transaction details',
+            headerTitle: 'Transaction details',
             headerLogo: new URL('@/assets/images/status/aeon-logo.png', import.meta.url).href,
             orderId: '661bbbc10cf7f20007e4ff48',
-            detail: {} as any
+            detail: {} as any,
+            orderNo: '' as any
         })
+        const getOrder = async () => {
+            let res = await getOrderDetail(data.orderNo)
+            if (res.data.code == 0) {
+                data.detail = res.data.model
+            } else {
+                proxy.$failToast(res.data.msg, 'failToast', 3000)
+            }
+        }
         onBeforeMount(() => {
         })
-        onMounted(() => {
-            data.detail = couponStore.$state.orderDetail
+        onMounted(async () => {
+            let orderNo = route.query.orderNo
+            if (orderNo) {
+                data.orderNo = orderNo
+                await getOrder()
+            } else {
+                data.detail = couponStore.$state.orderDetail
+            }
         })
-        onActivated(() => {
-            data.detail = couponStore.$state.orderDetail
+        onActivated(async () => {
+            let orderNo = route.query.orderNo
+            if (orderNo) {
+                data.orderNo = orderNo
+                await getOrder()
+            } else {
+                data.detail = couponStore.$state.orderDetail
+            }
         })
         return {
             ...toRefs(data)

@@ -37,12 +37,16 @@
                             }}
                         </div>
                         <div class="QRPay-list-con-status">
-                            <div class="completed-color" v-if="item.type != 'REFUND' && item.status == 'SUCCESS'">
+                            <div class="Pending-color" v-if="item.status == 'PENDING'">
+                                PENDING
+                            </div>
+                            <div class="completed-color" v-else-if="item.type != 'REFUND' && item.status == 'SUCCESS'">
                                 Completed
                             </div>
-                            <div class="failed-color" v-if="item.type != 'REFUND' && item.status == 'FAIL'">Failed</div>
-                            <div class="Refund-color" v-if="item.type == 'REFUND' && item.status == 'SUCCESS'">Refund
+                            <div class="failed-color" v-else-if="item.type != 'REFUND' && item.status == 'FAIL'">Failed</div>
+                            <div class="Refund-color" v-else-if="item.type == 'REFUND' && item.status == 'SUCCESS'">Refund
                             </div>
+                            <div class="failed-color" v-else>{{ item.status }}</div>
                         </div>
                     </div>
                 </div>
@@ -85,6 +89,7 @@ export default defineComponent({
         const couponStore = useMain();
 
         const data = reactive({
+            currency: '' as any,
             refLoading: true,
             loadingText: '...',
             img1: new URL('@/assets/images/balance/arrow-retract-icon.png', import.meta.url).href,
@@ -140,7 +145,7 @@ export default defineComponent({
 
         }
         const onHistory = async () => {
-            let res = await getHistory(data.pageNo, data.pageSize, activeTab.value)
+            let res = await getHistory(data.pageNo, data.pageSize, activeTab.value, data.currency)
             if (res.data.code == 0) {
                 if (res.data.model.data && res.data.model.data.length > 0) {
                     let transactionList = res.data.model.data
@@ -182,8 +187,13 @@ export default defineComponent({
             couponStore.SET_ORDERDETAIL({})
         })
         onMounted(async () => {
+            if (route.query.currency) {
+                data.currency = route.query.currency
+            } else {
+                data.currency = props.currency
+            }
             activeTab.value = 'DEPOSIT';
-            // console.log(props.currency)
+            console.log(props.currency)
             await onRefresh()
         })
         watchEffect(() => {

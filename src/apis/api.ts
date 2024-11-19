@@ -79,8 +79,8 @@ export function putWithdraw(data: any) {
 export function getBalances(faitCurrency: any) {
   return http.get(`${wallet.balances}?currency=${faitCurrency}`);
 }
-export function getHistory(pageNo: any, pageSize: any, type: any) {
-  return http.get(`${wallet.history}?pageNo=${pageNo}&pageSize=${pageSize}&type=${type}`);
+export function getHistory(pageNo: any, pageSize: any, type: any, token:any) {
+  return http.get(`${wallet.history}?pageNo=${pageNo}&pageSize=${pageSize}&type=${type}&token=${token}`);
 }
 export function getWalletRecordDetail(id: string, type: string) {
   return http.get(`${wallet.walletRecordDetail}?id=${id}&type=${type}`);
