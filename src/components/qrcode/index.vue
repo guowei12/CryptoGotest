@@ -40,10 +40,8 @@ export default defineComponent({
             data.text=props.text
             // 清空画布
             ctx.clearRect(0, 0, props.size, props.size);
-            console.log(data.text)
             // 生成二维码
             await QRCode.toCanvas(canvasz, data.text, { width: props.size });
-
             // 在二维码中间绘制图标
             const icon = new Image();
             icon.src = data.iconUrl;
