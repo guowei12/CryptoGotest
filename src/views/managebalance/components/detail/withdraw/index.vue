@@ -4,7 +4,25 @@
     <div class="withdraw-detail-box">
       <div class="withdraw-detail-con">
         <div class="withdraw-detail-con-li">
-          <div class="withdraw-detail-con-title">Transfer network</div>
+          <div class="withdraw-detail-con-title">Token</div>
+          <div class="withdraw-detail-con-text" @click="tokenShow = !tokenShow">
+            <div v-if="currency" class="network-list-li">
+              <div class="network-li-left">
+                <img class="currency-img" :src="cryptoLogoUrl" alt="" srcset="">
+                <div class="network-list-con">
+                  <div class="network-list-con-name">{{ currency }}</div>
+                  <div class="network-list-con-time">{{ cryptoFullName }}</div>
+                </div>
+              </div>
+
+            </div>
+            <div v-else>Select Network</div>
+            <img :class="networkShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png"
+              alt="">
+          </div>
+        </div>
+        <div class="withdraw-detail-con-li">
+          <div class="withdraw-detail-con-title">Network</div>
           <div class="withdraw-detail-con-text" @click="networkShow = !networkShow">
             <div v-if="nowNetwork" class="network-list-li">
               <div class="network-li-left">
@@ -37,15 +55,15 @@
               <input type="number" @input="calculateRate" class="amount-text" v-model="formData.amount"
                 placeholder="At least 1" />
             </div>
-            <div class="withdraw-detail-con-li-right">
+            <!-- <div class="withdraw-detail-con-li-right">
               <img class="currency-icon" :src="currencyUrl" alt="">
               <div>{{ currency }}</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="withdraw-detail-con-btm">
           <div>Available</div>
-          <div class="withdraw-detail-con-btm-right">{{ balances }} {{ currency }}</div>
+          <div class="withdraw-detail-con-btm-right">{{ balancesAmount }} {{ currency }}</div>
         </div>
       </div>
     </div>
@@ -82,7 +100,36 @@
           </div>
         </div>
       </div>
-      <div class='action-btm'>
+      <div class='action-btm' v-if="false">
+        <img class="tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
+        <div class="tip-con">
+          When you recharge this currency, please only recharge through the supported networks below. If you recharge
+          through other networks, funds will be lost.
+        </div>
+      </div>
+    </van-action-sheet>
+    <van-action-sheet v-model:show="tokenShow">
+      <!-- 自定义 header 插槽 -->
+      <view slot="header">
+        <div class="van-action-box-header">
+          <div class="action-title-line"></div>
+          <div>Select token</div>
+          <img @click="tokenShow = false" class="back-icon" src="@/assets/images/balance/back-icon.png" alt="">
+        </div>
+      </view>
+      <div class="network-list">
+        <div @click="setCurrency(item, index)" :class="nowIndext == index ? 'network-li-set' : ''"
+          class="network-list-li" v-for="(item, index) in tropertyList" :key="index">
+          <div class="network-li-left">
+            <img class="currency-img" :src="item.logoUrl" alt="" srcset="">
+            <div class="network-list-con">
+              <div class="network-list-con-name">{{ item.name }}</div>
+              <div class="network-list-con-time">{{ item.faitAmount }} {{ item.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='action-btm' v-if="false">
         <img class="tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
         <div class="tip-con">
           When you recharge this currency, please only recharge through the supported networks below. If you recharge
@@ -117,13 +164,18 @@ export default defineComponent({
       type: 1,
       address: '',
       networkShow: false,
+      tokenShow: false,
+      depositList: [] as any,
+      tropertyList: [] as any,
       networkList: [] as any,
       nowIndex: 0,
-      balances: {},
+      nowIndext: 0,
       balancesAmount: 0,
       nowUrl: '' as any,
       nowChainType: '' as any,
       currency: '' as any,
+      cryptoLogoUrl: '' as any,
+      cryptoFullName: '' as any,
       currencyUrl: '' as any,
       nowNetwork: '' as any,
       aeonUser: {} as any,
@@ -185,26 +237,40 @@ export default defineComponent({
         await infoMethods.getFree(data.currency, data.nowNetwork)
         data.networkShow = false
       },
+      async setCurrency(item: any, index: number) {
+        data.nowIndext = index
+        data.currency = item.name
+        data.cryptoLogoUrl = item.logoUrl
+        data.cryptoFullName = item.fullName
+        data.tokenShow = false
+        await infoMethods.getBalancesAmount()
+        console.log(data.balancesAmount)
+        await infoMethods.findNetwork(data.currency)
+      },
       onNext() {
-        // if (!nexShow) {
-        //   if(!data.formData.address){
-        //     proxy.$failToast('Please enter the address！', 'failToast', 3000)
-        //   }else if(data.formData.amount == 0 || !data.formData.amount){
-        //     proxy.$failToast('Please enter the amount！', 'failToast', 3000)
-        //   }
-        //   return
-        // }
-        // if (data.formData.address && data.formData.amount > 0) {
-          data.aeonUser = {
-            address: data.formData.address,
-            amount: data.formData.amount,
-            network: data.nowNetwork,
-            token: data.currency
+
+        if(data.balancesAmount == 0){
+          return 
+        }
+        if (!nexShow) {
+          if(!data.formData.address){
+            proxy.$failToast('Please enter the address！', 'failToast', 3000)
+          }else if(data.formData.amount == 0 || !data.formData.amount){
+            proxy.$failToast('Please enter the amount！', 'failToast', 3000)
           }
-          showModal.value = true
+          return
+        }
+        // if (data.formData.address && data.formData.amount > 0) {
+        data.aeonUser = {
+          address: data.formData.address,
+          amount: data.formData.amount,
+          network: data.nowNetwork,
+          token: data.currency
+        }
+        showModal.value = true
         // } else {
-          // proxy.$failToast('', 'failToast', 3000)
-          // return
+        // proxy.$failToast('', 'failToast', 3000)
+        // return
         // }
 
         // router.replace({ path: '/' })
@@ -243,16 +309,25 @@ export default defineComponent({
         let currency = localStorage.getItem('currency') || 'USD'
         let res = await getBalances(currency)
         if (res.data.code == 0) {
-          data.balances = res.data.model.balances
-          data.balances.tropertyList.forEach(item => {
-            if (item.name == data.currency) {
-              data.balancesAmount == item.faitAmount
-            }
-          })
-
+          // data.balances = res.data.model.balances
+          data.tropertyList = res.data.model.tropertyList
+          data.tropertyList.forEach((item: { name: any;logoUrl: any; fullName: any; faitAmount: number; }) => {
+          if (item.name == data.currency) {
+            data.cryptoLogoUrl = item.logoUrl
+            data.cryptoFullName = item.fullName
+            data.balancesAmount = item.faitAmount
+          }
+        })
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
+      },
+      async getBalancesAmount() {
+        data.tropertyList.forEach((item: { name: any; faitAmount: number; }) => {
+          if (item.name == data.currency) {
+            data.balancesAmount = item.faitAmount
+          }
+        })
       },
       async sendWithdraw() {
         let params = {
@@ -263,10 +338,12 @@ export default defineComponent({
           token: data.currency,
           type: data.type // 1、email 2、googleAuth
         }
-        await putWithdraw(params)
+        let res = await putWithdraw(params)
       }
     }
     const calculateRate = () => {
+      console.log(data.balancesAmount,data.formData.amount)
+
       if (data.formData.amount > data.balancesAmount) {
         data.formData.amount = data.balancesAmount;
       }
@@ -288,8 +365,8 @@ export default defineComponent({
     onBeforeMount(() => {
     })
     onMounted(async () => {
-      console.log(couponStore.$state.withdraw)
-      let withdraw = couponStore.$state.withdraw
+      // console.log(couponStore.$state.withdraw)
+      // let withdraw = couponStore.$state.withdraw
       if (route.query.currency) {
         data.headerTitle = 'Withdraw ' + route.query.currency
         data.currency = route.query.currency
@@ -297,27 +374,30 @@ export default defineComponent({
           data.nowNetwork = route.query.network
           data.currencyUrl = route.query.url
           data.type = 2
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.getFree(data.currency, data.nowNetwork)
-          await infoMethods.onBalances()
+
         } else {
           data.type = 1
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.getFree(data.currency, data.nowNetwork)
-          await infoMethods.onBalances()
         }
       } else {
-        if (withdraw) {
-          data.type = 3
-          data.headerTitle = 'Withdraw ' + withdraw
-          data.currency = withdraw.currency
-          data.nowNetwork = withdraw.network
-          data.currencyUrl = withdraw.url
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.getFree(data.currency, data.nowNetwork)
-          await infoMethods.onBalances()
-        }
+        // if (withdraw) {
+        //   data.type = 3
+        //   data.headerTitle = 'Withdraw ' + withdraw
+        //   data.currency = withdraw.currency
+        //   data.nowNetwork = withdraw.network
+        //   data.currencyUrl = withdraw.url
+        //   await infoMethods.findNetwork(data.currency)
+        //   await infoMethods.getFree(data.currency, data.nowNetwork)
+        //   await infoMethods.onBalances()
+        // }
       }
+      if (data.currency) {
+      } else {
+        data.currency = "USDT"
+      }
+      await infoMethods.findNetwork(data.currency)
+      await infoMethods.getFree(data.currency, data.nowNetwork)
+      await infoMethods.onBalances()
+      await infoMethods.getBalancesAmount()
     })
     watchEffect(() => {
     })

@@ -8,11 +8,11 @@
         <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
       </div>
       <div class="balance-btn-box">
-        <div class="balance-btn-df" @click="goUrl('depositb')">
+        <div class="balance-btn-df" @click="goUrl('depositDetail')">
           <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
           <div>Deposit</div>
         </div>
-        <div class="balance-btn-df" @click="goUrl('withdrawb')">
+        <div class="balance-btn-df" @click="goUrl('withdrawDetail')">
           <img class="balance-btn-img" src="@/assets/images/balance/import.png" alt="" srcset="">
           <div>Withdraw</div>
         </div>

@@ -90,7 +90,7 @@ export default defineComponent({
         })
         onMounted(async () => {
             onLoading()
-            data.orderNo = route.query.orderNo
+            data.orderNo = route.query.orderNum
             await getOrder()
             data.timer = setInterval(() => {
                 getOrder()

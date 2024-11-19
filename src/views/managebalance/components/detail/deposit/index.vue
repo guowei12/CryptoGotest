@@ -57,19 +57,23 @@
       </div>
       <div class="deposit-detail-btm">
         <div class="deposit-detail-btm-title">* Min Deposit Amount > 1 {{ currency }}</div>
-        <div class="deposit-detail-btm-text"> 
-          Please don't deposit any other digital assets except <span class="font-we">{{ currency }}</span> to the above address.
+        <div class="deposit-detail-btm-text">
+          Please don't deposit any other digital assets except <span class="font-we">{{ currency }}</span> to the above
+          address.
         </div>
-        <div class="deposit-detail-btm-text"> 
-          Minimum deposit amount <span class="font-we">1 {{ currency }}</span> . Any deposits less than the minimum will not be credited.        </div>
-        <div class="deposit-detail-btm-text"> 
-          Please make sure that your computer and browser are secure and your information is protected from being tampered or leaked.
+        <div class="deposit-detail-btm-text">
+          Minimum deposit amount <span class="font-we">1 {{ currency }}</span> . Any deposits less than the minimum will
+          not be credited. </div>
+        <div class="deposit-detail-btm-text">
+          Please make sure that your computer and browser are secure and your information is protected from being
+          tampered or leaked.
         </div>
       </div>
     </div>
     <div class="deposit-detail-btn" @click="backHome">
       Back Home
     </div>
+    <div style="height: 68px;"></div>
     <van-action-sheet v-model:show="show">
       <!-- 自定义 header 插槽 -->
       <view slot="header">
@@ -91,7 +95,7 @@
           </div>
         </div>
       </div>
-      <div class='action-btm'>
+      <div class='action-btm' v-if="false">
         <img class="tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
         <div class="tip-con">
           When you recharge this currency, please only recharge through the supported networks below. If you recharge
@@ -109,8 +113,8 @@
         </div>
       </view>
       <div class="network-list">
-        <div @click="setCurrency(item, index)" :class="nowIndext == index ? 'network-li-set' : ''" class="network-list-li"
-          v-for="(item, index) in depositList" :key="index">
+        <div @click="setCurrency(item, index)" :class="nowIndext == index ? 'network-li-set' : ''"
+          class="network-list-li" v-for="(item, index) in depositList" :key="index">
           <div class="network-li-left">
             <img class="currency-img" :src="item.cryptoLogoUrl" alt="" srcset="">
             <div class="network-list-con">
@@ -120,7 +124,7 @@
           </div>
         </div>
       </div>
-      <div class='action-btm'>
+      <div class='action-btm' v-if="false">
         <img class="tip-icon" src="@/assets/images/balance/tip-icon.png" alt="" srcset="">
         <div class="tip-con">
           When you recharge this currency, please only recharge through the supported networks below. If you recharge
@@ -179,7 +183,6 @@ export default defineComponent({
           qrCodeUrl.value = data.address
           await initQrcode(qrCodeUrl.value)
         } else {
-          console.log('11')
           data.address = ''
           // 清除二维码容器中的内容
           // if (qrcodeContainer.value) {
@@ -192,17 +195,19 @@ export default defineComponent({
         let res = await getTokens()
         if (res.data.code == 0) {
           data.depositList = res.data.model
-          if (data.currency) {
-            data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; }) => {
-              if (item.crypto == data.currency) {
-                data.cryptoFullName = item.cryptoFullName
-                data.cryptoLogoUrl = item.cryptoLogoUrl
-              }
-            })
-          }
         } else {
           proxy.$failToast(res.data.msg, 'failToast', 3000)
           return
+        }
+      },
+      async changeCurrency() {
+        if (data.currency) {
+          data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; }) => {
+            if (item.crypto == data.currency) {
+              data.cryptoFullName = item.cryptoFullName
+              data.cryptoLogoUrl = item.cryptoLogoUrl
+            }
+          })
         }
       },
       async findNetwork(token: any) {
@@ -231,7 +236,7 @@ export default defineComponent({
       async setNetwork(item: any, index: number) {
         data.nowIndex = index
         data.network = item.network
-        console.log(data.nowIndex)
+        // console.log(data.nowIndex)
         data.networkLogo = item.networkLogoUrl
         data.chainType = item.chainType
         await infoMethods.findAddress(data.currency, data.network)
@@ -242,9 +247,11 @@ export default defineComponent({
         data.currency = item.crypto
         data.cryptoLogoUrl = item.cryptoLogoUrl
         data.cryptoFullName = item.cryptoFullName
-        await infoMethods.findNetwork(data.currency)
-        await infoMethods.findAddress(data.currency, data.network)
         data.showt = false
+        await infoMethods.findNetwork(data.currency)
+        // console.log(data.network)
+        await infoMethods.findAddress(data.currency, data.network)
+
       },
       async onShow() {
         data.show = true
@@ -273,13 +280,12 @@ export default defineComponent({
       });
       //  qrcodeInstance.makeCode(url);
       // 获取生成的二维码的 canvas 元素
-      console.log(qrcodeContainer.value.querySelector('canvas'))
       const canvas = qrcodeContainer.value.querySelector('canvas');
       if (canvas) {
         const ctx = canvas.getContext('2d');
         const img = new Image();
         img.src = data.cryptoLogoUrl;
-        console.log(img.src)
+        // console.log(img.src)
         img.onload = () => {
           // 计算图标的位置
           const x = 55;
@@ -293,33 +299,36 @@ export default defineComponent({
     })
     onMounted(async () => {
       let deposit = couponStore.$state.deposit
+      await infoMethods.getList()
       if (route.query.currency) {
         data.headerTitle = 'Deposit ' + route.query.currency
         data.networkLogo = deposit ? deposit.logoUrl : ''
         data.currency = route.query.currency
-        await infoMethods.getList()
         if (route.query.network) {
           data.network = route.query.network
           data.type = 2
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.findAddress(data.currency, data.network)
         } else {
           data.type = 1
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.findAddress(data.currency, data.network)
         }
 
       } else {
-        if (deposit) {
-          data.headerTitle = 'Deposit ' + deposit
-          data.currency = deposit.currency
-          data.network = deposit.network
-          data.networkLogo = deposit.logoUrl
-          data.type = 3
-          await infoMethods.findNetwork(data.currency)
-          await infoMethods.findAddress(data.currency, data.network)
-        }
+        // if (deposit) {
+        //   data.headerTitle = 'Deposit ' + deposit
+        //   data.currency = deposit.currency
+        //   data.network = deposit.network
+        //   data.networkLogo = deposit.logoUrl
+        //   data.type = 3
+        // }
       }
+      if (data.currency) {
+      } else {
+        data.currency = "USDT"
+      }
+      console.log(data.type)
+      await infoMethods.findNetwork(data.currency)
+      console.log(data.network)
+      await infoMethods.findAddress(data.currency, data.network)
+      await infoMethods.changeCurrency()
     })
     watchEffect(() => {
     })

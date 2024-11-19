@@ -179,7 +179,7 @@ export default defineComponent({
           code: code
         }
         let res = await putWithdraw(params)
-        if(res.data.code == 1){
+        if(res.data.code == 0){
           data.codeEmail = '';
           router.replace({path:'/payWithdraw',query:{orderNo:'test111'}});
         }else{

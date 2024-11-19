@@ -37,6 +37,7 @@
     <div class="deposit-detail-btn" @click="backHome">
       Back Home
     </div>
+    <div style="height: 68px;"></div>
     <van-action-sheet v-model:show="show" >
        <!-- 自定义 header 插槽 -->
       <view slot="header" >
