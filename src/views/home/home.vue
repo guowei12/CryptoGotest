@@ -6,9 +6,15 @@
       <HeaderBar :home="true"></HeaderBar>
       <div class="QRPay-con">
         <div class="QRPay-balance">
-          <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
-              src="@/assets/images/home/see-icon.png" alt=""></div>
-          <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+          <div class="QRPay-balance-title">AEON balance
+            <div class="QRPay-balance-title-imgs" @click="balanceShow=!balanceShow">
+              <img class="QRPay-balance-title-img" :src="balanceShow?seeImg:seeCloseImg" alt="">
+              <!-- <van-icon class="closed-eye-icon" v-else name="closed-eye" /> -->
+              <!-- <img v-else cla ss="QRPay-balance-title-img" src="@/assets/images/home/see-close-icon.png" alt=""> -->
+            </div>
+          </div>
+          <div class="QRPay-balance-number" v-if="balanceShow">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+          <div class="QRPay-balance-number" v-else>{{ userBalances.faitIcon }} <span class="special-font">******</span></div>
         </div>
         <div class="QRPay-balance-btn" @click="goManagebalance">
           <img class="QRPay-balance-btn-img" src="@/assets/images/home/wallet-icon.png" alt="" srcset="">
@@ -111,6 +117,7 @@ export default defineComponent({
     const couponStore = useMain();
     const Faloading = ref(false)
     const data = reactive({
+      balanceShow: true,
       faitCurrency: '',
       icShow: true,
       loadingText: '...',
@@ -119,6 +126,8 @@ export default defineComponent({
       loading: false,
       listShow: 1,
       transactionList: [] as any,
+      seeImg: new URL('@/assets/images/home/see-icon.png', import.meta.url).href,
+      seeCloseImg: new URL('@/assets/images/home/see-close-icon.png', import.meta.url).href,
       assetsList: [
         {
           img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
@@ -325,8 +334,8 @@ export default defineComponent({
       tipShow == '1' ? data.icShow = false : data.icShow = true
     })
     onMounted(async () => {
-      let user=JSON.parse(localStorage.getItem('user') as any)?.aeonUserNo
-      if(user && user.aeonUserNo){
+      let user = JSON.parse(localStorage.getItem('user') as any)?.aeonUserNo
+      if (user && user.aeonUserNo) {
         data.loading = true
       }
       data.pageNo = 1
@@ -355,8 +364,8 @@ export default defineComponent({
       }
     })
     onActivated(async () => {
-      let user=JSON.parse(localStorage.getItem('user') as any).aeonUserNo
-      if(user&& user.aeonUserNo){
+      let user = JSON.parse(localStorage.getItem('user') as any).aeonUserNo
+      if (user && user.aeonUserNo) {
         data.loading = true
       }
       let stoken = getToken()

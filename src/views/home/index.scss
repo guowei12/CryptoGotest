@@ -10,7 +10,12 @@
     }
 
 }
-
+.special-font{
+    font-size: 24px;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+}
 .fLoading-box {
     z-index: 1000;
 }
@@ -34,12 +39,24 @@
         align-items: center;
         color: #737A86;
         font-family: 'sf-pro-display_medium_500';
-
-        .QRPay-balance-title-img {
+        .QRPay-balance-title-imgs{
             width: 16px;
             height: 16px;
             object-fit: cover;
             margin-left: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .closed-eye-icon{
+            margin-top: 4px;
+            transition: all linear 0.3s;
+        }
+        .QRPay-balance-title-img {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+            transition: all linear 0.3s;
         }
     }
 
@@ -49,6 +66,11 @@
         color: #191B1F;
         font-family: 'sf-pro-display_bold_700';
         margin-top: 6px;
+    }
+    .QRPay-balance-numbert{
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 

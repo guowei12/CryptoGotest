@@ -69,7 +69,6 @@ export default defineComponent({
     })
     const infoMethods = {
       setFooter(toNext:any){
-        console.log('toNext',toNext)
         router.push({ path:toNext,query: {}})
       }
     }

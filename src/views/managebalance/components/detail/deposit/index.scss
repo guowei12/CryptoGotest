@@ -1,3 +1,9 @@
+.deposit-detail{
+    :deep(.van-overlay) {
+        // border-radius: 16px 16px 0 0;
+        background: transparent !important;
+    }
+}
 .deposit-detail-box{
     margin: 16px;
     font-family: 'sf-pro-display_regular_400';

@@ -2,7 +2,8 @@
 <template>
   <div class="deposit-detail">
     <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
-    <div class="deposit-detail-box">
+    <Loading v-if="TLoading"></Loading>
+    <div class="deposit-detail-box" v-show="!TLoading">
       <!-- token -->
       <div class="deposit-detail-token">
         <div class="deposit-detail-token-title">
@@ -70,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div class="deposit-detail-btn" @click="backHome">
+    <div class="deposit-detail-btn" @click="backHome" v-show="!TLoading">
       Back Home
     </div>
     <div style="height: 68px;"></div>
@@ -143,12 +144,14 @@ import copyCon from '@/components/copy/index.vue'
 import { useMain } from '@/store';
 import showModel from '@/components/showModel/index.vue'
 import { getAddress, getTokens, getNetwork } from '@/apis/api'
+import Loading from '@/components/loading/index.vue'
 
 import QRCode from 'qrcodejs2-fix';
+import { nextTick } from 'process';
 
 export default defineComponent({
   name: 'depositDetail',
-  components: { HeaderBar, copyCon, showModel },
+  components: { HeaderBar, copyCon, showModel, Loading },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -156,9 +159,9 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as any
     const qrcodeContainer = ref(null) as any;
     let qrcodeInstance: { clear: () => void; } | null = null;
-
     let qrCodeUrl = ref('');
     const data = reactive({
+      TLoading: true,
       headerTitle: 'Deposit USDT',
       address: '',
       type: 1,
@@ -177,17 +180,22 @@ export default defineComponent({
     })
     const infoMethods = {
       async findAddress(token: any, network: any) {
+        data.TLoading = true
         let res = await getAddress(token, network)
         if (res.data.code == 0) {
           data.address = res.data.model
           qrCodeUrl.value = data.address
-          await initQrcode(qrCodeUrl.value)
+          // nextTick(async()=>{
+            await initQrcode(qrCodeUrl.value)
+          // })
+          data.TLoading = false
         } else {
           data.address = ''
           // 清除二维码容器中的内容
-          // if (qrcodeContainer.value) {
-          //   qrcodeContainer.value.innerHTML = '';
-          // }
+          if (qrcodeContainer.value) {
+            qrcodeContainer.value.innerHTML = '';
+          }
+          data.TLoading = false
           proxy.$failToast(res.data.msg, 'failToast', 3000)
         }
       },
@@ -202,7 +210,7 @@ export default defineComponent({
       },
       async changeCurrency() {
         if (data.currency) {
-          data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; },index) => {
+          data.depositList.forEach((item: { crypto: any; cryptoFullName: any; cryptoLogoUrl: any; }, index) => {
             if (item.crypto == data.currency) {
               data.nowIndext = index
               data.cryptoFullName = item.cryptoFullName
@@ -237,7 +245,6 @@ export default defineComponent({
       async setNetwork(item: any, index: number) {
         data.nowIndex = index
         data.network = item.network
-        // console.log(data.nowIndex)
         data.networkLogo = item.networkLogoUrl
         data.chainType = item.chainType
         await infoMethods.findAddress(data.currency, data.network)
@@ -325,9 +332,7 @@ export default defineComponent({
       } else {
         data.currency = "USDT"
       }
-      console.log(data.type)
       await infoMethods.findNetwork(data.currency)
-      console.log(data.network)
       await infoMethods.findAddress(data.currency, data.network)
       await infoMethods.changeCurrency()
     })

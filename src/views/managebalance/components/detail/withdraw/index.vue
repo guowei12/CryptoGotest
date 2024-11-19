@@ -89,7 +89,7 @@
         </div>
       </view>
       <div class="network-list">
-        <div @click="setNetwork(item)" :class="nowIndex == index ? 'network-li-set' : ''" class="network-list-li"
+        <div @click="setNetwork(item,index)" :class="nowIndex == index ? 'network-li-set' : ''" class="network-list-li"
           v-for="(item, index) in networkList" :key="index">
           <div class="network-li-left">
             <img class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
@@ -230,7 +230,8 @@ export default defineComponent({
       }
     }
     const infoMethods = {
-      async setNetwork(items: any) {
+      async setNetwork(items: any,index: number) {
+        data.nowIndex = index
         data.nowUrl = items.networkLogoUrl
         data.nowNetwork = items.network
         data.nowChainType = items.chainType
@@ -246,6 +247,7 @@ export default defineComponent({
         await infoMethods.getBalancesAmount()
         console.log(data.balancesAmount)
         await infoMethods.findNetwork(data.currency)
+        await infoMethods.getFree(data.currency, data.nowNetwork)
       },
       onNext() {
 
@@ -324,7 +326,7 @@ export default defineComponent({
         }
       },
       async getBalancesAmount() {
-        data.tropertyList.forEach((item: { name: any; faitAmount: number; },index) => {
+        data.tropertyList.forEach((item: { name: any; faitAmount: number; },index: number) => {
           if (item.name == data.currency) {
             data.nowIndext = index
             data.balancesAmount = item.faitAmount
@@ -344,8 +346,6 @@ export default defineComponent({
       }
     }
     const calculateRate = () => {
-      console.log(data.balancesAmount,data.formData.amount)
-
       if (data.formData.amount > data.balancesAmount) {
         data.formData.amount = data.balancesAmount;
       }
