@@ -249,7 +249,7 @@ export default defineComponent({
   box-sizing: border-box;
   color: #191B1F;
   background: transparent;
-  caret-color: #1A72F6;
+  caret-color: var(--inputCaretColor);
   flex: 1;
   width: calc(100%);
   font-size: 16px;

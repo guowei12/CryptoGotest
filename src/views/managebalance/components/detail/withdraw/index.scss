@@ -57,13 +57,13 @@
         font-family: 'sf-pro-display_medium_500';
         background: transparent !important;
         height: 17px;
-        caret-color: #1A72F6 !important;
+        caret-color: var(--inputCaretColor)!important;
         // text-indent: 12px;
         // caret-color: #1A72F6;
         /*光标颜色*/
     }
     textarea{
-        caret-color: #1A72F6 !important;
+        caret-color: var(--inputCaretColor) !important;
     }
     input::placeholder {
         font-size: 14px;

@@ -11,9 +11,8 @@
         color: #191B1F;
     }
     input {
-        caret-color: #1A72F6 !important;
+        caret-color: var(--inputCaretColor) !important;
         // text-indent: 12px;
-        // caret-color: #1A72F6;
         /*光标颜色*/
     }
     .wrong-text {
