@@ -4,11 +4,11 @@
         <div class="detail-box">
             <div class="detail-box-title">
                 <img v-if="detail.status == 'SUCCESS'" class="detail-box-icon" :src="successIcon" alt="" srcset="">
-                <img v-if="detail.status == 'FAIL'" class="detail-box-icon" :src="failIcon" alt="" srcset="">
+                <img v-else class="detail-box-icon" :src="failIcon" alt="" srcset="">
                 <div class="num">
                     <div>+{{ detail.confirmedNum }} {{ detail.crypto }}</div>
                     <div v-if="detail.status == 'SUCCESS'" class="min-font">Success</div>
-                    <div v-if="detail.status == 'FAIL'" class="min-font">Fail</div>
+                    <div v-else class="min-font">Fail</div>
                 </div>
             </div>
             <div class="detail-box-list">

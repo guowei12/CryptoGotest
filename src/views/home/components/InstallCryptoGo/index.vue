@@ -8,7 +8,7 @@
           <div class="ic-texta">Enjoy Seamless Application On Your Phone
             To get started,</div>
           <div class="ic-text">
-            Tap <img class="download-logo" src="@/assets/images/home/download-logo.png" alt=""> and “Add to Home Screen”
+            Tap <img class="download-logo" src="@/assets/images/home/deposit-icon.png" alt=""> and “Add to Home Screen”
           </div>
           <div class="ic-text2">
             Supported on Safari

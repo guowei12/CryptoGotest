@@ -5,7 +5,7 @@
             <img class="status-icon" src="@/assets/images/status/failed-icon.png" alt="" sizes="" srcset="">
             <div class="failed-title">
                 <!-- 20,000 VND -->
-                {{ detail.faitAmount }} {{ detail.fait }}
+                {{ detail.paymentAmount }} {{ detail.paymentUnit }}
             </div>
             <div class="failed-text">Failed</div>
             <div class="failed-payment">
@@ -25,14 +25,14 @@
                     <div class="failed-payment-con-li">
                         <div class="failed-payment-con-li-title">OrderID</div>
                         <div class="failed-payment-con-li-text">
-                            {{orderId}}
-                            <copyCon :copyHtml="orderId"/>
+                            {{ detail.orderNo }}
+                            <copyCon :copyHtml="detail.orderNo"/>
                         </div>
                     </div>
                     <div class="failed-payment-con-li matop-24">
                         <div class="failed-payment-con-li-title">Payment time</div>
                         <div class="failed-payment-con-li-text">
-                            {{ time }}
+                            {{ detail.paymentTime }}
                         </div>
                     </div>
             </div>

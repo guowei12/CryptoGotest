@@ -103,24 +103,7 @@ export default defineComponent({
       headerTitle: 'Withdraw USDT',
       hash: '0xe89bb7caa285672nbfe1v17bfcf85324b8b7f7af',
       networkShow: false,
-      depositList: [
-        {
-          img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-          network: 'Bitcoin',
-          name: 'BTC',
-          balance: '1191.71',
-          number: '0.0185',
-          currency: 'VND'
-        },
-        {
-          img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
-          network: 'Bitcoin',
-          name: 'BTC',
-          balance: '1191.71',
-          number: '0.0185',
-          currency: 'VND'
-        },
-      ],
+      depositList: [],
       networkList: [{
         img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
         network: 'Bitcoin',

@@ -239,14 +239,14 @@ export default defineComponent({
         if (res.data.code == 0) {
           if (res.data.model.data) {
             let transactionList = res.data.model.data
-            transactionList = transactionList.concat([
-              { failReason: '', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'REFUND', updateTime: "2024-11-13T07:34:51.000+0000" },
-              { failReason: 'Fiat transfer rejected by bank. ', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'FAIL', updateTime: "2024-11-13T07:34:51.000+0000" },
-            ])
-            transactionList.forEach((item: { updateTime: moment.MomentInput; }) => {
-              item.updateTime = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
+            // transactionList = transactionList.concat([
+            //   { failReason: '', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'REFUND', updateTime: "2024-11-13T07:34:51.000+0000" },
+            //   { failReason: 'Fiat transfer rejected by bank. ', fait: 'VND', faitAmount: '20,000', name: 'Mountain island coffee', status: 'FAIL', updateTime: "2024-11-13T07:34:51.000+0000" },
+            // ])
+            // transactionList.forEach((item: { updateTime: moment.MomentInput; }) => {
+              // item.updateTime = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
               // item.time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
-            })
+            // })
 
             data.transactionList = transactionList.concat(data.transactionList)
             // data.transactionList = data.transactionList.push({

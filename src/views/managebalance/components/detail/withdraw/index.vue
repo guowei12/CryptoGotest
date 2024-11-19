@@ -28,8 +28,8 @@
               <div class="network-li-left">
                 <img class="currency-img" :src="nowUrl" alt="" srcset="">
                 <div class="network-list-con">
-                  <div class="network-list-con-name">{{ nowChainType }}</div>
-                  <div class="network-list-con-time">{{ nowNetwork }}</div>
+                  <div class="network-list-con-name">{{ nowNetwork }}</div>
+                  <div class="network-list-con-time">{{ nowChainType }}</div>
                 </div>
               </div>
 
@@ -94,8 +94,8 @@
           <div class="network-li-left">
             <img class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
             <div class="network-list-con">
-              <div class="network-list-con-name">{{ item.chainType }}</div>
-              <div class="network-list-con-time">{{ item.network }}</div>
+              <div class="network-list-con-name">{{ item.network }}</div>
+              <div class="network-list-con-time">{{ item.chainType }}</div>
             </div>
           </div>
         </div>
