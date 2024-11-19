@@ -72,7 +72,7 @@
     }
 
     .withdraw-detail-con-li {
-        padding-top: 16px;
+        padding-top: 24px;
 
         .withdraw-detail-con-title {
             margin-bottom: 4px;
@@ -88,6 +88,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: #EDEFF2;
+            border-radius: 12px;
+        }
+        .withdraw-detail-con-text2{
+            cursor: pointer;
+            color: #737A86;
+            padding: 12px;
+            height:28px;
+            font-size: 14px;
+            line-height: 16.8px;
             background: #EDEFF2;
             border-radius: 12px;
         }
@@ -140,6 +150,7 @@
         font-size: 12px;
         color: #F53F3F;
         line-height: 14px;
+        margin-left: -12px;
     }
     .withdraw-detail-con-li-left{
 

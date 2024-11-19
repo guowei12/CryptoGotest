@@ -41,9 +41,9 @@
         </div>
         <div class="withdraw-detail-con-li">
           <div class="withdraw-detail-con-title">Wallet address</div>
-          <div class="withdraw-detail-con-text">
+          <div class="withdraw-detail-con-text2" :class="formError.address ? 'receive-con-input-wrong' : ''">
             <textarea @input="FormValidation('address', 'input')" @focus="FormValidClone('address')"
-              @blur="FormValidation('address', 'blur')" :class="formError.address ? 'receive-con-input-wrong' : ''"
+              @blur="FormValidation('address', 'blur')" 
               class="receive-con-input" type="text" v-model="formData.address" placeholder="Address"></textarea>
             <div v-if="formError.address" class="wrong-text">Your address is wrong</div>
           </div>
