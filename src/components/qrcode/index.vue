@@ -6,7 +6,7 @@
 
 <script>
 import QRCode from "qrcode";
-import { defineComponent, ref, reactive, toRefs, nextTick, onBeforeMount, onMounted, watch } from 'vue';
+import { defineComponent, ref, reactive, toRefs, nextTick, onBeforeMount, onMounted, onActivated, watch } from 'vue';
 
 export default defineComponent({
     props: {
@@ -28,30 +28,52 @@ export default defineComponent({
         }
     },
     setup(props) {
+        const canvas = ref(null)
+        const data=reactive({
+            text:'',
+            iconUrl:'' ,
+        })
         const generateQRCode = async () => {
-            const canvas = this.$refs.canvas;
-            const ctx = canvas.getContext("2d");
-
+            const canvasz = canvas.value
+            const ctx = canvasz.getContext("2d");
+            data.iconUrl=props.iconUrl
+            data.text=props.text
             // 清空画布
-            ctx.clearRect(0, 0, this.size, this.size);
-
+            ctx.clearRect(0, 0, props.size, props.size);
+            console.log(data.text)
             // 生成二维码
-            await QRCode.toCanvas(canvas, this.text, { width: this.size });
+            await QRCode.toCanvas(canvasz, data.text, { width: props.size });
 
             // 在二维码中间绘制图标
             const icon = new Image();
-            icon.src = this.iconUrl;
+            icon.src = data.iconUrl;
             icon.onload = () => {
-                const iconX = (this.size - this.iconSize) / 2;
-                const iconY = (this.size - this.iconSize) / 2;
-                ctx.drawImage(icon, iconX, iconY, this.iconSize, this.iconSize);
+                const iconX = (props.size - props.iconSize) / 2;
+                const iconY = (props.size - props.iconSize) / 2;
+                ctx.drawImage(icon, iconX, iconY, props.iconSize, props.iconSize);
             };
         }
-        onMounted(() => {
-            generateQRCode();
+        onMounted(async () => {
+            await generateQRCode();
         })
+        watch(
+            () => props.iconUrl,
+            (newVal) => {
+                data.iconUrl = props.iconUrl;
+                generateQRCode();
+            }
+        );
+        watch(
+            () => props.text,
+            (newVal) => {
+                data.text = props.text;
+                generateQRCode();
+            }
+        );
         return {
+            ...data,
             ...props,
+            canvas,
             generateQRCode
         };
     }
@@ -60,6 +82,7 @@ export default defineComponent({
 
 <style scoped>
 canvas {
-    border: 1px solid #ddd;
+    margin: -20px 0;
+    /* border: 1px solid #ddd; */
 }
 </style>

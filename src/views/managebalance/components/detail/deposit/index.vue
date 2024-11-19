@@ -39,13 +39,12 @@
         </div>
       </div>
       <div class="deposit-detail-qrCode">
-        <div ref="qrcodeContainer" id="qrcodeImg"></div>
+        <!-- <div ref="qrcodeContainer" id="qrcodeImg"></div> -->
+        <QrCodeWithIcon v-if="qeShow" :text="qrText" :iconUrl="qrUrl" :size="185" :iconSize="35"></QrCodeWithIcon>
         <!-- <div class="img-center">
           <img class="networkLogo" :src="networkLogo" alt="" srcset="">
         </div> -->
       </div>
-     <!-- <QrCodeWithIcon  :iconUrl="qrIconUrl" :size="200" :iconSize="40"></QrCodeWithIcon> -->
-
       <div class="deposit-text">
         Only deposit {{ currency }} to this address
       </div>
@@ -73,7 +72,7 @@
         </div>
       </div>
     </div>
-    <div class="deposit-detail-btn" @click="backHome" >
+    <div class="deposit-detail-btn" @click="backHome">
       Back Home
     </div>
     <div style="height: 68px;"></div>
@@ -153,7 +152,7 @@ import QrCodeWithIcon from "@/components/qrcode/index.vue";
 
 export default defineComponent({
   name: 'depositDetail',
-  components: { HeaderBar, copyCon, showModel, Loading,QrCodeWithIcon },
+  components: { HeaderBar, copyCon, showModel, Loading, QrCodeWithIcon },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -173,6 +172,9 @@ export default defineComponent({
       depositList: [] as any,
       nowIndext: -1,
       nowIndex: -1,
+      qeShow: false as any,
+      qrText: "" as any,
+      qrUrl: "" as any,
       currency: '' as any,
       cryptoFullName: '' as any,
       cryptoLogoUrl: '' as any,
@@ -188,7 +190,7 @@ export default defineComponent({
           data.address = res.data.model
           qrCodeUrl.value = data.address
           // nextTick(async()=>{
-            await initQrcode(qrCodeUrl.value)
+          await initQrcode(qrCodeUrl.value)
           // })
           data.TLoading = false
         } else {
@@ -265,11 +267,9 @@ export default defineComponent({
       },
       async onShow() {
         data.show = true
-        console.log(data.nowIndex)
       },
       async onShowt() {
         data.showt = true
-        console.log(data.nowIndex)
       },
       backHome() {
         router.replace({ path: '/' })
@@ -277,33 +277,48 @@ export default defineComponent({
     }
     // 初始化二维码
     const initQrcode = (url: string) => {
-      const qrcodeImgEl = document.getElementById('qrcodeImg') ? document.getElementById('qrcodeImg') : '';
-      qrcodeInstance = new QRCode(qrcodeImgEl, {
-        // width: appStore.equipmentType === 'pc' ? 185 : 148,
-        text: url,
-        width: 140,
-        height: 140,
-        margin: 1,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H,
-      });
+      data.qrUrl = ''
+      data.qrText = ''
+      data.qeShow = false
+      // console.log(url, data.qrText)
+      if (url) {
+        data.qeShow = true
+        data.qrText = url
+        data.qrUrl = data.cryptoLogoUrl
+      } else {
+        // data.qrText = '0xff46373ecbfe637482f23b111728698b1174fa44'
+        data.qeShow = false
+      }
+
+
+      // console.log('1',data.qrText)
+      // const qrcodeImgEl = document.getElementById('qrcodeImg') ? document.getElementById('qrcodeImg') : '';
+      // qrcodeInstance = new QRCode(qrcodeImgEl, {
+      //   // width: appStore.equipmentType === 'pc' ? 185 : 148,
+      //   text: url,
+      //   width: 140,
+      //   height: 140,
+      //   margin: 1,
+      //   colorDark: '#000000',
+      //   colorLight: '#ffffff',
+      //   correctLevel: QRCode.CorrectLevel.H,
+      // });
       //  qrcodeInstance.makeCode(url);
       // 获取生成的二维码的 canvas 元素
-      const canvas = qrcodeContainer.value.querySelector('canvas');
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.src = data.cryptoLogoUrl;
-        // console.log(img.src)
-        img.onload = () => {
-          // 计算图标的位置
-          const x = 55;
-          const y = 55;
-          // 在二维码的中心绘制图标
-          ctx.drawImage(img, x, y, 35, 35);
-        };
-      }
+      // const canvas = qrcodeContainer.value.querySelector('canvas');
+      // if (canvas) {
+      //   const ctx = canvas.getContext('2d');
+      //   const img = new Image();
+      //   img.src = data.cryptoLogoUrl;
+      //   // console.log(img.src)
+      //   img.onload = () => {
+      //     // 计算图标的位置
+      //     const x = 55;
+      //     const y = 55;
+      //     // 在二维码的中心绘制图标
+      //     ctx.drawImage(img, x, y, 35, 35);
+      //   };
+      // }
     };
     onBeforeMount(() => {
     })
