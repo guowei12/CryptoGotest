@@ -185,7 +185,7 @@ export default defineComponent({
     .qr_code-button {
       height: 48px;
       color: #191B1F !important;
-      background: #58F287 !important;
+      background: var(--primaryBgColor) !important;
       border-radius: 12px;
     }
   }

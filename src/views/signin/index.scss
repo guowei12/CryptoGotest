@@ -85,7 +85,7 @@
         font-family: 'sf-pro-display_medium_500';
         height: 48px;
         margin: 40px auto;
-        background: #58F287;
+        background: var(--primaryBgColor);
         border-radius: 12px;
         transition: background-color 0.3s;
     }

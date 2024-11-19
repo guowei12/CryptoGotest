@@ -572,7 +572,7 @@ export default defineComponent({
   .van-key--blue {
     font-size: 16px;
     color: #191B1F;
-    background: #58F287 !important;
+    background: var(--primaryBgColor) !important;
   }
 
   .van-field__label {

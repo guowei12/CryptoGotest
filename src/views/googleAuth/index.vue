@@ -166,7 +166,7 @@ export default defineComponent({
   .download_button {
     width: 100%;
     border-radius: 12px;
-    background: #58F28733;
+    background: #F5911933;
     padding: 14.5px 0;
     display: flex;
     align-items: center;
@@ -248,7 +248,7 @@ export default defineComponent({
   line-height: 48px;
   text-align: center;
   margin: 36px 16px 0 16px;
-  background: #58F287;
+  background: var(--primaryBgColor);
   border-radius: 12px;
 }
 </style>
