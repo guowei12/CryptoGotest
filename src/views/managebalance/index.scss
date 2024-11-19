@@ -18,12 +18,27 @@
         align-items: center;
         color: #737A86;
         font-family: 'sf-pro-display_medium_500';
-        .QRPay-balance-title-img{
+        .QRPay-balance-title-imgs{
             width: 16px;
             height: 16px;
             object-fit: cover;
             margin-left: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .QRPay-balance-title-img {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+            transition: all linear 0.3s;
+        }
+    }
+    .special-font{
+        font-size: 24px;
+        display: inline-block;
+        height: 24px;
+        line-height: 24px;
     }
     .QRPay-balance-number{
         font-size: 36px;

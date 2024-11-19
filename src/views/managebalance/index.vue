@@ -3,9 +3,15 @@
     <HeaderBar :title="headerTitle" :balance="true"></HeaderBar>
     <div class="QRPay-con">
       <div class="QRPay-balance">
-        <div class="QRPay-balance-title">AEON balance <img class="QRPay-balance-title-img"
-            src="@/assets/images/home/see-icon.png" alt=""></div>
-        <div class="QRPay-balance-number">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+        <div class="QRPay-balance-title">AEON balance
+          <div class="QRPay-balance-title-imgs" @click="balanceShow=!balanceShow">
+              <img class="QRPay-balance-title-img" :src="balanceShow?seeImg:seeCloseImg" alt="">
+              <!-- <van-icon class="closed-eye-icon" v-else name="closed-eye" /> -->
+              <!-- <img v-else cla ss="QRPay-balance-title-img" src="@/assets/images/home/see-close-icon.png" alt=""> -->
+            </div>
+        </div>
+        <div class="QRPay-balance-number" v-if="balanceShow">{{ userBalances.faitIcon }}{{ userBalances.balances }}</div>
+        <div class="QRPay-balance-number" v-else>{{ userBalances.faitIcon }} <span class="special-font">******</span></div>
       </div>
       <div class="balance-btn-box">
         <div class="balance-btn-df" @click="goUrl('depositDetail')">
@@ -55,6 +61,9 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as any
     const data = reactive({
       headerTitle: "Manage balance",
+      seeImg: new URL('@/assets/images/home/see-icon.png', import.meta.url).href,
+      seeCloseImg: new URL('@/assets/images/home/see-close-icon.png', import.meta.url).href,
+      balanceShow:true,
       assetsList: [
         {
           img: new URL('@/assets/images/home/BTC-icon.png', import.meta.url).href,
