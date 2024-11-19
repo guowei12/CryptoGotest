@@ -1,27 +1,32 @@
-.deposit-detail{
+.deposit-detail {
     :deep(.van-overlay) {
         // border-radius: 16px 16px 0 0;
         background: transparent !important;
     }
+
 }
-.deposit-detail-box{
+
+.deposit-detail-box {
     margin: 16px;
     font-family: 'sf-pro-display_regular_400';
     background: #FFFFFF;
-    padding-bottom:24px;
+    padding-bottom: 24px;
     border-radius: 12px;
-    .deposit-detail-qrCode{
+
+    .deposit-detail-qrCode {
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         padding-top: 32px;
-        #qrcodeImg{
-            width:140px;
+
+        #qrcodeImg {
+            width: 140px;
             height: 140px;
             overflow: hidden;
         }
-        .img-center{
+
+        .img-center {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -33,22 +38,26 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            .networkLogo{
+
+            .networkLogo {
                 width: 54px;
                 height: 54pc;
                 object-fit: contain;
             }
         }
     }
-    .deposit-detail-token{
+
+    .deposit-detail-token {
         margin: 0 24px;
-        padding-top:20px;
-        .deposit-detail-token-title{
+        padding-top: 20px;
+
+        .deposit-detail-token-title {
             font-size: 12px;
             line-height: 14.4px;
             color: #737A86;
         }
-        .deposit-detail-token-con{
+
+        .deposit-detail-token-con {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -57,36 +66,42 @@
             border-radius: 12px;
             padding: 9px 16px;
             background: #EDEFF2;
-            .deposit-detail-token-con-left{
+
+            .deposit-detail-token-con-left {
                 display: flex;
                 align-items: center;
             }
-            .deposit-detail-token-con-font{
-                margin-left:12px;
-                .detail-currency-text{
+
+            .deposit-detail-token-con-font {
+                margin-left: 12px;
+
+                .detail-currency-text {
                     font-size: 16px;
                     line-height: 20px;
                     font-family: 'sf-pro-display_medium_500';
                     color: #191B1F;
                 }
-                .detail-network-text{
+
+                .detail-network-text {
                     font-size: 12px;
                     line-height: 12px;
                     line-height: 14.32px;
                     color: #737A86;
                 }
             }
-            .currency-icon{
+
+            .currency-icon {
                 width: 32px;
                 height: 32px;
             }
+
             .arrow-btm {
                 width: 12px;
                 height: 12px;
                 margin-right: 4px;
                 transition: transform 0.4s;
             }
-    
+
             .arrow-btm-set {
                 width: 12px;
                 height: 12px;
@@ -96,14 +111,17 @@
             }
         }
     }
-    .deposit-detail-network{
+
+    .deposit-detail-network {
         margin: 20px 24px 0;
-        .deposit-detail-network-title{
+
+        .deposit-detail-network-title {
             font-size: 12px;
             line-height: 14.4px;
             color: #737A86;
         }
-        .deposit-detail-network-con{
+
+        .deposit-detail-network-con {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -112,36 +130,42 @@
             border-radius: 12px;
             padding: 9px 16px;
             background: #EDEFF2;
-            .deposit-detail-network-con-left{
+
+            .deposit-detail-network-con-left {
                 display: flex;
                 align-items: center;
             }
-            .deposit-detail-network-con-font{
-                margin-left:12px;
-                .detail-currency-text{
+
+            .deposit-detail-network-con-font {
+                margin-left: 12px;
+
+                .detail-currency-text {
                     font-size: 16px;
                     line-height: 20px;
                     font-family: 'sf-pro-display_medium_500';
                     color: #191B1F;
                 }
-                .detail-network-text{
+
+                .detail-network-text {
                     font-size: 12px;
                     line-height: 12px;
                     line-height: 14.32px;
                     color: #737A86;
                 }
             }
-            .currency-icon{
+
+            .currency-icon {
                 width: 32px;
                 height: 32px;
             }
+
             .arrow-btm {
                 width: 12px;
                 height: 12px;
                 margin-right: 4px;
                 transition: transform 0.4s;
             }
-    
+
             .arrow-btm-set {
                 width: 12px;
                 height: 12px;
@@ -151,21 +175,25 @@
             }
         }
     }
-    .deposit-detail-address{
+
+    .deposit-detail-address {
         margin: 32px 24px 0;
-        .deposit-detail-address-title{
+
+        .deposit-detail-address-title {
             font-size: 12px;
             line-height: 14.4px;
             color: #737A86;
         }
-        .deposit-detail-address-hash-box{
+
+        .deposit-detail-address-hash-box {
             font-size: 14px;
             line-height: 16.8px;
             color: #191B1F;
             display: flex;
             align-items: center;
             margin-top: 4px;
-            .deposit-detail-address-hash{
+
+            .deposit-detail-address-hash {
                 word-break: break-all;
                 width: calc(100% - 16px);
                 margin-right: 12px;
@@ -173,49 +201,58 @@
 
         }
     }
-    .deposit-detail-network-tip{
+
+    .deposit-detail-network-tip {
         font-size: 12px;
         line-height: 14.4px;
         margin-top: 20px;
         border-radius: 12px;
         background: #F5F5F5;
         padding: 12px;
-        .network-tip-icon{
+
+        .network-tip-icon {
             width: 16px;
             height: 16px;
             object-fit: cover;
             margin-right: 12px;
         }
     }
-    .deposit-text{
+
+    .deposit-text {
         font-size: 12px;
         line-height: 14.4px;
         color: #737A86;
         text-align: center;
         margin-top: 12px;
     }
-    .deposit-detail-btm{
+
+    .deposit-detail-btm {
         width: calc(100% - 32px);
         margin: 0 auto;
         color: #737A86;
         line-height: 16px;
         margin-top: 16px;
-        .deposit-detail-btm-title{
+
+        .deposit-detail-btm-title {
             font-family: 'sf-pro-display_medium_500';
-            font-size: 10px;
+            font-size: 12px;
             color: #191B1F;
-            margin-bottom: 24px;
+            margin-bottom: 14px;
         }
-        .deposit-detail-btm-text{
+
+        .deposit-detail-btm-text {
             margin-top: 5px;
         }
-        .font-we{
+
+        .font-we {
+            font-size: 12px;
             color: #191B1F;
             font-family: 'sf-pro-display_medium_500';
         }
     }
 }
-.deposit-detail-btn{
+
+.deposit-detail-btn {
     font-size: 16px;
     font-family: 'sf-pro-display_medium_500';
     color: #191B1F;
@@ -225,10 +262,11 @@
     position: fixed;
     bottom: 20px;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     border-radius: 12px;
     background: var(--primaryBgColor);
 }
+
 .deposit-detail-btn:hover:after {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 12px;
@@ -254,7 +292,8 @@
     z-index: 2;
     cursor: pointer;
 }
-.van-action-box-header{
+
+.van-action-box-header {
     font-size: 18px;
     font-family: 'ssf-pro-display_semibold_600';
     line-height: 24px;
@@ -264,18 +303,20 @@
     line-height: 64px;
     text-align: center;
 }
+
 .action-title-line {
     position: absolute;
     top: 6px;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     width: 48px;
     height: 4.5px;
     border-radius: 100px;
-    background: rgba(25,27,31,0.2);
+    background: rgba(25, 27, 31, 0.2);
     z-index: 2003;
 }
-.back-icon{
+
+.back-icon {
     width: 24px;
     height: 24px;
     position: absolute;
@@ -287,7 +328,8 @@
     font-family: 'sf-pro-display_medium_500';
     color: #191B1F;
     border-radius: 12px;
-    margin-bottom:52px;
+    margin-bottom: 52px;
+
     .network-list-li {
 
         height: 38px;
@@ -352,6 +394,7 @@
     }
 
 }
+
 .action-btm {
     font-size: 12px;
     line-height: 14.4px;
@@ -373,11 +416,13 @@
 
     .tip-con {}
 }
+
 @media only screen and (min-width: 700px) {
-    .deposit-detail{
+    .deposit-detail {
         // max-width: 375px;
     }
-    .deposit-detail-btn{
+
+    .deposit-detail-btn {
         // width: 375px;
     }
 }

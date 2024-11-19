@@ -29,7 +29,7 @@
                 <img class="currency-img" :src="nowUrl" alt="" srcset="">
                 <div class="network-list-con">
                   <div class="network-list-con-name">{{ nowNetwork }}</div>
-                  <div class="network-list-con-time">{{ nowChainType }}</div>
+                  <div class="network-list-con-time">{{ networkSortName }}</div>
                 </div>
               </div>
 
@@ -95,7 +95,7 @@
             <img class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
             <div class="network-list-con">
               <div class="network-list-con-name">{{ item.network }}</div>
-              <div class="network-list-con-time">{{ item.chainType }}</div>
+              <div class="network-list-con-time">{{ item.networkSortName }}</div>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default defineComponent({
       nowIndext: 0,
       balancesAmount: 0,
       nowUrl: '' as any,
-      nowChainType: '' as any,
+      networkSortName:'' as any,
       currency: '' as any,
       cryptoLogoUrl: '' as any,
       cryptoFullName: '' as any,
@@ -234,7 +234,7 @@ export default defineComponent({
         data.nowIndex = index
         data.nowUrl = items.networkLogoUrl
         data.nowNetwork = items.network
-        data.nowChainType = items.chainType
+        data.networkSortName = items.networkSortName
         await infoMethods.getFree(data.currency, data.nowNetwork)
         data.networkShow = false
       },
@@ -284,7 +284,7 @@ export default defineComponent({
           if (data.type == 1) {
             data.nowNetwork = data.networkList[0].network
             data.nowUrl = data.networkList[0].networkLogoUrl
-            data.nowChainType = data.networkList[0].chainType
+            data.networkSortName = data.networkList[0].networkSortName
             data.nowIndex = 0
           } else if (data.nowNetwork) {
             data.networkList.forEach((item: { network: any; networkLogoUrl: any; }, index: number) => {

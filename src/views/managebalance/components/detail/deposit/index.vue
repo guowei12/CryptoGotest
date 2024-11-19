@@ -31,7 +31,7 @@
             <img class="currency-icon" :src="networkLogo" alt="">
             <div class="deposit-detail-network-con-font">
               <div class="detail-currency-text">{{ network }}</div>
-              <div class="detail-network-text">{{ chainType }}</div>
+              <div class="detail-network-text">{{ networkSortName }}</div>
             </div>
           </div>
           <img :class="show ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/balance/arrow-btm.png" alt="">
@@ -92,7 +92,7 @@
             <img class="currency-img" :src="item.networkLogoUrl" alt="" srcset="">
             <div class="network-list-con">
               <div class="network-list-con-name">{{ item.network }}</div>
-              <div class="network-list-con-time">{{ item.chainType }}</div>
+              <div class="network-list-con-time">{{ item.networkSortName }}</div>
             </div>
           </div>
         </div>
@@ -178,7 +178,7 @@ export default defineComponent({
       currency: '' as any,
       cryptoFullName: '' as any,
       cryptoLogoUrl: '' as any,
-      chainType: '' as any,
+      networkSortName: '' as any,
       network: '' as any,
       networkLogo: '' as any
     })
@@ -230,7 +230,7 @@ export default defineComponent({
           if (data.type == 1) {
             data.network = data.networkList[0].network
             data.networkLogo = data.networkList[0].networkLogoUrl
-            data.chainType = data.networkList[0].chainType
+            data.networkSortName = data.networkList[0].networkSortName
             data.nowIndex = 0
           } else if (data.network) {
             data.networkList.forEach((item: { network: any; networkLogoUrl: any; }, index: number) => {
@@ -250,7 +250,7 @@ export default defineComponent({
         data.nowIndex = index
         data.network = item.network
         data.networkLogo = item.networkLogoUrl
-        data.chainType = item.chainType
+        data.networkSortName = item.networkSortName
         await infoMethods.findAddress(data.currency, data.network)
         data.show = false
       },
