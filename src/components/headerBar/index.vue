@@ -210,7 +210,6 @@ export default defineComponent({
               data.nowCountry = { ...item }
             }
           })
-
         } else {
           data.nowCountry = {
             img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href,

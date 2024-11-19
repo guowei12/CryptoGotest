@@ -191,6 +191,7 @@ export default defineComponent({
     const handleUserInfo = async () => {
       await removeToken()
       localStorage.removeItem('user');
+      router.replace({path:'/signin'})
       // localStorage.removeItem('userInfo');
     }
     const getUser = async (token: any) => {

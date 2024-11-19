@@ -195,7 +195,7 @@ export default defineComponent({
               if (tokenObj.language) {
                 window.localStorage.setItem('locale', tokenObj.language)
               } else if (tokenObj.ipCountry == 'CN') {
-                window.localStorage.setItem('locale', 'zh')
+                // window.localStorage.setItem('locale', 'zh')
               }
 
             } else {
