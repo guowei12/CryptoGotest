@@ -229,8 +229,8 @@ export default defineComponent({
         locale.value = 'en'
         window.localStorage.setItem('locale', 'en')
       }
-      data.merchantLogo = props.logo ? props.logo : new URL('@/assets/images/header/default-img.png', import.meta.url).href,
-        data.heLogo = props.logo ? props.logo : new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href
+      data.merchantLogo = props.logo ? props.logo : ''//new URL('@/assets/images/header/default-img.png', import.meta.url).href,
+      data.heLogo = props.logo ? props.logo : new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href
     });
 
     const infoMethods = {
