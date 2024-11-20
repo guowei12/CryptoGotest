@@ -128,7 +128,8 @@ export default defineComponent({
       } as any,
       currency: 'USD',
       language: 'EN-US',
-      googleVerification: false
+      googleVerification: false,
+      localList:['en']//'vi', 'th', 'en', 'zh'
     })
     const getCurrency = () => {
       let currencyt = window.localStorage.getItem('currency') as any;
@@ -140,7 +141,7 @@ export default defineComponent({
     }
     const getLoale = () => {
       let localet = window.localStorage.getItem('locale') as any;
-      if (['vi', 'th', 'en', 'zh'].includes(localet)) {
+      if (data.localList.includes(localet)) {
         data.LanguageList.forEach(item => {
           if (item.value == localet) {
             data.language = item.name
@@ -224,7 +225,7 @@ export default defineComponent({
       console.log('onActivated')
       data.currency = window.localStorage.getItem('currency') as any;
       let localet = window.localStorage.getItem('locale') as any
-      if (['vi', 'th', 'en', 'zh'].includes(localet)) {
+      if (data.localList.includes(localet)) {
         data.LanguageList.forEach(item => {
           if (item.value == localet) {
             data.language = item.name

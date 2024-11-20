@@ -72,10 +72,14 @@
         </div>
       </div>
     </div>
-    <div class="deposit-detail-btn" @click="backHome">
+    <!-- <van-sticky :offset-bottom="50" position="bottom"> -->
+      <!-- <van-button type="primary">吸底距离</van-button> -->
+      <div class="deposit-detail-btn" @click="backHome">
       Back Home
     </div>
-    <div style="height: 68px;"></div>
+    <!-- </van-sticky> -->
+  
+    <div style="height: 28px;"></div>
     <van-action-sheet v-model:show="show">
       <!-- 自定义 header 插槽 -->
       <view slot="header">

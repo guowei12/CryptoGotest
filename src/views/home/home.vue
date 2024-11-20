@@ -3,7 +3,9 @@
     <fLoading class="fLoading-box" v-if="Faloading" />
     <Tloading class="QRPay-loading" v-if="loading" />
     <div v-else>
-      <HeaderBar :home="true"></HeaderBar>
+      <HeaderBar v-if="userInfo.tgPicture" :home="true" :name="userInfo.lastName" :logo="userInfo.tgPicture"></HeaderBar>
+      <HeaderBar v-else :home="true" :name="userInfo.lastName" :logo="userInfo.tgPicture"></HeaderBar>
+
       <div class="QRPay-con">
         <div class="QRPay-balance">
           <div class="QRPay-balance-title">AEON balance
@@ -169,7 +171,8 @@ export default defineComponent({
 
               let user = {
                 email: tokenObj.email,
-                aeonUserNo: tokenObj.aeonUserNo
+                aeonUserNo: tokenObj.aeonUserNo,
+                tgUserInfo:tokenObj.tgUserInfo
               }
               if (tokenObj.tgUserInfo) {
                 data.userInfo = tokenObj.tgUserInfo
@@ -191,6 +194,9 @@ export default defineComponent({
                   return
                 }
 
+              }
+              if(tokenObj.ipCountry){
+                window.localStorage.setItem('country', tokenObj.ipCountry)
               }
               setToken(token)
               window.localStorage.setItem('user', JSON.stringify(user))

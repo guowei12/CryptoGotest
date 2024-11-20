@@ -9,9 +9,9 @@
           <img class="header-default-img" :src="nowCountry.img" alt="" srcset="">
           <div class="header-default-text">{{ nowCountry.name }}</div>
         </div>
-        <img  :class="countryShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
+        <img :class="countryShow ? 'arrow-btm-set' : 'arrow-btm'" src="@/assets/images/header/arrow-btm.png" alt=""
           srcset="">
-        <div v-if="countryShow&&qrCountryShow" :class="!countryShow ? 'country-list-show' : 'country-list'" >
+        <div v-if="countryShow && qrCountryShow" :class="!countryShow ? 'country-list-show' : 'country-list'">
           <div @click.stop="setCountry(item)" :class="nowCountry.name == item.name ? 'country-li-set' : ''"
             class="country-li" v-for="item, index in countryList" :key="index">
             <img class="country-li-img" :src="item.img" alt="" srcset="">
@@ -23,7 +23,7 @@
     <div class="header-already header-default" v-if="home">
       <div class="header-already-left">
         <img class="merchantLogo" :src="merchantLogo" alt="" srcset="">
-        <div class="header-already-name">Sharon</div>
+        <div class="header-already-name">{{ name }}</div>
       </div>
       <img @click="goSettings" class="set-icon" src="@/assets/images/header/set-icon.png" alt="" srcset="">
     </div>
@@ -119,7 +119,7 @@ export default defineComponent({
       required: false,
     },
     qrCode: {
-      type: [Number, String, Boolean],
+      type: [Boolean],
       required: false,
     },
     qrCountryShow: {
@@ -150,6 +150,10 @@ export default defineComponent({
       type: [String],
       required: false,
     },
+    name: {
+      type: [String],
+      required: false,
+    },
     previousShow: {
       type: [Boolean],
       required: false,
@@ -168,7 +172,7 @@ export default defineComponent({
       heLogo: new URL('@/assets/images/qr/aeon-logo.png', import.meta.url).href,
       countryList: [
         { img: new URL('@/assets/images/header/VN.png', import.meta.url).href, name: 'Vietnam', value: 'vi' },
-        { img: new URL('@/assets/images/header/TH.png', import.meta.url).href, name: 'Thailand', value: 'th' },
+        // { img: new URL('@/assets/images/header/TH.png', import.meta.url).href, name: 'Thailand', value: 'th' },
         { img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href, name: 'EN-US', value: 'en' },
       ],
       nowCountry: {
@@ -199,12 +203,15 @@ export default defineComponent({
         name: 'EN-US',
         img: new URL('@/assets/images/set/US-icon.png', import.meta.url).href,
         value: 'en'
-      }
+      },
+      countrySplitList: ['vi', 'en'], //'vi', 'th', 'en'
+      qrCode: false as any
     });
     onMounted(() => {
+      data.qrCode = props.qrCode
       let lang = window.localStorage.getItem('locale')
       if (lang) {
-        if (['vi', 'th', 'en'].includes(lang)) {
+        if (data.qrCode && data.countrySplitList.includes(lang)) {
           data.countryList.forEach(item => {
             if (item.value == lang) {
               data.nowCountry = { ...item }
@@ -229,8 +236,7 @@ export default defineComponent({
     const infoMethods = {
       setCountry(ary: { img: string; name: string; value: any }) {
         data.nowCountry = { ...ary }
-        locale.value = ary.value
-        window.localStorage.setItem('locale', ary.value);
+        window.localStorage.setItem('country', ary.value);
         data.countryShow = false
         // reload();
       },

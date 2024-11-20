@@ -3,11 +3,14 @@
         <HeaderBar :title="headerTitle" :defaultH="true"></HeaderBar>
         <div class="detail-box">
             <div class="detail-box-title">
-                <img class="detail-box-icon" :src="successIcon" alt="" srcset="">
+                <img class="detail-box-icon" v-if="detail.status == 'SUCCESS'" :src="successIcon" alt="" srcset="">
+                <img class="detail-box-icon" v-if="detail.status == 'FAIL'" :src="failIcon" alt="" srcset="">
+                <img class="detail-box-icon" v-if="detail.status == 'ERROR'" :src="failIcon" alt="" srcset="">
                 <div class="num">
                     <div>- {{ detail.confirmedNum }} {{ detail.crypto }}</div>
                     <div v-if="detail.status == 'SUCCESS'" class="min-font">Success</div>
                     <div v-if="detail.status == 'FAIL'" class="min-font">Fail</div>
+                    <div v-if="detail.status == 'ERROR'" class="min-font">ERROR</div>
                 </div>
             </div>
             <div class="detail-box-list">

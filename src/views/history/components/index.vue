@@ -109,6 +109,9 @@ export default defineComponent({
             await onRefresh()
         };
         const goDetail = (obj: any) => {
+            if(obj.status == "PENDING"){
+                return
+            }
             if (activeTab.value == 'DEPOSIT') {
                 if (obj.type == "REFUND") {
                     couponStore.SET_ORDERDETAIL(obj)

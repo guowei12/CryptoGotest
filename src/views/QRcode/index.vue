@@ -1,6 +1,6 @@
 <template>
   <div :class="showScanned ? 'Qr-container-scanned' : 'Qr-container'">
-    <HeaderBar v-if="!showScanned" :qrCode="true" ></HeaderBar>
+    <HeaderBar v-if="!showScanned" :qrCode="true" :qrCountryShow="true" ></HeaderBar>
     <div class="top-img" v-if="!showScanned">
       <img src="@/assets/images/qr/aeon-logo.png" alt="">
     </div>
