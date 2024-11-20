@@ -16,6 +16,7 @@ import useHook from './../common/useHook'
 import { storeToRefs } from 'pinia'
 import { useMain } from '@/store/index';
 import { useRoute } from 'vue-router'
+import { android_phone, onAndroid, onIOS } from '@/common/app.js'
 
 export default defineComponent({
   components: {
@@ -50,6 +51,17 @@ export default defineComponent({
       }
       handleScroll()
       timer = window.addEventListener('resize', handleScroll);
+      console.log(onAndroid)
+    })
+    watch(() => route, (to) => {
+      if (onAndroid) {
+        console.log('onAndroid',onAndroid)
+        // if (window.AANFT) {
+        //   let phoneType = window.AANFT.getPlatform()
+        // }
+      }else if(onIOS){
+        console.log('onIOS',onIOS)
+      }
     })
     return {
       ...toRefs(data),

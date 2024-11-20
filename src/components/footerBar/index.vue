@@ -54,7 +54,7 @@ export default defineComponent({
           name:'Map',
           icon:new URL('@/assets/images/footerBar/footer-map.png', import.meta.url).href,
           setIcon:new URL('@/assets/images/footerBar/footer-map-set.png', import.meta.url).href,
-          url:'/map'
+          url:''//'/map'
         }
       ],
       path:'/'
