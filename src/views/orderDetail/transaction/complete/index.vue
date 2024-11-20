@@ -10,7 +10,7 @@
                     <div class="complete-payment-header-title">Receiving account</div>
                     <div class="complete-payment-header-con">
                         <div class="complete-payment-header-left">
-                            <img src="@/assets/images/status/momo-logo.png" alt="" srcset="">
+                            <img :src="detail.pictureUrl" alt="" srcset="">
                         </div>
                         <div class="complete-payment-header-li">
                             <div class="complete-payment-header-li-title">{{ detail.bankAccountName }}</div>
